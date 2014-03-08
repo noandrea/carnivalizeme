@@ -17,11 +17,12 @@
           </div>
           
           <div class="videoBlock" ng-show="showVideo">
-          
+
               <div class="cover"></div>
 
               <div class="controls" ng-show="showControls">
-                  <div class="control" ng-click="canvasToImage();">Make Image</div>
+                  <div class="control" ng-click="canvasToImage();">IMAGE</div>
+                  <div class="control" ng-click="canvasToGif();">VIDEO</div>
                   <div class="control" ng-click="refreshTracking();" ng-show="isRunning">REFRESH</div>
                   <div class="control" ng-click="stopTracking();"   ng-show="isRunning">STOP</div>
                   <div class="control" ng-click="restartTracking();"ng-hide="isRunning">START</div>

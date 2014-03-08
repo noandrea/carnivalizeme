@@ -190,45 +190,89 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     $scope.images = [];
     $scope.canvasToImage = function(){
         
-        //remove previous canvas if exist
-        var node = document.querySelector('#compositionImage');
-        if (node && node.parentNode) {
-          node.parentNode.removeChild(node);
-        }
-
         html2canvas(document.querySelector('#fullPic'), {
-          onrendered: function(canvas) {
-            //create single canvas (from canvasVideo and canvasOverlay)
-            canvas.id = 'compositionImage';
-            //attach it to the DOM (CSS will hide it anyway)
-            document.body.appendChild(canvas);
-            //transform it into an Image
-            canvas = document.getElementById("compositionImage");
-            var img    = canvas.toDataURL("image/png");
-            //great <a> and <img> to append it to the dom
-            
-            /*
-            var anchor = document.createElement("a");
-            anchor.href = img;
-            var imgForDom = document.createElement("img");
-            imgForDom.src = img;
-            anchor.appendChild(imgForDom);
+            onrendered: function(canvas) {
+                var img    = canvas.toDataURL("image/png");
 
-            //append it to the DOM
-            document.body.appendChild(anchor);
-            */
-
-            //stop tracking
-            $scope.stopTracking();
-            var num = num + 1;
-            $scope.images.push( {'ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
-                                                                                // to get it back in human readable "14 minutes ago" format:
-                                                                                // var timestamp = moment.unix(1390348800);
-                                                                                // console.log(timestamp.fromNow());
-            $scope.$apply();
-          }
+                //stop tracking
+                $scope.stopTracking();
+                $scope.images.push( {'type': 'png','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
+                                                                                    // to get it back in human readable "14 minutes ago" format:
+                                                                                    // var timestamp = moment.unix(1390348800);
+                                                                                    // console.log(timestamp.fromNow());
+                $scope.$apply();
+            }
         });
     };
+
+
+    //as seen on https://github.com/antimatter15/jsgif
+    $scope.canvasToGif = function(){
+
+        var node;   //used to check if an old canvas is there
+        var encoder = new GIFEncoder();
+        encoder.setRepeat(0);   //0  -> loop forever ||| 1+ -> loop n times then stop
+        encoder.setDelay(100);  //go to next frame every n milliseconds
+        encoder.start();
+
+        var iFrequency  = 500; // expressed in miliseconds
+        var myInterval  = 0;
+        var repetition  = 0;
+        var maxFrames   = 10;
+
+        myInterval = setInterval( function(){
+
+            repetition++;
+            console.log('repetition: ' + repetition);
+            if(repetition > maxFrames){
+                //stop tracking
+                $scope.stopTracking();
+
+                console.log('reached maxFrames');
+                clearInterval(myInterval);
+                encoder.finish();
+                var binary_gif = encoder.stream().getData(); //notice this is different from the as3gif package!
+                //var animatedGIF = 'data:image/gif;base64,' + encode64(binary_gif);
+
+                //saving to BLOB, because the file is TOO BIG
+                var blob = b64toBlob(encode64(binary_gif), 'image/gif');
+                var animatedGIF = URL.createObjectURL(blob);
+
+
+                $scope.images.push( {'type': 'gif', 'ts' : moment().format("X"), 'image': animatedGIF});   // moment().format("X") gives unix timestamp
+                                                                            // to get it back in human readable "14 minutes ago" format:
+                                                                            // var timestamp = moment.unix(1390348800);
+                                                                            // console.log(timestamp.fromNow());
+                $scope.$apply();
+
+            }else{
+
+                html2canvas(document.querySelector('#fullPic'), {
+                    onrendered: function(canvas) {
+                        var context = canvas.getContext('2d');
+                        encoder.addFrame(context);
+                    }
+                });
+                
+               console.log('looping: ' + repetition);
+
+            }
+
+        }, iFrequency );  // run
+
+        // STARTS and Resets the loop if any
+        function startLoop() {
+            /*if(myInterval > 0){
+                clearInterval(myInterval);  // stop
+            }
+            myInterval = setInterval( recordFrame(), iFrequency );  // run
+            */
+            
+        }
+
+        //startLoop();
+    };
+
 });
 
 
