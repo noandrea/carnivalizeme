@@ -22,6 +22,9 @@ module.exports = function(lineman) {
     //     module: "myModuleName"
     //   }
     // }
+    removeTasks: {
+      common: ["handlebars", "jst", "less", "coffee"] //concat
+    },
 
     server: {
       pushState: true
@@ -37,7 +40,7 @@ module.exports = function(lineman) {
       //   host: 'localhost',
       //   port: 3000
       // }
-    }
+    },
 
     // Sass
     //
@@ -45,7 +48,16 @@ module.exports = function(lineman) {
     // have Ruby installed as well as the `sass` gem. To enable it, comment out the
     // following line:
     //
-    // enableSass: true
+    enableSass: true,
+    //configure Sass task
+    sass: {
+      compile: {
+        options: {
+          loadPath: ["app/sass", "app/css", "vendor/css"]
+        }
+        //files: ["<%= files.sass.generatedApp %>", "<%= files.sass.main %>"]
+      }
+    },
 
     // Asset Fingerprints
     //

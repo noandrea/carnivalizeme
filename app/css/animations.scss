@@ -1,0 +1,33 @@
+/* ANIMATIONS for pages (as seen at http://scotch.io/tutorials/javascript/animating-angularjs-apps-ngview) */
+
+.page.ng-leave  { z-index:99999999; }
+.page.ng-enter  { z-index:88888888; }
+
+/* home -------------------------- */
+.page-main.ng-leave         {
+  -webkit-animation: slideOutLeft 0.5s both ease-in;
+  -moz-animation: slideOutLeft 0.5s both ease-in;
+  animation: slideOutLeft 0.5s both ease-in;
+
+}
+.page-main.ng-enter     {  
+    -webkit-animation:bounceInLeft 0.5s both ease-in;
+    -moz-animation:bounceInLeft 0.5s both ease-in;
+    animation:bounceInLeft 0.5s both ease-in;
+    animation-delay:0.5s;
+    -webkit-animation-delay:0.5s; /* Safari and Chrome */
+}
+
+/* about ------------------------ */
+.page-editor.ng-leave        {
+    -webkit-animation:slideOutRight 0.5s both ease-in;
+    -moz-animation:slideOutRight 0.5s both ease-in;
+    animation:slideOutRight 0.5s both ease-in;   
+}
+.page-editor.ng-enter    {  
+    -webkit-animation:bounceInRight 0.5s both ease-in;
+    -moz-animation:bounceInRight 0.5s both ease-in;
+    animation:bounceInRight 0.5s both ease-in;    
+    animation-delay:0.5s;
+    -webkit-animation-delay:0.5s; /* Safari and Chrome */
+}

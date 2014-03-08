@@ -1,0 +1,59 @@
+<div>
+      <div class="aligner">
+
+          <div class="bigPlay" ng-show="showStart">
+              <div>
+                <a class="playButton" ng-click="startFun();">carnivalize yourself</a>
+                <br/>
+                <a class="playButton" ng-click="startFun();">go to carnival</a>
+                <br/>
+                <a class="playButton" href="/editor">create masks</a>
+              </div>
+          </div>
+
+          <div class="messages" ng-show="cameraMsg.msg">
+              <i class="icon {{cameraMsg.icon}}"></i>
+              <p ng-bind-html="cameraMsg.msg"></p>
+          </div>
+          
+          <div class="videoBlock" ng-show="showVideo">
+          
+              <div class="cover"></div>
+
+              <div class="controls" ng-show="showControls">
+                  <div class="control" ng-click="canvasToImage();">Make Image</div>
+                  <div class="control" ng-click="refreshTracking();" ng-show="isRunning">REFRESH</div>
+                  <div class="control" ng-click="stopTracking();"   ng-show="isRunning">STOP</div>
+                  <div class="control" ng-click="restartTracking();"ng-hide="isRunning">START</div>
+              </div>
+              
+              <div id="fullPic">
+                  <video-canvas></video-canvas>
+                  <overlay-face></overlay-face>
+                  <video-html5></video-html5>
+              </div>
+              
+              <!-- take the following code off when possible -->
+              <canvas id="debug" style="position:absolute; top:0; z-index: 100002; display: none;"></canvas>
+
+          </div>
+      </div>
+      <div class="aligner">
+          <div>
+            <a class="playButton" href="/editor">create masks</a> 
+            <a ng-click="startWebCam();">startWebCam</a>
+            <br/>
+            <h4 ng-click="startFun('big');">BIG</h4>
+            <h4 ng-click="startFun('small');">SMALL</h4>
+          </div>
+      </div>
+      <div class="aligner">
+          <ul class="userImages">
+            <li ng-repeat="img in images | orderBy:'ts':true">
+                <p>{{img.ts | timeago}} ({{img.ts}})</p>
+                <img src="{{img.image}}"/>
+            </li>
+          <ul>
+      </div>
+
+</div>

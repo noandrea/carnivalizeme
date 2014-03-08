@@ -1,0 +1,180 @@
+//import resets (Eric Meyer's reset.css in Sass. Originally by @postpostmodern.)
+@import "reset.scss";
+
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
+
+//import mixins for flexbox
+@import "flex-mixins.scss";
+
+//import other mixins
+@import "mixins/transitions.scss";
+@import "mixins/gradient.scss";
+
+//import variables
+@import "variables.scss";
+
+//import headtracker scss (for messages like "camera not found")
+@import "headtracker.scss";
+
+//animations helper (Google "animate.css")
+@import "animate.css";
+
+//animations (eg for ng-view)
+@import "animations.scss";
+
+
+
+html {
+    background-color: white;
+    font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
+}
+
+.site {
+    @include flexbox;
+    @include flex-direction(column); //vertical orient + normal direction
+    min-height:100vh;
+}
+
+.site-content {
+    @include flex(1);
+    background-color: #F1F1F1;
+    max-width:100%;
+    margin:0;
+    -ms-flex-preferred-size:auto;
+}
+
+.aligner {
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(center);
+}
+
+
+.messages {
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(center);
+
+    position: absolute;
+
+    .icon{
+        margin-right: -285px;
+        width: 300px;
+        height: 300px;
+        z-index: 100054;
+        &.brightness{
+            background: url(/img/brightness.png) no-repeat center center;
+        }
+        &.face{
+            background: url(/img/face.png) no-repeat center center;
+        }
+    }
+    p{
+        z-index: 100055;
+        display:block;
+        border: 2px solid black;
+        width: 250px;
+        font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+        background:white;
+        padding:10px;
+    }
+
+}
+.bigPlay {
+    width: 640px;
+    height: 480px;
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(center);
+    a.playButton{
+        color: black;
+        text-decoration: none;
+        display:block;
+        border: 2px solid black;
+        width: 250px;
+        font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+        background:white;
+        padding:10px;
+        cursor: pointer;
+
+        //-webkit-transition-property:color, background; 
+        @include transitionProperty((color, background));
+        //-webkit-transition-duration: 0.3s, 0.3s; 
+        @include transitionDuration(.2s);
+        //-webkit-transition-timing-function: linear, ease-in;
+        @include transitionTimingFunction((linear, ease-in));
+
+        &:hover{
+            background-color: black;
+            color: white;
+        }
+        &:active{
+            background-color: green;
+            color: black;
+        }
+    }
+}
+
+.searchInput{
+    z-index: 100056;
+}
+
+.videoBlock {
+    
+    .cover{
+        z-index: 100051;
+        position: absolute;
+        @include linear-gradient(rgba(black, 0.9), rgba(black, 0)); // Stick in your favourite HEX colours
+        opacity: .6;
+    }
+
+    .controls{
+        z-index: 100053;
+        position: absolute;
+
+        .control{
+            background-color: white;
+            color:black;
+            
+            width:38px;
+            height:38px;
+            border: 1px solid black;
+
+            float:right;
+            cursor: pointer;
+            font-size: 10px;
+            align:center;
+        }
+    }
+}
+
+#fullPic{
+    #overlay{
+        z-index: 100052;
+        position: absolute;
+        margin-left: 0;
+        
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+    }
+
+    #compare{
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+        z-index: 100050;
+    }
+}
