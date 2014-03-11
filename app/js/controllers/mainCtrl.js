@@ -1,10 +1,16 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService) {
+angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage) {
 
     $scope.showVideo    = false;
     $scope.showControls = false;
     $scope.showStart = true;
     $scope.pageClass = 'page-main';
     $scope.isRunning  = false;
+
+    //get previously HTML5 storage images or reset the array
+    $scope.images = html5Storage.get('myCarnival');
+    console.log('IMAGES',$scope.images);
+    if(!$scope.images){ $scope.images = []; }
+
 
     var videoInput,
         canvasInput,
@@ -186,8 +192,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         $scope.restartTracking();
     };
     
-
-    $scope.images = [];
     $scope.canvasToImage = function(){
         
         html2canvas(document.querySelector('#fullPic'), {
@@ -196,10 +200,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
                 //stop tracking
                 $scope.stopTracking();
-                $scope.images.push( {'type': 'png','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
+                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'type': 'png','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
                                                                                     // to get it back in human readable "14 minutes ago" format:
                                                                                     // var timestamp = moment.unix(1390348800);
                                                                                     // console.log(timestamp.fromNow());
+                html5Storage.set('myCarnival', $scope.images);
                 $scope.$apply();
             }
         });
@@ -211,6 +216,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
         var node;   //used to check if an old canvas is there
         var encoder = new GIFEncoder();
+        encoder.setQuality(10);
         encoder.setRepeat(0);   //0  -> loop forever ||| 1+ -> loop n times then stop
         encoder.setDelay(100);  //go to next frame every n milliseconds
         encoder.start();
@@ -218,7 +224,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         var iFrequency  = 500; // expressed in miliseconds
         var myInterval  = 0;
         var repetition  = 0;
-        var maxFrames   = 10;
+        var maxFrames   = 2;
 
         myInterval = setInterval( function(){
 
@@ -235,14 +241,17 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                 //var animatedGIF = 'data:image/gif;base64,' + encode64(binary_gif);
 
                 //saving to BLOB, because the file is TOO BIG
-                var blob = b64toBlob(encode64(binary_gif), 'image/gif');
-                var animatedGIF = URL.createObjectURL(blob);
+                var b64Image    = encode64(binary_gif);
+                var blob        = b64toBlob(b64Image, 'image/gif');
+                var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
+                //console.log('GIF 64bits', b64Image);
+                //console.log('blob', blob);
 
-
-                $scope.images.push( {'type': 'gif', 'ts' : moment().format("X"), 'image': animatedGIF});   // moment().format("X") gives unix timestamp
-                                                                            // to get it back in human readable "14 minutes ago" format:
-                                                                            // var timestamp = moment.unix(1390348800);
-                                                                            // console.log(timestamp.fromNow());
+                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'type': 'gif', 'ts' : moment().format("X"), 'binary': binary_gif});   // moment().format("X") gives unix timestamp
+                                                                                                                                                        // to get it back in human readable "14 minutes ago" format:
+                                                                                                                                                        // var timestamp = moment.unix(1390348800);
+                                                                                                                                                        // console.log(timestamp.fromNow());
+                html5Storage.set('myCarnival', $scope.images);
                 $scope.$apply();
 
             }else{
@@ -260,17 +269,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
         }, iFrequency );  // run
 
-        // STARTS and Resets the loop if any
-        function startLoop() {
-            /*if(myInterval > 0){
-                clearInterval(myInterval);  // stop
-            }
-            myInterval = setInterval( recordFrame(), iFrequency );  // run
-            */
-            
-        }
+    };
 
-        //startLoop();
+    $scope.clearStorage = function(){
+        html5Storage.set('myCarnival', []);
+        alert('html5 storage cleared!');
     };
 
 });
@@ -283,8 +286,12 @@ angular.module("app").filter('timeago', function() {
     return timestamp.fromNow();
   };
 });
-// angular.module('phonecatFilters', []).filter('checkmark', function() {
-//   return function(input) {
-//     return input ? '\u2713' : '\u2718';
-//   };
-// });
+
+
+/*angular.module("app").filter('readBinary', function() {
+  return function(input) {
+    var b64Image    = encode64(input);
+    var blob        = b64toBlob(b64Image, 'image/gif');
+    return URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
+  };
+});*/

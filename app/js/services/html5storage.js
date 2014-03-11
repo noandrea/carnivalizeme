@@ -4,7 +4,7 @@ angular.module("app").factory('html5Storage', function() {
         get: function (id) {
             return JSON.parse(localStorage.getItem(id) || null);
         },
-        put: function (id, value) {
+        set: function (id, value) {
             localStorage.setItem(id, JSON.stringify(value));
         }
     };

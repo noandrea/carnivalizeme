@@ -130,7 +130,7 @@ html {
     .cover{
         z-index: 100051;
         position: absolute;
-        @include linear-gradient(rgba(black, 0.9), rgba(black, 0)); // Stick in your favourite HEX colours
+        @include linear-gradient(rgba(black, 1), rgba(black, .2)); // Stick in your favourite HEX colours
         opacity: .6;
     }
 

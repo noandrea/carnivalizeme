@@ -41,6 +41,8 @@
       </div>
       <div class="aligner">
           <div>
+            <a ng-click="clearStorage();">clearStorage</a> 
+            <br/>
             <a class="playButton" href="/editor">create masks</a> 
             <a ng-click="startWebCam();">startWebCam</a>
             <br/>
@@ -50,10 +52,10 @@
       </div>
       <div class="aligner">
           <ul class="userImages">
-            <li ng-repeat="img in images | orderBy:'ts':true">
-                <p>{{img.ts | timeago}} ({{img.ts}})</p>
-                <img src="{{img.image}}"/>
-            </li>
+              <li ng-repeat="img in images | orderBy:'ts':true"> <!-- | orderBy:'ts':true -->
+                  <p>{{img.ts | timeago}}</p>
+                  <personal-image source="img"></personal-image>
+              </li>
           <ul>
       </div>
 
