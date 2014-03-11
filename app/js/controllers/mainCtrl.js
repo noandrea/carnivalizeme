@@ -198,9 +198,12 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             onrendered: function(canvas) {
                 var img    = canvas.toDataURL("image/png");
 
+                var head = 'data:image/png;base64,';
+                var imgFileSize = Math.round((img.length - head.length)*3/4) ;
+
                 //stop tracking
                 $scope.stopTracking();
-                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'type': 'png','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
+                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
                                                                                     // to get it back in human readable "14 minutes ago" format:
                                                                                     // var timestamp = moment.unix(1390348800);
                                                                                     // console.log(timestamp.fromNow());
@@ -225,7 +228,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         var iFrequency  = 500; // expressed in miliseconds
         var myInterval  = 0;
         var repetition  = 0;
-        var maxFrames   = 2;
+        var maxFrames   = 8;
 
         myInterval = setInterval( function(){
 
@@ -246,9 +249,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                 var blob        = b64toBlob(b64Image, 'image/gif');
                 var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
                 //console.log('GIF 64bits', b64Image);
-                //console.log('blob', blob);
+                console.log('blob', blob);
 
-                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'type': 'gif', 'ts' : moment().format("X"), 'binary': binary_gif});   // moment().format("X") gives unix timestamp
+                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': blob.size, 'type': 'gif', 'ts' : moment().format("X"), 'binary': binary_gif});   // moment().format("X") gives unix timestamp
                                                                                                                                                         // to get it back in human readable "14 minutes ago" format:
                                                                                                                                                         // var timestamp = moment.unix(1390348800);
                                                                                                                                                         // console.log(timestamp.fromNow());
@@ -288,11 +291,17 @@ angular.module("app").filter('timeago', function() {
   };
 });
 
+angular.module("app").filter('bytes', function() {
+    return function(bytes, precision) {
+        if (isNaN(parseFloat(bytes)) || !isFinite(bytes)){
+            return '-';
+        }
 
-/*angular.module("app").filter('readBinary', function() {
-  return function(input) {
-    var b64Image    = encode64(input);
-    var blob        = b64toBlob(b64Image, 'image/gif');
-    return URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
-  };
-});*/
+        if (typeof precision === 'undefined'){
+            precision = 1;
+        }
+        var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
+            number = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
+    };
+});
