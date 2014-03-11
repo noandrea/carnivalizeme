@@ -204,8 +204,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                                                                     // to get it back in human readable "14 minutes ago" format:
                                                                                     // var timestamp = moment.unix(1390348800);
                                                                                     // console.log(timestamp.fromNow());
-                html5Storage.set('myCarnival', $scope.images);
-                $scope.$apply();
+                if(html5Storage.set('myCarnival', $scope.images)){
+                    $scope.$apply();
+                }
             }
         });
     };
@@ -251,8 +252,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                                                                                                                                         // to get it back in human readable "14 minutes ago" format:
                                                                                                                                                         // var timestamp = moment.unix(1390348800);
                                                                                                                                                         // console.log(timestamp.fromNow());
-                html5Storage.set('myCarnival', $scope.images);
-                $scope.$apply();
+                if(html5Storage.set('myCarnival', $scope.images)){
+                    $scope.$apply();
+                }
 
             }else{
 
@@ -262,7 +264,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                         encoder.addFrame(context);
                     }
                 });
-                
                console.log('looping: ' + repetition);
 
             }

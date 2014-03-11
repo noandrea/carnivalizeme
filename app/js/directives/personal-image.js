@@ -11,9 +11,9 @@ angular.module("app").directive('personalImage', function() {
 
 
             scope.$watch('theImage', function(newVal, oldVal) {
-                console.log('changeeeed');
+                //console.log('changeeeed');
                     if(newVal.binary){
-                        console.log('HOOOOP');
+                        //console.log('HOOOOP');
                         var b64Image    = encode64(newVal.binary);
                         var blob        = b64toBlob(b64Image, 'image/gif');
                         scope.imageUrl  = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
