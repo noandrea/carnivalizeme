@@ -1,0 +1,22 @@
+<div>
+    <div colorpicker="hex" ng-model="fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{fillStyle}}"></div>
+    <br/><br/>
+    <input type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
+    Eraser
+    <br/><br/>
+    <input type="checkbox" ng-model="showGrid" ng-checked="1" ng-false-value="false" ng-true-value="true">
+    FaceGrid
+    <br/><br/>
+    <input type="input" ng-model="blur">
+    Blur
+
+    <br/><br/>
+    <a ng-click="brushSize=20">BIG BRUSH</a><br/>
+    <a ng-click="brushSize=10">Medium Brush</a><br/>
+    <a ng-click="brushSize=5">small brush</a><br/>
+    <a ng-click="brushSize=2">tiny brush</a><br/>
+    
+
+    <input type="button" ng-click="save();" value="SAVE" style="top:55%;left:15%;">
+    <input type="button" ng-click="erase();" value="clear" style="top:55%;left:15%;">
+</div>

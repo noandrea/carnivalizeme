@@ -12,22 +12,31 @@
  *
  */
 
-module.exports = {
+ module.exports = {
   drawRoutes: function(app) {
-    app.post('/login', function(req, res) {
-      res.json({ message: 'logging in!' });
-    });
 
-    app.post('/logout', function(req, res) {
-      res.json({ message: 'logging out!'});
-    });
+    app.get('/masks', function (req, res) {
 
-    app.get('/books', function (req, res) {
-      res.json([
-        {title: 'Great Expectations', author: 'Dickens'},
-        {title: 'Foundation Series', author: 'Asimov'},
-        {title: 'Treasure Island', author: 'Stephenson'}
-      ]);
-    });
-  }
+        var data = {
+
+            status: {
+                code: 200,
+                message: 'Good'
+            },
+
+            response: [
+                  {name: 'mask_scuba.png', credits: 'http://www.scuba.com'},
+                  {name: 'mask_headglass.png', credits: 'http://headglass.com'},
+                  {name: 'mask_beard.png', credits: 'http://beard.com'},
+                  {name: 'mask_another.png', credits: 'http://beard.com'},
+                  {name: 'mask_lotsofshit.png', credits: 'http://lotsofstuff.com'},
+                  {name: 'mask_manual.png', credits: 'http://WIIII.com'}
+            ]
+        };
+
+      res.json(data);
+
+
+  });
+}
 };

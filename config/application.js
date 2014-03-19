@@ -11,7 +11,7 @@
  *   $ lineman config #=> to print the entire config
  *   $ lineman config concat.js #=> to see the JS config for the concat task.
  */
-module.exports = function(lineman) {
+ module.exports = function(lineman) {
   //Override application configuration here. Common examples follow in the comments.
   return {
     // grunt-angular-templates assumes your module is named "app", but
@@ -24,10 +24,10 @@ module.exports = function(lineman) {
     // }
     removeTasks: {
       common: ["handlebars", "jst", "less", "coffee"] //concat
-    },
+  },
 
-    server: {
-      pushState: true
+  server: {
+      pushState: true,
       // API Proxying
       //
       // During development, you'll likely want to make XHR (AJAX) requests to an API on the same
@@ -35,11 +35,15 @@ module.exports = function(lineman) {
       // requests for paths that don't match a static asset in ./generated will be forwarded to
       // whatever service might be running on the specified port.
       //
-      // apiProxy: {
-      //   enabled: true,
-      //   host: 'localhost',
-      //   port: 3000
-      // }
+      //
+      // enables HTML5 pushState;
+      // Lineman will serve `generated/index.html` for any request that does not match the apiProxy.prefix
+      apiProxy: {
+        enabled: true,
+        host: 'localhost',
+        port: 3000,
+        prefix: 'api' // request paths that contain 'api' will now be the only ones forwarded to the apiProxy
+      }
     },
 
     // Sass
@@ -54,10 +58,10 @@ module.exports = function(lineman) {
       compile: {
         options: {
           loadPath: ["app/sass", "app/css", "vendor/css"]
-        }
-        //files: ["<%= files.sass.generatedApp %>", "<%= files.sass.main %>"]
       }
-    },
+        //files: ["<%= files.sass.generatedApp %>", "<%= files.sass.main %>"]
+    }
+},
 
     // Asset Fingerprints
     //
@@ -67,5 +71,5 @@ module.exports = function(lineman) {
     //
     // enableAssetFingerprint: true
 
-  };
+};
 };

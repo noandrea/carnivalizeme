@@ -1,4 +1,4 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage) {
+angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks) {
 
     $scope.showVideo    = false;
     $scope.showControls = false;
@@ -26,21 +26,61 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     var controlsWidth   = 40; //squares 38x38px (with border:1px)
 
     var videoWidth,videoHeight;
-
-    var stickImage  = new Image();
-        stickImage.src = "img/scuba_mask.png";//"img/headglass_mask.png";
-    //var stickImage2 = new Image();
-    //    stickImage2.src = "img/beard_mask.png";
     var degrees = 0;
+
+    var stickImage      = new Image();
+        stickImage.src  = "img/mask_scuba.png"; //"img/mask_headglass.png";
+    var maskIndex       = Math.floor((Math.random()*5));
     
+
+    
+
+    var filter = {};//{upcoming: true, workstation_id: $routeParams.workstation_id, order : 'check_in_date,check_in_time'};
+
+    $scope.getMasks = function (tags){
+        // get data for the "upcoming reservations" panel
+        Masks.query(filter).$promise.then(function(response){
+            if($scope.parseAPIResponse(response)){
+                $scope.masks = response.response;
+                //pic random image
+                stickImage.src = 'img/' + $scope.masks[maskIndex].name;
+                console.log('MASKS!', $scope.masks);
+            }
+        });
+    };
+
+    $scope.getMasks();
+
+    $scope.changeMask = function (step){
+
+        if($scope.masks.length){
+            console.log('There are : ' + $scope.masks.length + ' masks');
+
+            maskIndex += step;
+            if(maskIndex > ($scope.masks.length-1)){
+                maskIndex = 0;
+            }else if(maskIndex < 0){
+                maskIndex = $scope.masks.length-1;
+            }
+            console.log('SELECT ' + maskIndex);
+            stickImage.src = 'img/' + $scope.masks[maskIndex].name;
+        }else{
+            console.log('There are NO masks');
+        }
+    };    
+
+
     $scope.videoPlayerStyle = function(style){
 
         if(style === 'big'){
-            videoWidth  = 920;      // 640 - 920
-            videoHeight = 690;      // 480 - 690
+            videoWidth  = 920;      // 320 - 640 - 920
+            videoHeight = 690;      // 240 - 480 - 690
+        }else if(style === 'small'){
+            videoWidth  = 320;
+            videoHeight = 240;
         }else{
-            videoWidth  = 640;      // 640 - 920
-            videoHeight = 480;      // 480 - 690
+            videoWidth  = 640;
+            videoHeight = 480;
         }
 
         //set video block dimention
@@ -162,7 +202,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
                 
                 overlayContext.drawImage(stickImage,-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
-                //overlayContext.drawImage(stickImage2,-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
 
                 overlayContext.rotate(degrees);
                 overlayContext.translate(-event.x, -event.y);
@@ -207,9 +246,10 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                                                                     // to get it back in human readable "14 minutes ago" format:
                                                                                     // var timestamp = moment.unix(1390348800);
                                                                                     // console.log(timestamp.fromNow());
-                if(html5Storage.set('myCarnival', $scope.images)){
+                /*if(html5Storage.set('myCarnival', $scope.images)){
                     $scope.$apply();
-                }
+                }*/
+                $scope.$apply();
             }
         });
     };
@@ -220,7 +260,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
         var node;   //used to check if an old canvas is there
         var encoder = new GIFEncoder();
-        encoder.setQuality(10);
+        encoder.setQuality(2);
         encoder.setRepeat(0);   //0  -> loop forever ||| 1+ -> loop n times then stop
         encoder.setDelay(100);  //go to next frame every n milliseconds
         encoder.start();
@@ -228,7 +268,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         var iFrequency  = 500; // expressed in miliseconds
         var myInterval  = 0;
         var repetition  = 0;
-        var maxFrames   = 8;
+        var maxFrames   = 10;
 
         myInterval = setInterval( function(){
 
@@ -241,6 +281,10 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                 console.log('reached maxFrames');
                 clearInterval(myInterval);
                 encoder.finish();
+
+                console.log(encoder);
+
+
                 var binary_gif = encoder.stream().getData(); //notice this is different from the as3gif package!
                 //var animatedGIF = 'data:image/gif;base64,' + encode64(binary_gif);
 
@@ -255,16 +299,19 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                                                                                                                                         // to get it back in human readable "14 minutes ago" format:
                                                                                                                                                         // var timestamp = moment.unix(1390348800);
                                                                                                                                                         // console.log(timestamp.fromNow());
-                if(html5Storage.set('myCarnival', $scope.images)){
+                /*if(html5Storage.set('myCarnival', $scope.images)){
                     $scope.$apply();
-                }
+                }*/
+                $scope.$apply();
 
             }else{
 
                 html2canvas(document.querySelector('#fullPic'), {
                     onrendered: function(canvas) {
                         var context = canvas.getContext('2d');
+                        encoder.setQuality(20);
                         encoder.addFrame(context);
+                        encoder.setQuality(20);
                     }
                 });
                console.log('looping: ' + repetition);
