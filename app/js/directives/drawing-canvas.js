@@ -7,6 +7,11 @@ angular.module("app").directive('drawingCanvas', function() {
     link: function(scope, element, attrs){
 
 
+        /**
+         * The concept behind this is an inspiration from http://perfectionkills.com/exploring-canvas-drawing-techniques/
+         */
+        
+
         var canvas, ctx, flag = false,
         prevX = 0,
         currX = 0,
@@ -17,7 +22,7 @@ angular.module("app").directive('drawingCanvas', function() {
         var fillStyle = scope.fillStyle = "#000000",
             lineWidth = scope.lineWidth = 2;
         
-        canvas          = scope.canvas = element[0].children[1];
+        canvas          = scope.canvas = element[0];
         ctx             = scope.ctx = canvas.getContext("2d");
         ctx.lineJoin    = ctx.lineCap = 'round';
 
@@ -27,10 +32,12 @@ angular.module("app").directive('drawingCanvas', function() {
 
         var isDrawing, lastPoint;
 
+
+
         element.bind('mousemove', function (e) {
             if (!isDrawing) { return; }
 
-            var currentPoint = { x: e.clientX - canvas.offsetLeft, y: e.clientY - (canvas.offsetTop - window.pageYOffset) };
+            var currentPoint = { x: e.clientX - element[0].offsetParent.offsetLeft, y: e.clientY - (element[0].offsetParent.offsetTop - window.pageYOffset) };
             var dist = distanceBetween(lastPoint, currentPoint);
             var angle = angleBetween(lastPoint, currentPoint);
 
@@ -58,7 +65,7 @@ angular.module("app").directive('drawingCanvas', function() {
 
         element.bind('mousedown', function (e) {
             isDrawing = true;
-            lastPoint = { x: e.clientX - canvas.offsetLeft, y: e.clientY - (canvas.offsetTop - window.pageYOffset) };
+            lastPoint = { x: e.clientX - (element[0].offsetParent.offsetLeft - window.pageXOffset), y: e.clientY - (element[0].offsetParent.offsetTop - window.pageYOffset) };
         });
 
         element.bind('mouseup', function (e) {
@@ -94,97 +101,6 @@ angular.module("app").directive('drawingCanvas', function() {
                 b: parseInt(result[3], 16)
             } : null;
         }
-
-
-
-
-
-
-
-
-
-
-
-        // /**
-        //  * Simple "draw" function that allows the user to
-        //  * draw stuff
-        //  * 
-        //  * @return {[type]} [description]
-        //  */
-        // function draw() {
-        //     ctx.beginPath();
-        //     ctx.moveTo(prevX, prevY);
-        //     ctx.lineTo(currX, currY);
-            
-        //     ctx.lineWidth = scope.brushSize;
-        //     ctx.lineJoin = ctx.lineCap = 'round';
-
-        //     //ctx.arc(currX,currY, scope.brushSize, 0, 2*Math.PI);
-            
-        //     var rgbaFillStyle = hexToRgb(scope.fillStyle);
-        //     var innerRadius = scope.brushSize/20;
-        //     var outerRadius = scope.brushSize;
-
-
-        //     var gradient = ctx.createRadialGradient(currX, currY, innerRadius, currX, currY, outerRadius);
-        //     gradient.addColorStop(0, scope.fillStyle);
-        //     gradient.addColorStop(0.5, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', 0.5)');
-        //     gradient.addColorStop(1, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', 0)');
-
-        //     ctx.strokeStyle = scope.fillStyle;
-
-        //     //ctx.fillStyle = gradient;
-        //     //ctx.fill();
-
-        //     ctx.stroke();
-        //     ctx.closePath();
-        // }
-
-
-
-
-
-
-        // /**
-        //  * findxy draw/stop/find pointer position
-        //  * 
-        //  * @param  {string} res ["out"/"up"/"down"/"move"]
-        //  * @param  {object} e   [event (click/move/up/down)]
-        //  * 
-        //  * @return {nul}        [nothing]
-        //  */
-        // function findxy(res, e) {
-
-        //     if (res === 'down') {
-        //         prevX = currX;
-        //         prevY = currY;
-        //         currX = e.clientX - canvas.offsetLeft;
-        //         currY = e.clientY - canvas.offsetTop;
-
-        //         flag = true;
-        //         dot_flag = true;
-        //         if (dot_flag) {
-        //             ctx.beginPath();
-        //             ctx.fillStyle = scope.fillStyle;
-        //             ctx.fillRect(currX, currY, 2, 2);
-        //             ctx.closePath();
-        //             dot_flag = false;
-        //         }
-        //     }
-        //     if (res === 'up' || res === "out") {
-        //         flag = false;
-        //     }
-        //     if (res === 'move') {
-        //         if (flag) {
-        //             prevX = currX;
-        //             prevY = currY;
-        //             currX = e.clientX - canvas.offsetLeft;
-        //             currY = e.clientY - canvas.offsetTop;
-        //             draw();
-        //         }
-        //     }
-
-        // }
 
     }
   };

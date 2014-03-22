@@ -111,6 +111,7 @@ colorpicker-alpha,
   min-width: 129px;
   padding: 4px;
   margin-top: 0;
+  background-color: black;
 }
 .colorpicker-position-top .dropdown-menu::after {
   border-top: 6px solid #fff;
@@ -137,7 +138,7 @@ colorpicker-alpha,
   left: -6px;
 }
 .colorpicker-position-bottom .dropdown-menu::after {
-  border-bottom: 6px solid #fff;
+  border-bottom: 6px solid black;
   border-top: 0;
 }
 .colorpicker-position-bottom .dropdown-menu::before {

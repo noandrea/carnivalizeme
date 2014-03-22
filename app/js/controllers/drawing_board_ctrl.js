@@ -12,9 +12,13 @@ angular.module("app").controller('drawingBoardCtrl', function($scope) {
     $scope.erase = function() {
         var m = confirm("Want to clear");
         if (m) {
+            $scope.uploadedImage = '';
             $scope.ctx.clearRect(0, 0, w, h);
-            document.getElementById("canvasimg").style.display = "none";
         }
+    };
+    $scope.eraseImage = function() {
+        $scope.uploadedImage = '';
+        $scope.ctx.clearRect(0, 0, w, h);
     };
 
     /**
@@ -23,10 +27,36 @@ angular.module("app").controller('drawingBoardCtrl', function($scope) {
      * @return {dataURL}    [the base64 image in an dataURL format eg. "data://bgf684df8s4s8..."]
      */
     $scope.save = function() {
-        document.getElementById("canvasimg").style.border = "2px solid";
+        
+        /*
         var dataURL = $scope.canvas.toDataURL();
-        document.getElementById("canvasimg").src = dataURL;
-        document.getElementById("canvasimg").style.display = "inline";
+
+        var head = 'data:image/png;base64,';
+        var imgFileSize = Math.round((dataURL.length - head.length)*3/4) ;
+
+        $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': dataURL};
+        */
+
+        html2canvas(document.querySelector('#customMask'), 
+
+            {
+            onrendered: function(canvas) {
+                var img    = canvas.toDataURL("image/gif");
+
+                var head = 'data:image/gif;base64,';
+                var imgFileSize = Math.round((img.length - head.length)*3/4) ;
+
+                $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': img};
+                console.log($scope.customMask);
+                
+                /*if(html5Storage.set('customMask', $scope.images)){
+                    $scope.$apply();
+                }*/
+                $scope.$apply();
+            },
+            background: undefined
+        });
+
     };
 
 
@@ -36,7 +66,6 @@ angular.module("app").controller('drawingBoardCtrl', function($scope) {
      * @return {null}           [nothing]
      */
     $scope.setEraser = function() {
-        //$scope.fillStyle = "rgba(255,255,255,1)";
         $scope.ctx.globalCompositeOperation = "destination-out";
     };
 
@@ -46,10 +75,28 @@ angular.module("app").controller('drawingBoardCtrl', function($scope) {
      * @return {null}           [nothing]
      */
     $scope.setBrush = function() {
-        $scope.fillStyle = "black";
         $scope.ctx.globalCompositeOperation = "source-over";
     };
 
 
+
+    //+++++++++++++++++++++++++++++++++++++++ MANAGE UPLOAD of a USER IMAGE
+    $scope.files = [];
+    //listen for the file selected event
+    $scope.$on("fileError", function (event, args) {
+        $scope.$apply(function () {            
+            //add the file object to the scope's files collection
+            //$scope.files.push(args.file);
+            alert('Sorry, you can upload PNG images only.', "&#127748;");
+        });
+    });
+    //listen for the file selected event
+    $scope.$on("fileUploaded", function (event, args) {
+        $scope.$apply(function () {
+            console.log(event, args);
+            //here i could already send the image to the server
+            $scope.uploadedImage      = args;
+        });
+    });
 
 });

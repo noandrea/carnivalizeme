@@ -15,21 +15,21 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
             break;
             case 401:                
                 if(response.response){
-                    Notification.show(response.response, "&#128274;", 'error');
+                    alert(response.response, "&#128274;", 'error');
                 } else {
-                    Notification.show("For Security reasons <strong>your session has expired.</strong><br>You are now Logged out.", "&#128274;");
+                    alert("For Security reasons <strong>your session has expired.</strong><br>You are now Logged out.", "&#128274;");
                     $rootScope.logout();
                 }               
                 the_return = false;
             break;
             case 404:
                 // not authorized... redirect to login page
-                Notification.show("<strong>You might have found a bug in our system.</strong><br>Please contact ShareDesk Admin to fix this issue.", "&#128165;", "error", true);
+                alert("<strong>You might have found a bug in our system.</strong><br>Please contact ShareDesk Admin to fix this issue.", "&#128165;", "error", true);
                 the_return = false;
             break;       
             case 500:
                 // not authorized... redirect to login page
-                Notification.show("<strong>Ouch!</strong><br>" + response.response.userMessage, "&#128165;", "error", true);
+                alert("<strong>Ouch!</strong><br>" + response.response.userMessage, "&#128165;", "error", true);
                 console.warn('Error ' + response.status.code + ' ' + response.status.message + ' - ' + response.response.error);
                 the_return = false;
             break;                                                     

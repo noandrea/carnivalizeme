@@ -7,8 +7,7 @@
 @import "flex-mixins.scss";
 
 //import other mixins
-@import "mixins/transitions.scss";
-@import "mixins/gradient.scss";
+@import "mixins.scss";
 
 //import variables
 @import "variables.scss";
@@ -22,10 +21,12 @@
 //animations (eg for ng-view)
 @import "animations.scss";
 
+header{
+    height: $header-height;
+}
 
 
 html {
-    background-color: white;
     font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
 }
 
@@ -37,7 +38,7 @@ html {
 
 .site-content {
     @include flex(1);
-    background-color: #F1F1F1;
+    background-color: white;
     max-width:100%;
     margin:0;
     -ms-flex-preferred-size:auto;
@@ -180,18 +181,9 @@ html {
 }
 
 
-.drawing_canvas{
-    width: 720px;
-    height: 960px;
-    border:2px gray dashed;
-    cursor: crosshair;
-}
-
 .cpicker{
-    
     display: block;
-    float:left;
-    width:20px;
+    width:auto;
     height:20px;
 }
 
@@ -201,15 +193,215 @@ html {
 }
 
 .canvasContainer{
-    z-index: 10;
-    canvas{
+    #customMask{
+        background: transparent;
         z-index: 999;
+        position: relative;
+        overflow: hidden;
+    }
+    .drawing_canvas{
+        z-index: 998;
+        width: 720px;
+        height: 960px;
+        border:1px gray dashed;
+        cursor: crosshair;
     }
     .canvasBg{
+        z-index: 996;
         background: url("/img/mask_scuba.png") no-repeat center;
-        position: absolute;
-        width: 724px;
-        height: 964px;
+        width: 720px;
+        height: 960px;
+        margin-top: -963px;
+        margin-left: 1px;
     }
     
+}
+
+/* ********************* TOOLBOX! ********************* */
+
+.toolbox{
+    background: #F1F1F1;
+    .tool{
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+
+        legend{
+            font-weight: 100;
+            font-size: 14px;
+            letter-spacing: 0.05em;
+            padding: 5px 10px;
+            background: #ddd;
+        }
+
+        .el{
+            font-weight: 100;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            background: none;
+            margin-bottom: 20px;
+        }
+    }
+}
+
+
+
+
+
+
+// Upload Photo Input
+input[type="file"] {
+    @include opacity(0);
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    //display: block;
+    min-width: 100%;
+    //min-height: 100%;
+    text-align: right;
+    font-size: 999px;
+    cursor: inherit;
+    height: 100%;
+}
+
+.upload-area {
+    label {
+        text-transform: none;
+    }
+    .suggestion{
+        text-align: right;
+        font-size: 12px;
+        font-weight: 200;
+        margin-top: 5px;
+    }
+
+    .file-container {
+        padding:10px;
+        border: 1px solid black;
+        font-weight: 200;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        background: white;
+
+        //-webkit-transition-property:color, background; 
+        @include transitionProperty((color, background, border));
+        //-webkit-transition-duration: 0.3s, 0.3s; 
+        @include transitionDuration(.2s);
+        //-webkit-transition-timing-function: linear, ease-in;
+        @include transitionTimingFunction((linear, ease-in));
+        
+        label{
+            text-align: center;
+            cursor: pointer;
+        }
+        &:hover {
+            color: #268EC9;
+            border: 1px solid #268EC9;
+            background: white;
+        }
+
+        &.delete{
+            &:hover {
+                color: red;
+                border: 1px solid red;
+                background: white;
+            }
+        }
+    }
+}
+
+.range-blur{
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+input[type=radio],
+input[type=checkbox] {
+    display: none;
+}
+.checkbox{
+    width: 120px;
+    height: 40px;
+    background: #333;
+    border-radius: 50px;
+    position: relative;
+}
+.checkbox:before {
+    content: 'On';
+    position: absolute;
+    top: 12px;
+    left: 13px;
+    height: 2px;
+    color: #26ca28;
+    font-size: 16px;
+}
+.checkbox:after {
+    content: 'Off';
+    position: absolute;
+    top: 12px;
+    left: 84px;
+    height: 2px;
+    color: #ddd;
+    font-size: 16px;
+}
+.checkbox label {
+    display: block;
+    width: 52px;
+    height: 22px;
+    border-radius: 50px;
+
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 9px;
+    z-index: 1;
+    left: 12px;
+    background: #ddd;
+}
+.checkbox input[type=checkbox]:checked + label {
+    left: 60px;
+    background: #26ca28;
+}
+
+
+
+
+
+
+// Input Range
+input[type="range"] {
+    @include radius(8px);
+    margin-bottom: .5em;
+    width: 100%;
+    height: .5em;
+    background-color: white;
+    cursor: pointer;
+    -webkit-appearance: none;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        position: relative;
+        top: 0px;
+        z-index: 1;
+        width: 11px;
+        height: 11px;
+        cursor: pointer;
+        background: #f1f1f1;
+        border: 1px solid black;
+        @include radius(10px);
+        
+    }
+
 }
