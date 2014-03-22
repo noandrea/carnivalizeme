@@ -11,17 +11,19 @@
     </fieldset>
 
     <fieldset class="tool">
-        <legend ng-if="ctx.globalCompositeOperation !== 'destination-out'">Brush</legend>
-        <legend ng-if="ctx.globalCompositeOperation === 'destination-out'">Eraser</legend>
+        <legend>
+            Brush
+        </legend>
+
+        <div class="el">
+            <input id="eraser" type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
+            <label for="eraser">Eraser</label>
+        </div>
+
 
         <div class="el">
             <div class="label">Size</div>
             <input type="range" ng-model="brushSize" name="points" min="2" step="2" max="20">
-        </div>
-
-        <div class="el" ng-show="ctx.globalCompositeOperation !== 'destination-out'">
-            <div class="label">Color</div>
-            <div colorpicker="hex" ng-model="fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{fillStyle}}"></div>
         </div>
 
         <div class="el">
@@ -30,11 +32,9 @@
         </div>
 
         <div class="el">
-            <div class="label">Eraser Mode</div>
-            <div class="checkbox">
-                <input id="eraser" type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
-                <label for="eraser"></label>
-            </div>
+            <div class="label">Color</div>
+            <div ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{fillStyle}}"></div>
+            <div ng-show="ctx.globalCompositeOperation === 'destination-out'" class="cpicker transparent"></div>
         </div>
 
     </fieldset>

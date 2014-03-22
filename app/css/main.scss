@@ -3,14 +3,20 @@
 
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
+//import variables
+@import "fonts.scss";
+
+//import variables
+@import "variables.scss";
+
+//import variables
+@import "icons.scss";
+
 //import mixins for flexbox
 @import "flex-mixins.scss";
 
 //import other mixins
 @import "mixins.scss";
-
-//import variables
-@import "variables.scss";
 
 //import headtracker scss (for messages like "camera not found")
 @import "headtracker.scss";
@@ -185,6 +191,17 @@ html {
     display: block;
     width:auto;
     height:20px;
+    border:1px solid #999;
+    padding-top: 9px;
+    text-align: center;
+
+    &.transparent{
+        background-color: #eee;
+        background-image: linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white), 
+        linear-gradient(45deg, white 25%, transparent 25%, transparent 75%, white 75%, white);
+        background-size:10px 10px;
+        background-position:0 0, 5px 5px
+    }
 }
 
 
@@ -312,64 +329,64 @@ input[type="file"] {
     }
 }
 
-.range-blur{
-    -moz-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-}
-
-input[type=radio],
-input[type=checkbox] {
-    display: none;
-}
 .checkbox{
+    input[type=radio],
+    input[type=checkbox] {
+        display: none;
+    }
+
+
     width: 120px;
     height: 40px;
     background: #333;
     border-radius: 50px;
     position: relative;
-}
-.checkbox:before {
-    content: 'On';
-    position: absolute;
-    top: 12px;
-    left: 13px;
-    height: 2px;
-    color: #26ca28;
-    font-size: 16px;
-}
-.checkbox:after {
-    content: 'Off';
-    position: absolute;
-    top: 12px;
-    left: 84px;
-    height: 2px;
-    color: #ddd;
-    font-size: 16px;
-}
-.checkbox label {
-    display: block;
-    width: 52px;
-    height: 22px;
-    border-radius: 50px;
 
-    -webkit-transition: all .5s ease;
-    -moz-transition: all .5s ease;
-    -o-transition: all .5s ease;
-    -ms-transition: all .5s ease;
-    transition: all .5s ease;
-    cursor: pointer;
-    position: absolute;
-    top: 9px;
-    z-index: 1;
-    left: 12px;
-    background: #ddd;
+    &:before {
+        content: 'On';
+        position: absolute;
+        top: 12px;
+        left: 13px;
+        height: 2px;
+        color: #26ca28;
+        font-size: 16px;
+    }
+    &:after {
+        content: 'Off';
+        position: absolute;
+        top: 12px;
+        left: 84px;
+        height: 2px;
+        color: #ddd;
+        font-size: 16px;
+    }
+
+    label {
+        display: block;
+        width: 52px;
+        height: 22px;
+        border-radius: 50px;
+
+        -webkit-transition: all .5s ease;
+        -moz-transition: all .5s ease;
+        -o-transition: all .5s ease;
+        -ms-transition: all .5s ease;
+        transition: all .5s ease;
+        cursor: pointer;
+        position: absolute;
+        top: 9px;
+        z-index: 1;
+        left: 12px;
+        background: #ddd;
+    }
+
+    input[type=checkbox]:checked + label {
+        left: 60px;
+        background: #26ca28;
+    }
+
 }
-.checkbox input[type=checkbox]:checked + label {
-    left: 60px;
-    background: #26ca28;
-}
+
 
 
 
@@ -399,9 +416,14 @@ input[type="range"] {
         height: 11px;
         cursor: pointer;
         background: #f1f1f1;
-        border: 1px solid black;
-        @include radius(10px);
-        
+        border: 1px solid #999;
+        @include radius(10px);   
     }
+}
 
+.range-blur{
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 }

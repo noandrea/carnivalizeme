@@ -1,4 +1,4 @@
-angular.module("app").controller('drawingBoardCtrl', function($scope) {
+angular.module("app").controller('drawingBoardCtrl', function($scope, $document) {
 
     $scope.showGrid     = true;
     $scope.brushSize    = 10;
@@ -20,6 +20,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope) {
         $scope.uploadedImage = '';
         $scope.ctx.clearRect(0, 0, w, h);
     };
+
 
     /**
      * Create the PNG image

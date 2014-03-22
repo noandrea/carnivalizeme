@@ -10,8 +10,6 @@ angular.module("app").directive('drawingCanvas', function() {
         /**
          * The concept behind this is an inspiration from http://perfectionkills.com/exploring-canvas-drawing-techniques/
          */
-        
-
         var canvas, ctx, flag = false,
         prevX = 0,
         currX = 0,
@@ -29,10 +27,7 @@ angular.module("app").directive('drawingCanvas', function() {
         w       = canvas.width;
         h       = canvas.height;
 
-
         var isDrawing, lastPoint;
-
-
 
         element.bind('mousemove', function (e) {
             if (!isDrawing) { return; }
