@@ -85,16 +85,16 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document)
     $scope.files = [];
     //listen for the file selected event
     $scope.$on("fileError", function (event, args) {
-        $scope.$apply(function () {            
+        //$scope.$apply(function () {            
             //add the file object to the scope's files collection
             //$scope.files.push(args.file);
-            alert('Sorry, you can upload PNG images only.', "&#127748;");
-        });
+            alert('Sorry, you can upload PNG images only.');
+        //});
     });
     //listen for the file selected event
     $scope.$on("fileUploaded", function (event, args) {
         $scope.$apply(function () {
-            console.log(event, args);
+            console.log('uploaded');
             //here i could already send the image to the server
             $scope.uploadedImage      = args;
         });

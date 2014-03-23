@@ -2,68 +2,83 @@
    
     <fieldset class="tool">
         <legend>Guides</legend>
-        <div class="el">
-            <div class="checkbox">
-                <input id="grid" type="checkbox" ng-model="showGrid" ng-checked="1" ng-false-value="false" ng-true-value="true">
-                <label for="grid"></label>
+        <div class="inner">
+            <div class="el">
+                <div class="checkbox switch">
+                    <input id="grid" type="checkbox" ng-model="showGrid" ng-checked="1" ng-false-value="false" ng-true-value="true">
+                    <label for="grid"></label>
+                </div>
             </div>
         </div>
     </fieldset>
 
     <fieldset class="tool">
-        <legend>
-            Brush
-        </legend>
+        <legend>Brush</legend>
+        <div class="inner">
+            <div class="el">
+                <div class="checkbox regular">
+                    <input id="eraser" type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
+                    <label for="eraser"></label>
+                    Eraser
+                </div>
+            </div>
 
-        <div class="el">
-            <input id="eraser" type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
-            <label for="eraser">Eraser</label>
-        </div>
 
+            <div class="el">
+                <div class="label">Size</div>
+                <input type="range" ng-model="brushSize" name="points" min="2" step="2" max="20">
+            </div>
 
-        <div class="el">
-            <div class="label">Size</div>
-            <input type="range" ng-model="brushSize" name="points" min="2" step="2" max="20">
-        </div>
+            <div class="el">
+                <div class="label">Blur</div>
+                <input class="range-blur" type="range" ng-model="blur" name="points" min="0.1" step="0.1" max="1">
+            </div>
 
-        <div class="el">
-            <div class="label">Blur</div>
-            <input class="range-blur" type="range" ng-model="blur" name="points" min="0.1" step="0.1" max="1">
-        </div>
-
-        <div class="el">
-            <div class="label">Color</div>
-            <div ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{fillStyle}}"></div>
-            <div ng-show="ctx.globalCompositeOperation === 'destination-out'" class="cpicker transparent"></div>
+            <div class="el">
+                <div class="label">Color</div>
+                <div ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{fillStyle}}"></div>
+                <div ng-show="ctx.globalCompositeOperation === 'destination-out'" class="cpicker transparent"></div>
+            </div>
         </div>
 
     </fieldset>
 
     <fieldset class="tool upload-area">
         <legend><span ng-show="!uploadedImage">Add </span><span ng-show="uploadedImage">Uploaded </span>Image</legend>
-        
-        <div ng-if="!uploadedImage">
-            <div class="file-container">
-                <label for="uploaded_image">
-                    from Computer
-                </label>
-                <input type="file" file-upload name="uploaded_image" />
+
+        <div class="inner">
+            <div ng-if="!uploadedImage">
+                <div class="file-container">
+                    <label for="uploaded_image">
+                        from Computer
+                    </label>
+                    <input type="file" file-upload name="uploaded_image" />
+                </div>
+
+                <div class="suggestion">PNG</div>
             </div>
 
-            <div class="suggestion">PNG</div>
-        </div>
-
-        <div ng-if="uploadedImage">
-            <div class="file-container delete" ng-click="eraseImage();">
-                <label>
-                    Remove Image
-                </label>
+            <div ng-if="uploadedImage">
+                <div class="file-container delete" ng-click="eraseImage();">
+                    <label>
+                        Remove Image
+                    </label>
+                </div>
+                <div class="suggestion" ng-if="uploadedImage">PNG - {{uploadedImage.size | bytes}}</div>
             </div>
-            <div class="suggestion" ng-if="uploadedImage">PNG - {{uploadedImage.size | bytes}}</div>
         </div>
 
     </fieldset>
 
-    <input type="button" ng-click="save();" value="SAVE" style="top:55%;left:15%;">
-    <input type="button" ng-click="erase();" value="clear" style="top:55%;left:15%;">
+    <fieldset class="tool upload-area">
+        <div class="inner">
+            <a class="btn" ng-click="save();">save mask</a>
+            <div class="help">
+                <br/><br/>
+                <a href="#" ng-click="erase();">RESTART</a>
+                <br/><br/><br/>
+                <a href="#" ng-click="erase();">HELP</a>
+            </div>
+        </div>
+    </fieldset>
 </div>

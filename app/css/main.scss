@@ -138,7 +138,7 @@ html {
         z-index: 100051;
         position: absolute;
         @include linear-gradient(rgba(black, 1), rgba(black, .2)); // Stick in your favourite HEX colours
-        opacity: .6;
+        @include opacity(.6);
     }
 
     .controls{
@@ -220,7 +220,7 @@ html {
         z-index: 998;
         width: 720px;
         height: 960px;
-        border:1px gray dashed;
+        border:1px #999 dashed;
         cursor: crosshair;
     }
     .canvasBg{
@@ -238,16 +238,36 @@ html {
 
 .toolbox{
     background: #F1F1F1;
-    .tool{
-        padding: 15px;
-        border-bottom: 1px solid #ddd;
+    height: 445px;
+    @include radius( 0 3px 3px 0);
+    border-bottom: 4px solid #999;
 
+    .tool{
+        padding: 0;
+        border-bottom: 1px solid #999;
+        &:last-child{
+            border-bottom: none;
+        }
+            
+        .inner{
+            padding: 15px 15px 5px 15px;
+            background: rgba(255, 255, 255, 0.55);
+        }
+        &:last-child{
+            .inner{
+                padding: 30px 15px;
+                background: none;
+            }
+        }
+
+        
         legend{
-            font-weight: 100;
-            font-size: 14px;
+            font-weight: 400;
+            font-size: 12px;
             letter-spacing: 0.05em;
             padding: 5px 10px;
-            background: #ddd;
+            background: rgba(255, 255, 255, 0.55);
+            text-transform: uppercase;
         }
 
         .el{
@@ -294,13 +314,13 @@ input[type="file"] {
 
     .file-container {
         padding:10px;
-        border: 1px solid black;
         font-weight: 200;
         text-align: center;
         position: relative;
         overflow: hidden;
         cursor: pointer;
         background: white;
+        color:#ddd;
 
         //-webkit-transition-property:color, background; 
         @include transitionProperty((color, background, border));
@@ -314,83 +334,134 @@ input[type="file"] {
             cursor: pointer;
         }
         &:hover {
-            color: #268EC9;
-            border: 1px solid #268EC9;
-            background: white;
+            color: white;
+            background: $green-editor;
         }
 
         &.delete{
             &:hover {
-                color: red;
-                border: 1px solid red;
-                background: white;
+                color: white;
+                background: red;
             }
         }
     }
 }
 
 .checkbox{
-    input[type=radio],
     input[type=checkbox] {
         display: none;
     }
 
-
-    width: 120px;
-    height: 40px;
-    background: #333;
-    border-radius: 50px;
-    position: relative;
-
-    &:before {
-        content: 'On';
-        position: absolute;
-        top: 12px;
-        left: 13px;
-        height: 2px;
-        color: #26ca28;
-        font-size: 16px;
-    }
-    &:after {
-        content: 'Off';
-        position: absolute;
-        top: 12px;
-        left: 84px;
-        height: 2px;
-        color: #ddd;
-        font-size: 16px;
-    }
-
-    label {
-        display: block;
-        width: 52px;
-        height: 22px;
+    &.switch{
+        width: 130px;
+        height: 40px;
+        background: white;
         border-radius: 50px;
+        position: relative;
 
-        -webkit-transition: all .5s ease;
-        -moz-transition: all .5s ease;
-        -o-transition: all .5s ease;
-        -ms-transition: all .5s ease;
-        transition: all .5s ease;
-        cursor: pointer;
-        position: absolute;
-        top: 9px;
-        z-index: 1;
-        left: 12px;
-        background: #ddd;
+        &:before {
+                content: 'On';
+                position: absolute;
+                top: 12px;
+                left: 13px;
+                height: 2px;
+                color: $green-editor;
+                font-size: 16px;
+            }
+            &:after {
+                content: 'Off';
+                position: absolute;
+                top: 12px;
+                left: 84px;
+                height: 2px;
+                color: #ddd;
+                font-size: 16px;
+            }
+
+            label {
+                display: block;
+                width: 52px;
+                height: 22px;
+                border-radius: 50px;
+
+                -webkit-transition: all .5s ease;
+                -moz-transition: all .5s ease;
+                -o-transition: all .5s ease;
+                -ms-transition: all .5s ease;
+                transition: all .5s ease;
+                cursor: pointer;
+                position: absolute;
+                top: 9px;
+                z-index: 1;
+                left: 12px;
+                background: #ddd;
+            }
+
+            input[type=checkbox]:checked + label {
+                left: 60px;
+                background: $green-editor;
+            }
+
     }
 
-    input[type=checkbox]:checked + label {
-        left: 60px;
-        background: #26ca28;
+    &.regular {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        padding-left: 25px;
+        padding-top: 5px;
+
+        /**
+         * Create the box for the checkbox
+         */
+        label {
+            cursor: pointer;
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            background: white;
+            border:1px solid #ddd;
+        }
+        /**
+         * Display the tick inside the checkbox
+         */
+        label:after {
+            @include opacity(.1);
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            background: transparent;
+            top: -4px;
+            left: 2px;
+            border: 4px solid $green-editor;
+            border-top: none;
+            border-right: none;
+
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+        }
+        /**
+         * Create the hover event of the tick
+         */
+        label:hover::after {
+            @include opacity(.4);
+        }
+
+        /**
+         * Create the checkbox state for the tick
+         */
+        input[type=checkbox]:checked + label:after {
+            @include opacity(1);
+        }
     }
 
 }
-
-
-
-
-
 
 
 // Input Range
@@ -426,4 +497,68 @@ input[type="range"] {
     -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
+}
+
+
+
+
+
+//BUTTONS
+
+.btn{
+    padding: 5px 0;
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
+    color: black;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+
+    //-webkit-transition-property:color, background; 
+    @include transitionProperty((color, background));
+    //-webkit-transition-duration: 0.3s, 0.3s; 
+    @include transitionDuration(.2s);
+    //-webkit-transition-timing-function: linear, ease-in;
+    @include transitionTimingFunction((linear, ease-in));
+
+    &:hover{
+        background-color: black;
+        color: white;
+    }
+    &:active{
+        background-color: $green-editor;
+        color: white;
+    }
+}
+.help{
+    color: #999;
+    font-weight: 100;
+    text-align: center;
+    margin-left: 2px;
+    a{
+        width: 100%;
+        display: inline-block;
+        text-decoration: none;
+        color: #999;
+        padding: 5px 0;
+
+        //-webkit-transition-property:color, background; 
+        @include transitionProperty((color, background));
+        //-webkit-transition-duration: 0.3s, 0.3s; 
+        @include transitionDuration(.2s);
+        //-webkit-transition-timing-function: linear, ease-in;
+        @include transitionTimingFunction((linear, ease-in));
+
+        &:hover{
+            background-color: black;
+            color: white;
+        }
+        &:active{
+            background-color: $green-editor;
+            color: white;
+        }
+    }
 }

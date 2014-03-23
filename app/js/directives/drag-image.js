@@ -4,7 +4,7 @@ angular.module("app").directive('dragRotateResize', function($document) {
         replace: true,
         link: function(scope, element, attr) {
 
-            var startX = 0, startY = 0, x = 0 || 0, y = 0 || 0, action, rotationDeg = 0, scaleAmount = 1, startManimulate = 0;
+            var startX = 0, startY = 0, x = 0 || 0, y = 0 || 0, action, rotationDeg = 0, scaleAmount = 1, startManipulating = 0;
  
             element.css({
                 position: 'absolute',
@@ -21,10 +21,14 @@ angular.module("app").directive('dragRotateResize', function($document) {
                 if(x===0 && y ===0){
                     x = element[0].x;
                     y = element[0].y;
+                    startX = event.pageX;
+                    startY = event.pageY;
+                }else{
+                    startX = event.pageX - x;
+                    startY = event.pageY - y;
                 }
 
-                startX = event.pageX - x;
-                startY = event.pageY - y;
+                console.log("MOUSEDOWN", event.pageX - startX, event.pageX, startX);
 
                 $document.on('mousemove', mousemove);
                 $document.on('mouseup', mouseup);
@@ -51,11 +55,11 @@ angular.module("app").directive('dragRotateResize', function($document) {
                 
                 switch(action){
                     case 'rotate':
-                        if(startManimulate===0){
-                            startManimulate = event.pageX;
+                        if(startManipulating===0){
+                            startManipulating = event.pageX;
                         }
                         currentX    = event.pageX;
-                        deviation   = startManimulate - currentX;
+                        deviation   = startManipulating - currentX;
 
                         maxX        = 500;
                         maxRotate   = 360;
@@ -70,11 +74,11 @@ angular.module("app").directive('dragRotateResize', function($document) {
 
                     break;
                     case 'scale':
-                        if(startManimulate===0){
-                            startManimulate = event.pageX;
+                        if(startManipulating===0){
+                            startManipulating = event.pageX;
                         }
                         currentX    = event.pageX;
-                        deviation   = Math.abs(startManimulate - currentX);
+                        deviation   = Math.abs(startManipulating - currentX);
 
                         maxX        = 500;
                         maxScale    = 4;
@@ -89,7 +93,8 @@ angular.module("app").directive('dragRotateResize', function($document) {
 
                     break;
                     default:
-                        startManimulate = 0;
+                        console.log("MOVING", event.pageX - startX, event.pageX, startX);
+                        startManipulating = 0;
                         y = event.pageY - startY;
                         x = event.pageX - startX;
                         element.css({

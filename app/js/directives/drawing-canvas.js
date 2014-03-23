@@ -17,7 +17,7 @@ angular.module("app").directive('drawingCanvas', function() {
         currY = 0,
         dot_flag = false;
 
-        var fillStyle = scope.fillStyle = "#000000",
+        var fillStyle = scope.fillStyle = "#ededed",
             lineWidth = scope.lineWidth = 2;
         
         canvas          = scope.canvas = element[0];
