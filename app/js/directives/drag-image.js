@@ -1,16 +1,25 @@
-angular.module("app").directive('dragRotateResize', function($document) {
+angular.module("app").directive('dragRotateResize', function($document, html5Storage) {
     return {
         restrict: 'EA',
         replace: true,
         link: function(scope, element, attr) {
 
-            var startX = 0, startY = 0, x = 0 || 0, y = 0 || 0, action, rotationDeg = 0, scaleAmount = 1, startManipulating = 0;
+            var startX = 0, startY = 0, x = 0 || 0, y = 0 || 0, action, rotationDeg = 0, scaleAmount = 1, startManipulating = 0, style, position;
  
             element.css({
                 position: 'absolute',
                 cursor: 'move',
                 zindex: 9999999999999999999999999999
             });
+
+            //if the user prevsiously set style and position, use that!
+            if(html5Storage.get('uploadedImage_style')){
+                element.css(html5Storage.get('uploadedImage_style'));
+            }
+            if(html5Storage.get('uploadedImage_position')){
+                element.css(html5Storage.get('uploadedImage_style'));
+            }
+
  
             element.on('mousedown', function(event) {
                 // Prevent default dragging of selected content
@@ -69,12 +78,14 @@ angular.module("app").directive('dragRotateResize', function($document) {
                             rotationDeg = 360;
                         }
 
-                        element.css({
+                        style = {
                             webkitTransform : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)',
                             MozTransform    : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)',
                             msTransform     : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)',
                             OTransform      : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)'
-                        });
+                        };
+                        element.css(style);
+                        html5Storage.set('uploadedImage_style', style);
 
                     break;
                     case 'scale':
@@ -88,12 +99,14 @@ angular.module("app").directive('dragRotateResize', function($document) {
                         maxScale    = 4;
                         scaleAmount = Math.round(((deviation/maxX)*maxScale)*10)/10;
 
-                        element.css({
+                        style = {
                             webkitTransform : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)',
                             MozTransform    : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)',
                             msTransform     : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)',
                             OTransform      : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)'
-                        });
+                        };
+                        element.css(style);
+                        html5Storage.set('uploadedImage_style', style);
 
                     break;
                     default:
@@ -101,12 +114,15 @@ angular.module("app").directive('dragRotateResize', function($document) {
                         startManipulating = 0;
                         y = event.pageY - startY;
                         x = event.pageX - startX;
-                        element.css({
-                            top: y + 'px',
-                            left:  x + 'px'
-                        });
+                        position = { top: y + 'px',left:  x + 'px' };
+                        element.css(position);
+                        html5Storage.set('uploadedImage_position', position);
                     break;
                 }
+
+
+
+
 
             }
 

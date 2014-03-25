@@ -1,4 +1,4 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module"]).run(function($rootScope) {
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate"]).run(function($rootScope) {
     
     /**
      * General response parser for API calls.
@@ -38,6 +38,36 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
     };
 
 }).config(['$compileProvider', function($compileProvider) {
+
     var oldWhiteList = $compileProvider.imgSrcSanitizationWhitelist();
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
+
+}]).config(['$translateProvider', function($translateProvider) {
+
+    // Simply register translation table as object hash
+    $translateProvider.translations('en_EN', {
+        'CARNIVALIZE_YOURSELF': 'carnivalize yourself',
+        'GOTO_CARNIVAL': 'visit the carnival',
+        'CREATE_MASK': 'create a mask'
+    });
+
+    $translateProvider.translations('it_IT', {
+        'CARNIVALIZE_YOURSELF': 'carnivalizzati',
+        'GOTO_CARNIVAL': 'guarda il carnevale',
+        'CREATE_MASK': 'crea una maschera'
+
+    });
+
+    $translateProvider.translations('de_DE', {
+        'CARNIVALIZE_YOURSELF': 'carnivalize du selbst',
+        'GOTO_CARNIVAL': 'sieht den Karneval',
+        'CREATE_MASK': 'erstellen Sie eine Maske'
+    });
+
+
+    $translateProvider.preferredLanguage('it_IT');
+
 }]);
+
+
+

@@ -1,4 +1,4 @@
-angular.module("app").directive('drawingCanvas', function() {
+angular.module("app").directive('drawingCanvas', function(html5Storage) {
   return {
     restrict: "E",
     controller: 'drawingBoardCtrl',
@@ -20,9 +20,23 @@ angular.module("app").directive('drawingCanvas', function() {
         var fillStyle = scope.fillStyle = "#9c9c9c",
             lineWidth = scope.lineWidth = 2;
         
+        var previousCanvas = html5Storage.get('drawing_canvas', 'canvas');
+        console.log(previousCanvas);
+
+
         canvas          = scope.canvas = element[0];
         ctx             = scope.ctx = canvas.getContext("2d");
         ctx.lineJoin    = ctx.lineCap = 'round';
+
+
+        //if the guy was drawing already......let him see his shiet
+        if(previousCanvas && previousCanvas.length){
+            var img = new Image();
+            img.src = previousCanvas;
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+            };
+        }
 
         w       = canvas.width;
         h       = canvas.height;

@@ -1,4 +1,4 @@
-angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope) {
+angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage) {
 
     $scope.showGrid     = true;
     $scope.brushSize    = 4;
@@ -13,10 +13,14 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
         var m = confirm("You're about to destroy yout masterpiece!");
         if (m) {
             $scope.eraseImage();
+            html5Storage.set('drawing_canvas', '');
             $scope.ctx.clearRect(0, 0, w, h);
         }
     };
     $scope.eraseImage = function() {
+        html5Storage.set('uploadedImage_style', '');
+        html5Storage.set('uploadedImage_position', '');
+        html5Storage.set('uploadedImage', '');
         if(document.querySelector('#upped-image')){
             angular.element(document.querySelector('#upped-image')).css({   webkitTransform : '',
                                                                             MozTransform    : '',
@@ -56,7 +60,8 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
         $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': dataURL};
         */
         
-
+        //localStorage the mask (excluding the IMAGE)
+        html5Storage.set('drawing_canvas', $scope.canvas, 'canvas');
         
         html2canvas(document.querySelector('#customMask'), 
 
@@ -67,12 +72,11 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
                 var head = 'data:image/png;base64,';
                 var imgFileSize = Math.round((img.length - head.length)*3/4) ;
 
-                $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': img};
-                console.log($scope.customMask);
-                
-                // if(html5Storage.set('customMask', $scope.images)){
-                //     $scope.$apply();
-                // }
+                $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': img, credits: 'http://www.ciao.com'};
+
+                //save the PNG image to test!
+                html5Storage.set('the_mask', $scope.customMask);
+
                 $scope.$apply();
             },
             background: undefined

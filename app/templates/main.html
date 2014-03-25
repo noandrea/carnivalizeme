@@ -1,13 +1,13 @@
 <div>
       <div class="aligner">
 
-          <div class="bigPlay" ng-show="showStart">
+          <div class="bigPlay" ng-show="showStart" ng-if="mode !== 'save'">
               <div>
-                <a class="playButton" ng-click="startFun();">carnivalize yourself</a>
+                <a class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
                 <br/>
-                <a class="playButton" ng-click="startFun();">go to carnival</a>
+                <a class="playButton" ng-click="startFun();">{{'GOTO_CARNIVAL' | translate}}</a>
                 <br/>
-                <a class="playButton" href="/editor">create masks</a>
+                <a class="playButton" href="/editor">{{'CREATE_MASK' | translate}}</a>
               </div>
           </div>
 
@@ -38,10 +38,17 @@
               <canvas id="debug" style="position:absolute; top:0; z-index: 100002; display: none;"></canvas>
 
           </div>
-      </div>
-      <div class="aligner">
-          <div>
+        </div>
 
+        <div class="aligner" ng-if="mode === 'save'">
+            <div>
+                <a>SAVE MASK</a>
+                <a href="/editor">GO TO EDITOR</a> 
+            </div>
+        </div>
+
+      <div class="aligner" ng-if="mode !== 'save'">
+          <div>
             <a ng-click="changeMask(1);">MINUS Masks</a>  | <a ng-click="changeMask(-1);">PLUS Masks</a> 
             <br/><br/>
             <a ng-click="getMasks();">PLUS Masks</a> 

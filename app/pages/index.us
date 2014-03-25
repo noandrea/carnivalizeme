@@ -12,7 +12,7 @@
 	<body class="site">
 
 		<header>
-			header
+			{{ 'TEST' | translate }}
 		</header>
 
 		<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>

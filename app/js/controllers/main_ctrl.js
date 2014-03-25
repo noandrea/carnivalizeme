@@ -1,4 +1,10 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks) {
+angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, $translate) {
+
+    $scope.mode = 'play';
+    if($location.$$path === '/trymask'){
+        $scope.mode = 'save';
+    }
+    $translate.use('it_IT');
 
     $scope.showVideo    = false;
     $scope.showControls = false;
@@ -8,7 +14,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
     //get previously HTML5 storage images or reset the array
     $scope.images = html5Storage.get('myCarnival');
-    console.log('IMAGES',$scope.images);
+
     if(!$scope.images){ $scope.images = []; }
 
 
@@ -38,15 +44,23 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     var filter = {};//{upcoming: true, workstation_id: $routeParams.workstation_id, order : 'check_in_date,check_in_time'};
 
     $scope.getMasks = function (tags){
-        // get data for the "upcoming reservations" panel
-        Masks.query(filter).$promise.then(function(response){
-            if($scope.parseAPIResponse(response)){
-                $scope.masks = response.response;
-                //pic random image
-                stickImage.src = 'img/' + $scope.masks[maskIndex].name;
-                console.log('MASKS!', $scope.masks);
-            }
-        });
+        if($scope.mode !== 'save'){
+            // get data for the "upcoming reservations" panel
+            Masks.query(filter).$promise.then(function(response){
+                if($scope.parseAPIResponse(response)){
+                    $scope.masks = response.response;
+                    //pic random image
+                    stickImage.src = 'img/' + $scope.masks[maskIndex].image;
+                    console.log('MASKS!', $scope.masks);
+                }
+            });
+        }else{
+            console.log('HERE!');
+            $scope.masks    = [];
+            $scope.masks.push(html5Storage.get('the_mask'));
+            stickImage.src  = $scope.masks[0].image;
+            console.log('MASK!', $scope.masks);
+        }
     };
 
     $scope.getMasks();
@@ -63,7 +77,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                 maskIndex = $scope.masks.length-1;
             }
             console.log('SELECT ' + maskIndex);
-            stickImage.src = 'img/' + $scope.masks[maskIndex].name;
+            stickImage.src = 'img/' + $scope.masks[maskIndex].image;
         }else{
             console.log('There are NO masks');
         }
@@ -324,8 +338,27 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
     $scope.clearStorage = function(){
         html5Storage.set('myCarnival', []);
+        html5Storage.set('drawing_canvas', '');
+
+        html5Storage.set('the_mask', '');
+
+        html5Storage.set('uploadedImage', '');
+        html5Storage.set('uploadedImage_style', '');
+        html5Storage.set('uploadedImage_position', '');
+        
         alert('html5 storage cleared!');
     };
+
+
+
+
+
+
+    if($scope.mode === 'save'){
+        setTimeout(function() {
+            $scope.startFun();
+        }, 1000); 
+    }
 
 });
 

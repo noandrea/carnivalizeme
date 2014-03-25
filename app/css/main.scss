@@ -232,6 +232,7 @@ body{
         height: 960px;
         outline:1px #999 dashed;
         cursor: crosshair;
+        margin-right:1px;
     }
     .canvasBg{
         z-index: 996;
@@ -239,7 +240,7 @@ body{
         width: 720px;
         height: 960px;
         margin-top: -963px;
-        margin-left: 1px;
+        margin-right: 1px;
     }
     
 }
@@ -526,6 +527,7 @@ input[type="range"] {
     text-align: center;
     width: 100%;
     display: inline-block;
+    text-decoration: none;
 
     //-webkit-transition-property:color, background; 
     @include transitionProperty((color, background));
@@ -539,8 +541,8 @@ input[type="range"] {
         color: white;
     }
     &:active{
-        background-color: $green-editor;
-        color: white;
+        background-color: white;
+        color: black;
     }
 }
 .help{
@@ -567,8 +569,8 @@ input[type="range"] {
             color: white;
         }
         &:active{
-            background-color: $green-editor;
-            color: white;
+            background-color: white;
+            color: black;
         }
     }
 }
@@ -584,7 +586,7 @@ input[type="range"] {
     left: 0;
     background-color: black;
     z-index:999999999999999;
-    @include opacity(.6);
+    @include opacity(.8);
 
 
     &.ng-hide-remove{
@@ -653,7 +655,7 @@ input[type="range"] {
             -webkit-animation:bounceInDown 0.5s both ease-in;
             -moz-animation:bounceInDown 0.5s both ease-in;
             animation:bounceInDown 0.5s both ease-in;
-            animation-delay:0.3s;
+            /*animation-delay:0.3s;
             -webkit-animation-delay:0.3s; /* Safari and Chrome */
         }
         &.ng-hide-add, &.ng-hide-add-active{

@@ -12,6 +12,11 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
     controller: 'EditorCtrl'
   });
 
+  $routeProvider.when('/trymask', {
+    templateUrl: 'main.html',
+    controller: 'MainCtrl'
+  });
+
   $routeProvider.otherwise({redirectTo: '/'});
 
 });

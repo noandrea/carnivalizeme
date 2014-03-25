@@ -31,3 +31,49 @@
     animation-delay:0.5s;
     -webkit-animation-delay:0.5s; /* Safari and Chrome */
 }
+
+
+/* exend animate.css */
+@-webkit-keyframes fadeInHalf {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: .8;
+  }
+}
+
+@keyframes fadeInHalf {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: .8;
+  }
+}
+
+.fadeInHalf {
+  -webkit-animation-name: fadeInHalf;
+  animation-name: fadeInHalf;
+}
+@-webkit-keyframes fadeOutHalf {
+  0% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOutHalf {
+  0% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
