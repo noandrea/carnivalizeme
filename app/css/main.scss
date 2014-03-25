@@ -36,10 +36,16 @@ html {
     font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
 }
 
-.site {
-    @include flexbox;
-    @include flex-direction(column); //vertical orient + normal direction
-    min-height:100vh;
+body{
+    &.lock{
+        overflow: hidden;
+    }
+
+    &.site {
+        @include flexbox;
+        @include flex-direction(column); //vertical orient + normal direction
+        min-height:100vh;
+    }
 }
 
 .site-content {
@@ -206,21 +212,25 @@ html {
 
 
 .drawingBoard{
-    display:flex; flex-flow: row wrap; justify-content: space-around;
+    @include flexbox;
+    @include flex-flow('row wrap');
+    @include justify-content('space-around');
 }
 
 .canvasContainer{
-    #customMask{
-        background: transparent;
-        z-index: 999;
-        position: relative;
+    .maskWrap{
+        #customMask{
+            background: transparent;
+            z-index: 999;
+            position: relative;
+        }
         overflow: hidden;
     }
     .drawing_canvas{
         z-index: 998;
         width: 720px;
         height: 960px;
-        border:1px #999 dashed;
+        outline:1px #999 dashed;
         cursor: crosshair;
     }
     .canvasBg{
@@ -240,7 +250,7 @@ html {
     background: #F1F1F1;
     height: 445px;
     @include radius( 0 3px 3px 0);
-    border-bottom: 4px solid #999;
+    
 
     .tool{
         padding: 0;
@@ -365,7 +375,7 @@ input[type="file"] {
                 top: 12px;
                 left: 13px;
                 height: 2px;
-                color: $green-editor;
+                color: #ddd;
                 font-size: 16px;
             }
             &:after {
@@ -374,7 +384,7 @@ input[type="file"] {
                 top: 12px;
                 left: 84px;
                 height: 2px;
-                color: #ddd;
+                color: #AF4848;
                 font-size: 16px;
             }
 
@@ -394,12 +404,12 @@ input[type="file"] {
                 top: 9px;
                 z-index: 1;
                 left: 12px;
-                background: #ddd;
+                background: #AF4848;
             }
 
             input[type=checkbox]:checked + label {
                 left: 60px;
-                background: $green-editor;
+                background: #ddd;
             }
 
     }
@@ -559,6 +569,98 @@ input[type="range"] {
         &:active{
             background-color: $green-editor;
             color: white;
+        }
+    }
+}
+
+
+.modalCover{
+    display: block;
+    margin: 0;
+    height: 100%;
+    width: 100%; /* needed for Firefox */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    z-index:999999999999999;
+    @include opacity(.6);
+
+
+    &.ng-hide-remove{
+        -webkit-animation:fadeInHalf 0.3s both ease-in;
+        -moz-animation:fadeInHalf 0.3s both ease-in;
+        animation:fadeInHalf 0.3s both ease-in;
+    }
+    &.ng-hide-add, &.ng-hide-add-active{
+        display:block!important;
+        -webkit-animation:fadeOutHalf .3s both ease-in;
+        -moz-animation:fadeOutHalf .3s both ease-in;
+        animation:fadeOutHalf .3s both ease-in;
+    }
+}
+.modalWrapper {
+    margin: 0;
+    height: 100%;
+    width: 100%; /* needed for Firefox */
+    position: fixed;
+    top: 0;
+    left: 0;
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(center);
+    z-index:999999999999999;
+
+    .modalContent {
+        z-index:9999999999999999;
+        background: white;
+        width: 35%;
+        max-height: 70%;
+        padding: 40px;
+        position: relative;
+        overflow: scroll;
+
+
+        table{
+            margin: 0 auto;
+            tr{
+                td:nth-child(even){ //explanation
+                    padding:15px;
+                    font-weight: 400;
+                    color: #999;
+                    span {
+                        color: #333;
+                    }
+                }
+                td:nth-child(odd){  //keyboard key
+                    padding:10px;
+                    font-weight: 400;
+                    span{
+                        border: 1px solid black;
+                        border-bottom: 2px solid black;
+                        border-right: 2px solid black;
+                        height: 20px;
+                        min-width: 22px;
+                        display: inline-block;
+                        text-align: center;
+                        padding: 3px 2px 0px 2px;
+                    }
+                }
+            }
+        }
+
+        &.ng-hide-remove{
+            -webkit-animation:bounceInDown 0.5s both ease-in;
+            -moz-animation:bounceInDown 0.5s both ease-in;
+            animation:bounceInDown 0.5s both ease-in;
+            animation-delay:0.3s;
+            -webkit-animation-delay:0.3s; /* Safari and Chrome */
+        }
+        &.ng-hide-add, &.ng-hide-add-active{
+            display:block!important;
+            -webkit-animation:bounceOutDown .3s both ease-in;
+            -moz-animation:bounceOutDown .3s both ease-in;
+            animation:bounceOutDown .3s both ease-in;
         }
     }
 }

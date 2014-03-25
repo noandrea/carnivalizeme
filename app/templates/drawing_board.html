@@ -1,10 +1,12 @@
 <div ng-controller="drawingBoardCtrl" class="drawingBoard">
     <div class="canvasContainer">
-        <div id="customMask">
-            <img drag-rotate-resize class="img-uploaded" ng-if="uploadedImage.fileBase64" src="{{uploadedImage.fileBase64}}" alt="image"/>
-            <drawing-canvas></drawing-canvas>
+        <div class="maskWrap">
+            <div id="customMask">
+                <img id="upped-image" drag-rotate-resize class="img-uploaded" ng-show="uploadedImage.fileBase64" src="{{uploadedImage.fileBase64}}" alt="image"/>
+                <drawing-canvas></drawing-canvas>
+            </div>
+            <div class="canvasBg" ng-show="showGrid"></div>
         </div>
-        <div class="canvasBg" ng-show="showGrid"></div>
 
         <img ng-if="customMask.image" src="{{customMask.image}}" alt="image" width="720" height="960" />
 

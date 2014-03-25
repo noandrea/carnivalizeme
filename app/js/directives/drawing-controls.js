@@ -11,51 +11,49 @@ angular.module("app").directive('drawingControls', function($document) {
             switch(e.which){
                 case 69: //letter "E" of Eraser
                     toggleBrush();
-                    return;
+                    break;
                 case 49:
                     setBrushSize(2);
-                    return;
+                    break;
                 case 50:
                     setBrushSize(4);
-                    return;
+                    break;
                 case 51:
                     setBrushSize(6);
-                    return;
+                    break;
                 case 52:
                     setBrushSize(8);
-                    return;
+                    break;
                 case 53:
                     setBrushSize(10);
-                    return;
+                    break;
                 case 54:
                     setBrushSize(12);
-                    return;
+                    break;
                 case 55:
                     setBrushSize(14);
-                    return;
+                    break;
                 case 56:
                     setBrushSize(16);
-                    return;
+                    break;
                 case 57:
                     setBrushSize(18);
-                    return;
+                    break;
                 case 48:
                     setBrushSize(20);
-                    return;
+                    break;
                 case 37:
                     changeBlur('more');
-                    return;
+                    break;
                 case 39:
                     changeBlur('less');
-                    return;
+                    break;
                 case 67:
                     scope.erase();
-                    return;
-                // following case is removed because it conflicts with the case:
-                // "S" of SCALE
-                /*case 83:
+                    break;
+                case 84:
                     scope.save();
-                    return;*/
+                    break;
             }
             scope.$apply();
         });

@@ -63,7 +63,11 @@ angular.module("app").directive('dragRotateResize', function($document) {
 
                         maxX        = 500;
                         maxRotate   = 360;
-                        rotationDeg = Math.round(((deviation/maxX)*maxRotate)*10)/10;
+                        rotationDeg = Math.abs(Math.round((deviation/maxX)*maxRotate));
+
+                        if(rotationDeg>360){
+                            rotationDeg = 360;
+                        }
 
                         element.css({
                             webkitTransform : 'scale('+scaleAmount+','+scaleAmount+') rotate('+rotationDeg+'deg)',
@@ -93,7 +97,7 @@ angular.module("app").directive('dragRotateResize', function($document) {
 
                     break;
                     default:
-                        console.log("MOVING", event.pageX - startX, event.pageX, startX);
+                        //console.log("MOVING", event.pageX - startX, event.pageX, startX);
                         startManipulating = 0;
                         y = event.pageY - startY;
                         x = event.pageX - startX;

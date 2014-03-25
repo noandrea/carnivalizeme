@@ -1,7 +1,7 @@
-angular.module("app").controller('drawingBoardCtrl', function($scope, $document) {
+angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope) {
 
     $scope.showGrid     = true;
-    $scope.brushSize    = 10;
+    $scope.brushSize    = 4;
     $scope.blur         = 0.9;
 
     /**
@@ -10,15 +10,24 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document)
      * @return {null}   [simply empty the board]
      */
     $scope.erase = function() {
-        var m = confirm("Want to clear");
+        var m = confirm("You're about to destroy yout masterpiece!");
         if (m) {
-            $scope.uploadedImage = '';
+            $scope.eraseImage();
             $scope.ctx.clearRect(0, 0, w, h);
         }
     };
     $scope.eraseImage = function() {
+        if(document.querySelector('#upped-image')){
+            angular.element(document.querySelector('#upped-image')).css({   webkitTransform : '',
+                                                                            MozTransform    : '',
+                                                                            msTransform     : '',
+                                                                            OTransform      : '',
+                                                                            top             : '',
+                                                                            left            : ''
+                                                                        });
+        }
+        console.log(document.querySelector('#upped-image'));
         $scope.uploadedImage = '';
-        $scope.ctx.clearRect(0, 0, w, h);
     };
 
 
@@ -28,8 +37,17 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document)
      * @return {dataURL}    [the base64 image in an dataURL format eg. "data://bgf684df8s4s8..."]
      */
     $scope.save = function() {
-        
+
         /*
+        canvasContext      = $scope.canvas.getContext('2d');
+
+        var uppedImage      = new Image();
+            uppedImage.src  = $scope.uploadedImage.fileBase64; //"img/mask_headglass.png";
+
+
+        canvasContext.drawImage(uppedImage, 0 ,0);
+
+
         var dataURL = $scope.canvas.toDataURL();
 
         var head = 'data:image/png;base64,';
@@ -37,26 +55,29 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document)
 
         $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': dataURL};
         */
+        
 
+        
         html2canvas(document.querySelector('#customMask'), 
 
             {
             onrendered: function(canvas) {
-                var img    = canvas.toDataURL("image/gif");
+                var img    = canvas.toDataURL("image/png");
 
-                var head = 'data:image/gif;base64,';
+                var head = 'data:image/png;base64,';
                 var imgFileSize = Math.round((img.length - head.length)*3/4) ;
 
                 $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': img};
                 console.log($scope.customMask);
                 
-                /*if(html5Storage.set('customMask', $scope.images)){
-                    $scope.$apply();
-                }*/
+                // if(html5Storage.set('customMask', $scope.images)){
+                //     $scope.$apply();
+                // }
                 $scope.$apply();
             },
             background: undefined
         });
+        
 
     };
 
@@ -78,26 +99,5 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document)
     $scope.setBrush = function() {
         $scope.ctx.globalCompositeOperation = "source-over";
     };
-
-
-
-    //+++++++++++++++++++++++++++++++++++++++ MANAGE UPLOAD of a USER IMAGE
-    $scope.files = [];
-    //listen for the file selected event
-    $scope.$on("fileError", function (event, args) {
-        //$scope.$apply(function () {            
-            //add the file object to the scope's files collection
-            //$scope.files.push(args.file);
-            alert('Sorry, you can upload PNG images only.');
-        //});
-    });
-    //listen for the file selected event
-    $scope.$on("fileUploaded", function (event, args) {
-        $scope.$apply(function () {
-            console.log('uploaded');
-            //here i could already send the image to the server
-            $scope.uploadedImage      = args;
-        });
-    });
 
 });

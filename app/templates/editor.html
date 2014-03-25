@@ -1,7 +1,80 @@
 <div>
-      <div class="aligner">
+    <div class="aligner">
+        <drawing-board></drawing-board>
+    </div>
 
-            <drawing-board></drawing-board>
+    <!-- help modal -->
+    <div class="modalWrapper" ng-show='modal_wrapper_show'>
+        <div class="modalCover" ng-show="modal_show" ng-click="hideModal();" ></div>
+        <div class="modalContent" ng-show="modal_show">
 
-      </div>
+            <table>
+                <tr>
+                    <td>
+                        <span>1</span> <span>...</span> <span>9</span>
+                    </td>
+                    <td>
+                        Brush <span>SIZE</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>&larr;</span> <span>&rarr;</span>
+                    </td>
+                    <td>
+                        Brush <span>BLUR</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>E</span>
+                    </td>
+                    <td>
+                        Toggle <span>ERASER</span> Mode
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>mouse</span>
+                    </td>
+                    <td>
+                        <span>DRAG</span> <em>Uploaded Image</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>mouse</span> + <span>R</span>
+                    </td>
+                    <td>
+                        <span>ROTATE</span> <em>Uploaded Image</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>mouse</span> + <span>S</span>
+                    </td>
+                    <td>
+                        <span>SCALE</span> <em>Uploaded Image</em>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>C</span>
+                    </td>
+                    <td>
+                        <span>CLEAR</span> Drawing Board
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>T</span>
+                    </td>
+                    <td>
+                        <span>TRY</span> Mask
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
 </div>
