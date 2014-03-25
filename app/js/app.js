@@ -44,28 +44,13 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
 
 }]).config(['$translateProvider', function($translateProvider) {
 
-    // Simply register translation table as object hash
-    $translateProvider.translations('en_EN', {
-        'CARNIVALIZE_YOURSELF': 'carnivalize yourself',
-        'GOTO_CARNIVAL': 'visit the carnival',
-        'CREATE_MASK': 'create a mask'
+    $translateProvider.useStaticFilesLoader({
+        type: 'static-files',
+        prefix: '/languages/locale-',
+        suffix: '.json'
     });
 
-    $translateProvider.translations('it_IT', {
-        'CARNIVALIZE_YOURSELF': 'carnivalizzati',
-        'GOTO_CARNIVAL': 'guarda il carnevale',
-        'CREATE_MASK': 'crea una maschera'
-
-    });
-
-    $translateProvider.translations('de_DE', {
-        'CARNIVALIZE_YOURSELF': 'carnivalize du selbst',
-        'GOTO_CARNIVAL': 'sieht den Karneval',
-        'CREATE_MASK': 'erstellen Sie eine Maske'
-    });
-
-
-    $translateProvider.preferredLanguage('it_IT');
+    $translateProvider.preferredLanguage('de_DE');
 
 }]);
 

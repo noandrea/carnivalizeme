@@ -24,7 +24,7 @@
     // }
     removeTasks: {
       common: ["handlebars", "jst", "less", "coffee"] //concat
-  },
+    },
 
   server: {
       pushState: true,

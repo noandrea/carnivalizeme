@@ -18,7 +18,7 @@ module.exports = function(lineman) {
         "app/js/**/*.js"
       ]
     },
-
+    
     less: {
       compile: {
         options: {
