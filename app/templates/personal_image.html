@@ -1,4 +1,24 @@
 <div class="imgContainer">
-    SIZE: {{theImage.size | bytes : 2}}<br/>
+
+menu: {{showMenu}}
+    <div class="imgWrap">
+        <div class="imgCover" ></div>
+        <div class="imgMenu" >
+            <div class="form">
+                <label>E-mail</label><br/>
+                <input type="text" name=""></input><br/>
+                <label>TAGS</label><br/>
+                <input type="text" name=""></input><br/>
+                <br/>
+                <input type="button" name="" value="zzzalva"></input>
+                <div class="help">by clicking this button you agree on our <a href="#"> Terms and Conditions</a></small></div>
+            </div>
+        </div>
+    </div>
     <img src="{{theImage.image ? theImage.image : imageUrl}}"></img>
+    
+    <div class="credits"> 
+        {{theImage.ext}} | <span>{{img.ts | timeago}} </span>
+    </div>
+
 </div>

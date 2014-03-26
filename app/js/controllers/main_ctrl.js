@@ -1,4 +1,7 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, $translate) {
+angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, $translate, $filter, scroller) {
+
+
+    console.log(scroller);
 
     $scope.mode = 'play';
     if($location.$$path === '/trymask'){
@@ -6,11 +9,13 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     }
     $translate.use('it_IT');
 
-    $scope.showVideo    = false;
-    $scope.showControls = false;
-    $scope.showStart = true;
-    $scope.pageClass = 'page-main';
-    $scope.isRunning  = false;
+    $scope.showVideo        = false;
+    $scope.showControls     = false;
+    $scope.showStart        = true;
+    $scope.pageClass        = 'page-main';
+    $scope.isRunning        = false;
+    $scope.showMask         = true;
+    $scope.showImage        = true;
 
     //get previously HTML5 storage images or reset the array
     $scope.images = html5Storage.get('myCarnival');
@@ -51,15 +56,14 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     $scope.masks = response.response;
                     //pic random image
                     stickImage.src = 'img/' + $scope.masks[maskIndex].image;
-                    console.log('MASKS!', $scope.masks);
+                    $scope.credits = $scope.masks[maskIndex].credits;
                 }
             });
         }else{
-            console.log('HERE!');
             $scope.masks    = [];
             $scope.masks.push(html5Storage.get('the_mask'));
             stickImage.src  = $scope.masks[0].image;
-            console.log('MASK!', $scope.masks);
+            $scope.credits = $scope.masks[maskIndex].credits;
         }
     };
 
@@ -68,18 +72,16 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     $scope.changeMask = function (step){
 
         if($scope.masks.length){
-            console.log('There are : ' + $scope.masks.length + ' masks');
-
             maskIndex += step;
             if(maskIndex > ($scope.masks.length-1)){
                 maskIndex = 0;
             }else if(maskIndex < 0){
                 maskIndex = $scope.masks.length-1;
             }
-            console.log('SELECT ' + maskIndex);
             stickImage.src = 'img/' + $scope.masks[maskIndex].image;
+            $scope.credits = $scope.masks[maskIndex].credits;
         }else{
-            console.log('There are NO masks');
+            alert('There are NO masks!');
         }
     };    
 
@@ -113,7 +115,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         messages.style.height   = (videoHeight-40) + "px";
         //set controls position
         var controls            = document.querySelector('.controls');
-        controls.style.marginLeft   = (videoWidth - (controlsWidth * controlsAmount)) + "px";
+        controls.style.marginLeft   = "0px";
         controls.style.marginTop    = (videoHeight - controlsWidth) + "px";
 
     };
@@ -133,7 +135,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         //set canvas with overlay(s)
         canvasOverlay.width = videoWidth;
         canvasOverlay.height= videoHeight;
-        canvasOverlay.style.marginTop = "-" + videoHeight + "px";
+        canvasOverlay.style.marginTop = "-" + (videoHeight+2) + "px";
 
         //init and start tracking
         if($scope.isRunning){ $scope.stopTracking(); }
@@ -155,7 +157,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         // "lost" : lost tracking of face
         // "redetecting" : trying to redetect face
         // "stopped" : face tracking was stopped
-
         document.addEventListener('headtrackrStatus', 
           function (event) {
             $scope.cameraMsg        = {};
@@ -164,20 +165,20 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
             switch(event.status){
                 case "getUserMedia":
-                    $scope.cameraMsg.msg = "camera is supported!";
+                    $scope.cameraMsg.msg = $filter('translate')('CAMERA_SUPPORT');
                     break;
                 case "no getUserMedia":
-                    $scope.cameraMsg.msg = "camera is NOT supported by yout browser!";
+                    $scope.cameraMsg.msg = $filter('translate')('GET_USER_MEDIA');
                     break;
                 case "no camera":
-                    $scope.cameraMsg.msg = "sorry. camera not found or streaming not allowed";
+                    $scope.cameraMsg.msg = $filter('translate')('NO_CAMERA');
                     $scope.showControls = false;
                     break;
                 case "whitebalance":
-                    $scope.cameraMsg.msg = "loading, please wait";
+                    $scope.cameraMsg.msg = $filter('translate')('WHITE_BALANCE');
                     break;
                 case "detecting":
-                    $scope.cameraMsg.msg    = "Switch on the lights and <br/><strong>show me your face</strong>!";
+                    $scope.cameraMsg.msg    = $filter('translate')('DETECTING');
                     $scope.cameraMsg.icon   = "face";
                     break;
                 case "found":
@@ -185,7 +186,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     canvasOverlay.style.display = "block";
                     break;
                 case "hints":
-                    $scope.cameraMsg.msg = "i can't see you.<br/>try switching on some lights";
+                    $scope.cameraMsg.msg = $filter('translate')('HINTS');
                     $scope.cameraMsg.icon   = "brightness";
                     break;
                 case "stopped":
@@ -211,7 +212,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                 overlayContext.translate(event.x, event.y);
                 overlayContext.rotate(event.angle-(Math.PI/2));
                 overlayContext.strokeStyle = "red";
-                overlayContext.strokeRect((-(event.width/2)) >> 0, (-(event.height/2)) >> 0, event.width, event.height);
+                //overlayContext.strokeRect((-(event.width/2)) >> 0, (-(event.height/2)) >> 0, event.width, event.height);
                 degrees = (Math.PI/2)-event.angle;
 
                 
@@ -256,7 +257,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
                 //stop tracking
                 $scope.stopTracking();
-                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
+                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': imgFileSize, 'ext': 'PNG','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
                                                                                     // to get it back in human readable "14 minutes ago" format:
                                                                                     // var timestamp = moment.unix(1390348800);
                                                                                     // console.log(timestamp.fromNow());
@@ -264,94 +265,79 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     $scope.$apply();
                 }*/
                 $scope.$apply();
+                scroller.scrollTo(0, 580, 1000);
             }
         });
     };
 
-
+    $scope.pics = 0;
+    var node, encoder = new GIFEncoder();
     //as seen on https://github.com/antimatter15/jsgif
     $scope.canvasToGif = function(){
 
-        var node;   //used to check if an old canvas is there
-        var encoder = new GIFEncoder();
-        encoder.setQuality(2);
-        encoder.setRepeat(0);   //0  -> loop forever ||| 1+ -> loop n times then stop
-        encoder.setDelay(100);  //go to next frame every n milliseconds
-        encoder.start();
+        //hide the button to take images again
+        $scope.showImage = false;
 
-        var iFrequency  = 500; // expressed in miliseconds
-        var myInterval  = 0;
-        var repetition  = 0;
-        var maxFrames   = 10;
+        $scope.pics++;
 
-        myInterval = setInterval( function(){
-
-            repetition++;
-            console.log('repetition: ' + repetition);
-            if(repetition > maxFrames){
-                //stop tracking
-                $scope.stopTracking();
-
-                console.log('reached maxFrames');
-                clearInterval(myInterval);
-                encoder.finish();
-
-                console.log(encoder);
+        if($scope.pics === 1){
+            encoder.setQuality(2);
+            encoder.setRepeat(0);   //0  -> loop forever ||| 1+ -> loop n times then stop
+            encoder.setDelay(100);  //go to next frame every n milliseconds
+            encoder.start();
+        }
 
 
-                var binary_gif = encoder.stream().getData(); //notice this is different from the as3gif package!
-                //var animatedGIF = 'data:image/gif;base64,' + encode64(binary_gif);
+        if($scope.pics === 10){
+            //stop tracking
+            $scope.stopTracking();
+            //finish encoding GIF
+            encoder.finish();
+            //get binary GIF
+            var binary_gif = encoder.stream().getData();
+            //saving to BLOB, because the file is TOO BIG
+            var b64Image    = encode64(binary_gif);
+            var blob        = b64toBlob(b64Image, 'image/gif');
+            var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
 
-                //saving to BLOB, because the file is TOO BIG
-                var b64Image    = encode64(binary_gif);
-                var blob        = b64toBlob(b64Image, 'image/gif');
-                var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
-                //console.log('GIF 64bits', b64Image);
-                console.log('blob', blob);
+            $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': blob.size, 'ext': 'GIF', 'ts' : moment().format("X"), 'binary': binary_gif});   // moment().format("X") gives unix timestamp
+                                                                                                                                                    // to get it back in human readable "14 minutes ago" format:
+                                                                                                                                                    // var timestamp = moment.unix(1390348800);
+                                                                                                                                                    // console.log(timestamp.fromNow());
+                                                                                                                                                    // 
+            scroller.scrollTo(0, 580, 1000);
 
-                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': blob.size, 'type': 'gif', 'ts' : moment().format("X"), 'binary': binary_gif});   // moment().format("X") gives unix timestamp
-                                                                                                                                                        // to get it back in human readable "14 minutes ago" format:
-                                                                                                                                                        // var timestamp = moment.unix(1390348800);
-                                                                                                                                                        // console.log(timestamp.fromNow());
-                /*if(html5Storage.set('myCarnival', $scope.images)){
-                    $scope.$apply();
-                }*/
-                $scope.$apply();
+            $scope.pics = 0;
+            $scope.GIFprogress = '0%';
 
-            }else{
+            //show the button to take images again
+            $scope.showImage = true;
+        }else{
 
-                html2canvas(document.querySelector('#fullPic'), {
-                    onrendered: function(canvas) {
-                        var context = canvas.getContext('2d');
-                        encoder.setQuality(20);
-                        encoder.addFrame(context);
-                        encoder.setQuality(20);
-                    }
-                });
-               console.log('looping: ' + repetition);
+            html2canvas(document.querySelector('#fullPic'), {
+                onrendered: function(canvas) {
+                    var context = canvas.getContext('2d');
+                    encoder.setQuality(20);
+                    encoder.addFrame(context);
+                    encoder.setQuality(20);
+                }
+            });
 
-            }
+        }
+        $scope.GIFprogress = ($scope.pics*10) + '%';
 
-        }, iFrequency );  // run
 
     };
 
     $scope.clearStorage = function(){
         html5Storage.set('myCarnival', []);
         html5Storage.set('drawing_canvas', '');
-
         html5Storage.set('the_mask', '');
-
         html5Storage.set('uploadedImage', '');
         html5Storage.set('uploadedImage_style', '');
         html5Storage.set('uploadedImage_position', '');
-        
         alert('html5 storage cleared!');
     };
-
-
-
-
 
 
     if($scope.mode === 'save'){

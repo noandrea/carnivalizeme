@@ -1,4 +1,4 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate"]).run(function($rootScope) {
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll"]).run(function($rootScope) {
     
     /**
      * General response parser for API calls.
@@ -37,12 +37,12 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         return the_return;
     };
 
-}).config(['$compileProvider', function($compileProvider) {
+}).config(function($compileProvider, $translateProvider) {
 
     var oldWhiteList = $compileProvider.imgSrcSanitizationWhitelist();
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
 
-}]).config(['$translateProvider', function($translateProvider) {
+
 
     $translateProvider.useStaticFilesLoader({
         type: 'static-files',
@@ -50,9 +50,9 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         suffix: '.json'
     });
 
-    $translateProvider.preferredLanguage('de_DE');
+    $translateProvider.preferredLanguage('en_EN');
 
-}]);
+});
 
 
 

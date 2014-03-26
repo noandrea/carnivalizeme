@@ -77,3 +77,14 @@
     opacity: 0;
   }
 }
+
+
+// spins forever
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to { 
+    -webkit-transform: rotate(360deg);
+  }
+}

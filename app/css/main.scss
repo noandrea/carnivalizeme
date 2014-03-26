@@ -147,22 +147,204 @@ body{
         @include opacity(.6);
     }
 
+    .changeMask{
+        z-index: 100053;
+        position: absolute;
+        top: 210px;
+        width:640px;
+        height:60px;
+
+        .roundBtn{
+            background-color: rgba(255,255,255,.4);
+            width: 75px;
+            height: 75px;
+            @include radius(40px);
+            cursor: pointer;
+
+            background-color: rgba(255,255,255,.4);
+            @include transitionProperty((background-color));
+            @include transitionDuration(.1s);
+            @include transitionTimingFunction((ease-in));
+            &:hover{
+                background-color: rgba(255,255,255,.8);
+            }
+
+            &.left{
+                border: 1px solid #FF0099;
+                float:left;
+                margin-left: 15px;
+                background-image:url("/img/arrow_mask_selection.png");
+                background-repeat:no-repeat;
+                background-position:center;
+            }
+            &.right{
+                border: 1px solid #FF0099;
+                float:right;
+                margin-right: 15px;
+                background-image:url("/img/arrow_mask_selection.png");
+                background-repeat:no-repeat;
+                background-position:center;
+                -moz-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+                filter: FlipH;
+                -ms-filter: "FlipH";
+            }
+        }
+    }
+
+
     .controls{
         z-index: 100053;
         position: absolute;
 
-        .control{
-            background-color: white;
-            color:black;
-            
-            width:38px;
-            height:38px;
-            border: 1px solid black;
 
+        .videoProgress{
+            width: 430px;
+            background: rgba(0,0,0,.2);
+            margin-right: 5px;
+            height: 40px;
+            float: right;
+
+            .progress{
+                width: 0%;
+                background: red;
+                height: 40px;
+                background: rgba(255,0,153,.7);
+                .framesCounter{
+                    padding-top: 10px;
+                    font-size: 18px;
+                    float: right;
+                    padding-right: 10px;
+                    color: white;
+                }
+            }
+        }
+
+        .control{
+            background-image:url("/img/icon_sprite.png");
+            color:black;
+            width:40px;
+            height:40px;
             float:right;
             cursor: pointer;
             font-size: 10px;
             align:center;
+
+            background-color: rgba(0,0,0,.7);
+            &.play{
+                margin-right: 5px;
+                background-repeat:no-repeat;
+                background-position: -42px -40px;
+                &:hover{
+                    background-repeat:no-repeat;
+                    background-position: -42px 1px;
+                }
+            }
+            &.pause{
+                margin-right: 5px;
+                background-repeat:no-repeat;
+                background-position: -84px -40px;
+                &:hover{
+                    background-repeat:no-repeat;
+                    background-position: -84px 1px;
+                }
+            }
+            &.calibrate{
+                background-repeat:no-repeat;
+                background-position: -126px -80px;
+                &:hover{
+                    background-repeat:no-repeat;
+                    background-position: -126px -39px;
+                }
+                &:active{
+                    background-repeat:no-repeat;
+                    background-position: -126px 2px;
+                }
+            }
+            &.image{
+                background-repeat:no-repeat;
+                background-position: -166px -82px;
+                &:hover{
+                    background-repeat:no-repeat;
+                    background-position: -166px -41px;
+                }
+                &:active{
+                    background-repeat:no-repeat;
+                    background-position: -166px 1px;
+                }
+            }
+            &.video{
+                background-repeat:no-repeat;
+                background-position: -208px -82px;
+                &:hover{
+                    background-repeat:no-repeat;
+                    background-position: -208px -41px;
+                }
+                &:active{
+                    background-repeat:no-repeat;
+                    background-position: -208px 1px;
+                }
+            }
+            &.mask{
+                background-repeat:no-repeat;
+                background-position: -250px -82px;
+                &:hover{
+                    background-repeat:no-repeat;
+                    background-position: -250px -41px;
+                }
+                &:active{
+                    background-repeat:no-repeat;
+                    background-position: -250px 1px;
+                }
+            }
+            &.loading{
+                background-image: none;
+
+                span{
+                    background-image:url("/img/icon_sprite.png");
+                    background-position: 0 -39px;
+                    width:40px;
+                    height:40px;
+                    display: block;
+
+                    &:hover{
+                        background-repeat:no-repeat;
+                        background-position: 0px 2px;
+                    }
+                    &.spinning{
+                        background-repeat:no-repeat;
+                        background-position: 0px 0px;
+                        -webkit-animation-name:             rotate; 
+                        -webkit-animation-duration:         2s; 
+                        -webkit-animation-iteration-count:  infinite;
+                        -webkit-animation-timing-function: linear;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.credits{
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #999;
+    width: 640px;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+
+    span{
+        text-transform: lowercase;
+        font-size: 12px;
+        a{
+            text-decoration: none;
+            color: #666;
+            &:hover{
+                color: black;
+            }
         }
     }
 }
@@ -664,5 +846,32 @@ input[type="range"] {
             -moz-animation:bounceOutDown .3s both ease-in;
             animation:bounceOutDown .3s both ease-in;
         }
+    }
+}
+
+.imgContainer{
+    .imgWrap{
+        .imgCover{
+            position: absolute;
+            width:640px;
+            height:480px;
+            background-color:rgba(45,235,55,.6);
+        }
+        .imgMenu{
+            position: absolute;
+            width:640px;
+            height:480px;
+            @include flexbox;
+            @include align-items(center);
+            @include justify-content(center);
+            
+            .form{
+                width:340px;
+                text-align: center;
+            }
+        }
+    }
+    img{
+
     }
 }
