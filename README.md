@@ -319,10 +319,6 @@ search photos tagged
 
 search masks tagged
 
-#### params
-
-:tags : pipe separated list of tags. ex: /tags/photos/white|black|brown
-
 #### reply
 
 200:
