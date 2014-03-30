@@ -1,5 +1,17 @@
 # carnivalize.me api
 
+Usage and methods for carnivalize.me photo app.
+
+
+default endopoint: **http://carnivalizemeapi.appspot.com/**
+
+example api invocation:
+
+[**http://carnivalizemeapi.appspot.com/mask/face7af8cb750ce1a1b402e4a5cef42056f9c59f**](http://carnivalizemeapi.appspot.com/mask/face7af8cb750ce1a1b402e4a5cef42056f9c59f)
+
+
+
+
 ## PUT /photo
 
 create a new photo
