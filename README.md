@@ -32,7 +32,8 @@ meta:
 400: bad parameters
 
 304: not modified (photo already exists)
-    
+   
+--------------- 
     
 ## GET /photo/:id
 
@@ -57,6 +58,8 @@ get the metadata of a photo
 	
 404: Not Found
 
+---------------
+
 ## POST /photo/:id:/up
 
 upvote a photo
@@ -71,6 +74,8 @@ upvote a photo
     }
 
 404: Not Found
+
+---------------
 
 ## POST /photo/:id:/dw
 
@@ -123,7 +128,8 @@ meta:
 
 304: not modified (mask already exists)
     
-    
+---------------
+
 ## GET /mask/:id
 
 get a mask metadata
@@ -148,6 +154,8 @@ get a mask metadata
 	
 404: Not Found
 
+---------------
+
 ## POST /mask/:id:/up
 
 upvote a mask
@@ -162,6 +170,9 @@ upvote a mask
     }
 
 404: Not Found
+
+
+---------------
 
 ## POST /mask/:id:/dw
 
@@ -203,6 +214,9 @@ get a list of photos sorted by upvotes and date of upload
 	      },
 	      .....
 	  ]
+	  
+	  
+---------------
 
 ## GET /masks
 
@@ -228,6 +242,8 @@ get a list of masks sorted by upvotes and date of upload
           },
           ...
       ]
+
+---------------
 
 ## GET /tags/photos/:tags
 
@@ -257,6 +273,8 @@ search photos tagged
 	      },
 	      .....
 	  ]
+
+---------------
 
 ## GET /tags/masks
 
@@ -292,6 +310,9 @@ search masks tagged
 ## GET /p/:id.(gif|png)
 
 get the binary image of a photo
+
+
+---------------
 
 ## GET /m/:id.(png)
 
