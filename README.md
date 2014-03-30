@@ -72,7 +72,7 @@ get the metadata of a photo
 
 ---------------
 
-## POST /photo/:id:/up
+## POST /photo/:id/up
 
 upvote a photo
 
@@ -89,7 +89,7 @@ upvote a photo
 
 ---------------
 
-## POST /photo/:id:/dw
+## POST /photo/:id/dw
 
 downvote a photo
 
@@ -115,7 +115,7 @@ create a new mask
 
 | name | value
 |------------------
-|photo | image data
+|mask | image data
 |meta | json data 
 
 
@@ -168,7 +168,7 @@ get a mask metadata
 
 ---------------
 
-## POST /mask/:id:/up
+## POST /mask/:id/up
 
 upvote a mask
 
@@ -186,7 +186,7 @@ upvote a mask
 
 ---------------
 
-## POST /mask/:id:/dw
+## POST /mask/:id/dw
 
 downvote a mask
 

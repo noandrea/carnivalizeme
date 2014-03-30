@@ -70,7 +70,7 @@ class TagHandler(webapp2.RequestHandler):
     def get(self, collection, csv_tags):
         if collection == 'photos':
             tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
-            photos = Photo.query(Photo.tags.IN(tags)).order(Photo.up_vote, Photo.added).fetch(20)
+            photos = Photo.query(Photo.tags.IN(tags)).order(-Photo.up_vote, -Photo.added).fetch(20)
 
             reply = []
             for photo in photos:
@@ -79,8 +79,8 @@ class TagHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps(reply))
         if collection == 'masks':
-            tags = [Tag.sanitize(x) for x in tag.split('|')]
-            masks = Mask.query(Mask.tags.IN(tags)).order(Mask.up_vote, Mask.added).fetch(20)
+            tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
+            masks = Mask.query(Mask.tags.IN(tags)).order(-Mask.up_vote, -Mask.added).fetch(20)
 
             reply = []
             for mask in masks:
