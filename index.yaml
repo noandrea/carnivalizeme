@@ -25,3 +25,10 @@ indexes:
   properties:
   - name: up_vote
   - name: added
+
+- kind: Tag
+  properties:
+  - name: count
+    direction: desc
+  - name: added
+    direction: desc

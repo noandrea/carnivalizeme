@@ -38,7 +38,7 @@ class MainHandler(webapp2.RequestHandler):
 class CollectionsHandler(webapp2.RequestHandler):
     def get(self, collection):
         if collection == 'photos':
-            photos = Photo.query().order(Photo.up_vote, Photo.added).fetch(20)
+            photos = Photo.query().order(-Photo.up_vote, -Photo.added).fetch(20)
 
             reply = []
             for photo in photos:
@@ -48,14 +48,23 @@ class CollectionsHandler(webapp2.RequestHandler):
             self.response.write(json.dumps(reply))
 
         if collection == 'masks':
-            masks = Mask.query().order(Mask.up_vote, Mask.added).fetch(20)
+            masks = Mask.query().order(-Mask.up_vote, -Mask.added).fetch(20)
 
             reply = []
             for mask in masks:
                 reply.append(Mask.to_json_object(mask))
 
             self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(json.dumps(reply))            
+            self.response.write(json.dumps(reply))   
+
+        if collection == 'tags':
+            tags = Tag.query().order(-Tag.count, -Tag.added).fetch(20)
+            reply = []
+            for tag in tags:
+                reply.append(Tag.to_json_object(tag))
+
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write(json.dumps(reply))     
 
 class TagHandler(webapp2.RequestHandler):
     def get(self, collection, csv_tags):
@@ -326,7 +335,7 @@ class ImageHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', handler=MainHandler),
-    webapp2.Route(r'/<collection:(photos|masks)>', handler=CollectionsHandler),
+    webapp2.Route(r'/<collection:(photos|masks|tags)>', handler=CollectionsHandler),
     webapp2.Route(r'/tags/<collection:(photos|masks)>/<csv_tags>', handler=TagHandler),
 
     webapp2.Route(r'/photo/<_id:[a-z0-9]+>', handler=PhotoHandler),

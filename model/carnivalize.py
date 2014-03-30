@@ -71,6 +71,23 @@ class Tag(ndb.Model):
     count = ndb.IntegerProperty(default=1)
     lang = ndb.StringProperty(repeated=True)
     source = ndb.StringProperty(repeated=True)
+
+    @staticmethod
+    def to_json_string(tag):
+        data = Tag.to_json_object(tag)
+        return json.dumps(data)
+
+    @staticmethod
+    def to_json_object(tag):
+        data = {
+            'id': tag.key.id(),
+            'added' : tag.added.isoformat(),
+            'label' : tag.label,
+            'sources' : tag.source,
+            'langs' : tag.lang,
+            'count' : tag.count
+        }
+        return data
     
     @staticmethod
     def sanitize(tag_name):

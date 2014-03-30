@@ -254,6 +254,33 @@ get a list of masks sorted by upvotes and date of upload
           },
           ...
       ]
+      
+---------------
+      
+## GET /tags
+
+get a list of tags sorted by count and date of upload
+
+#### reply
+
+200:
+      
+      [
+          {
+              id: "white",
+              label: "white",
+              added: "2014-03-30T14:07:19.972141",
+              count: 3,
+              langs: [
+                  "en"
+              ],
+              sources: [
+                  "MASK",
+                  "USER"
+              ]
+          },
+          ...
+      ]
 
 ---------------
 
