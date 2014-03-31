@@ -37,6 +37,7 @@ class MainHandler(webapp2.RequestHandler):
 
 class CollectionsHandler(webapp2.RequestHandler):
     def get(self, collection):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         if collection == 'photos':
             photos = Photo.query().order(-Photo.up_vote, -Photo.added).fetch(20)
 
@@ -68,6 +69,7 @@ class CollectionsHandler(webapp2.RequestHandler):
 
 class TagHandler(webapp2.RequestHandler):
     def get(self, collection, csv_tags):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         if collection == 'photos':
             tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
             photos = Photo.query(Photo.tags.IN(tags)).order(-Photo.up_vote, -Photo.added).fetch(20)
@@ -94,6 +96,7 @@ class TagHandler(webapp2.RequestHandler):
 
 class PhotoHandler(webapp2.RequestHandler):
     def get(self, _id):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         photo = Photo.get_by_id(_id)
         if photo is None:
             self.response.set_status('404')
@@ -103,6 +106,7 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.write(Photo.to_json_string(photo))
 
     def post(self, _id ,action):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         photo = Photo.get_by_id(_id)
         if photo is None:
             self.response.set_status('404')
@@ -125,7 +129,7 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.set_status('400')
 
     def put(self):
-
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         # get all parameters
         image = self.request.POST.get("photo")
         ip = self.request.remote_addr
@@ -213,6 +217,7 @@ class PhotoHandler(webapp2.RequestHandler):
         
 class MaskHandler(webapp2.RequestHandler):
     def get(self, _id):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         mask = Mask.get_by_id(_id)
         if mask is None:
             self.response.set_status('404')
@@ -222,6 +227,7 @@ class MaskHandler(webapp2.RequestHandler):
         self.response.write(Mask.to_json_string(mask))
 
     def post(self, _id ,action):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         mask = Mask.get_by_id(_id)
         if mask is None:
             self.response.set_status('404')
@@ -244,7 +250,7 @@ class MaskHandler(webapp2.RequestHandler):
         self.response.set_status('400')
 
     def put(self):
-
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
         #image_file = self.request.get('image', default_value=None)
         image = self.request.POST.get("mask")
         ip = self.request.remote_addr
@@ -315,7 +321,7 @@ class MaskHandler(webapp2.RequestHandler):
 
 class ImageHandler(webapp2.RequestHandler):
     def get(self,_id, img_type):
-        
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
 
         bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
         if img_type == 'p':
