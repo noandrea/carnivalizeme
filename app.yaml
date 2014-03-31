@@ -6,8 +6,27 @@ threadsafe: yes
 
 handlers:
 - url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
+  static_files: app/favicon.ico
+  upload: app/favicon\.ico
+
+- url: /
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /css
+  static_dir: app/css
+
+- url: /js
+  static_dir: app/js
+
+- url: /webfonts
+  static_dir: app/webfonts
+
+- url: /img
+  static_dir: app/img
+
+- url: /languages
+  static_dir: app/languages
 
 - url: .*
   script: main.app

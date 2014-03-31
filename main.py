@@ -334,7 +334,7 @@ class ImageHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-    webapp2.Route('/', handler=MainHandler),
+    # webapp2.Route('/', handler=MainHandler),
     webapp2.Route(r'/<collection:(photos|masks|tags)>', handler=CollectionsHandler),
     webapp2.Route(r'/tags/<collection:(photos|masks)>/<csv_tags>', handler=TagHandler),
 
