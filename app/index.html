@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<title>lineman-angular-template</title>
+
+	<link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+</head>
+
+
+
+
+	<body class="site">
+
+		<header>
+			{{ 'TEST' | translate }}
+		</header>
+
+		<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>
+
+
+	<footer>
+		footer
+	</footer>
+
+	<script type="text/javascript" src="/js/app.js"></script>
+
+
+	</body>
+</html>

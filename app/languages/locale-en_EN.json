@@ -1,0 +1,12 @@
+{
+    "CARNIVALIZE_YOURSELF"  : "carnivalize yourself",
+    "GOTO_CARNIVAL"         : "check out the carnival",
+    "CREATE_MASK"           : "create a mask",
+    
+    "CAMERA_SUPPORT"        : "camera is not supported",
+    "GET_USER_MEDIA"        : "camera is not supported by your browser",
+    "NO_CAMERA"             : "camera not found or streaming not allowed",
+    "WHITE_BALANCE"         : "detecting face, please wait",
+    "DETECTING"             : "Switch on the lights and <br/><strong>show me your face</strong>!",
+    "HINTS"                 : "i can't see you.<br/>try switching on some lights"
+}
