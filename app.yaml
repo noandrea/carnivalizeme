@@ -13,6 +13,14 @@ handlers:
   static_files: app/index.html
   upload: app/index\.html
 
+- url: /trymask
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /editor
+  static_files: app/index.html
+  upload: app/index\.html
+
 - url: /css
   static_dir: app/css
 
