@@ -21,18 +21,25 @@ indexes:
 - kind: Mask
   properties:
   - name: up_vote
+    direction: desc
   - name: added
+    direction: desc
 
 - kind: Photo
   properties:
   - name: tags
   - name: up_vote
+    direction: desc
   - name: added
+    direction: desc
 
 - kind: Photo
   properties:
   - name: up_vote
+    direction: desc
   - name: added
+    direction: desc
+
 
 - kind: Tag
   properties:
