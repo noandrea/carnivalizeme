@@ -7,12 +7,12 @@ default endopoint: **http://carnivalizemeapi.appspot.com/**
 
 example api invocation:
 
-[**http://carnivalizemeapi.appspot.com/mask/face7af8cb750ce1a1b402e4a5cef42056f9c59f**](http://carnivalizemeapi.appspot.com/mask/face7af8cb750ce1a1b402e4a5cef42056f9c59f)
+[**http://carnivalizemeapi.appspot.com/masks/face7af8cb750ce1a1b402e4a5cef42056f9c59f**](http://carnivalizemeapi.appspot.com/masks/face7af8cb750ce1a1b402e4a5cef42056f9c59f)
 
 
 
 
-## PUT /photo
+## POST /photos
 
 create a new photo
 
@@ -47,7 +47,7 @@ meta:
    
 --------------- 
     
-## GET /photo/:id
+## GET /photos/:id
 
 get the metadata of a photo
 
@@ -72,7 +72,7 @@ get the metadata of a photo
 
 ---------------
 
-## POST /photo/:id/up
+## PUT /photos/:id/up
 
 upvote a photo
 
@@ -89,7 +89,7 @@ upvote a photo
 
 ---------------
 
-## POST /photo/:id/dw
+## PUT /photos/:id/dw
 
 downvote a photo
 
@@ -107,7 +107,7 @@ downvote a photo
 
 -----
 
-## PUT /mask
+## POST /masks
 
 create a new mask
 
@@ -142,7 +142,7 @@ meta:
     
 ---------------
 
-## GET /mask/:id
+## GET /masks/:id
 
 get a mask metadata
 
@@ -168,7 +168,7 @@ get a mask metadata
 
 ---------------
 
-## POST /mask/:id/up
+## PUT /masks/:id/up
 
 upvote a mask
 
@@ -186,7 +186,7 @@ upvote a mask
 
 ---------------
 
-## POST /mask/:id/dw
+## PUT /masks/:id/dw
 
 downvote a mask
 
@@ -284,7 +284,7 @@ get a list of tags sorted by count and date of upload
 
 ---------------
 
-## GET /tags/photos/:tags
+## GET /photos/tags/:tags
 
 search photos tagged 
 
@@ -308,16 +308,19 @@ search photos tagged
             "image": "/p/a97c7595fc233916596c9eed8a7894dc0b670d44.gif",
             "up": 4,
             "dw": 0,
-            "photo_count":0
 	      },
 	      .....
 	  ]
 
 ---------------
 
-## GET /tags/masks
+## GET /masks/tags/:tags
 
 search masks tagged
+
+### params
+
+:tags : pipe separated list of tags. ex: /tags/photos/white|black|brown
 
 #### reply
 
@@ -332,7 +335,7 @@ search masks tagged
                  "white"
              ],
              "added": "2014-03-30T14:08:49.613337",
-             "image": "/p/a97c7595fc233916596c9eed8a7894dc0b670d44.gif",
+             "image": "/m/a97c7595fc233916596c9eed8a7894dc0b670d44.gif",
              "up": 4,
              "dw": 0,
              "photo_count":0

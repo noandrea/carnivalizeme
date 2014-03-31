@@ -35,100 +35,32 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write('Hello world!')
 
-class CollectionsHandler(webapp2.RequestHandler):
-    def get(self, collection):
-        self.response.headers['Access-Control-Allow-Origin'] = "*"
-        if collection == 'photos':
-            photos = Photo.query().order(-Photo.up_vote, -Photo.added).fetch(20)
-
-            reply = []
-            for photo in photos:
-                reply.append(Photo.to_json_object(photo))
-
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(json.dumps(reply))
-
-        if collection == 'masks':
-            masks = Mask.query().order(-Mask.up_vote, -Mask.added).fetch(20)
-
-            reply = []
-            for mask in masks:
-                reply.append(Mask.to_json_object(mask))
-
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(json.dumps(reply))   
-
-        if collection == 'tags':
-            tags = Tag.query().order(-Tag.count, -Tag.added).fetch(20)
-            reply = []
-            for tag in tags:
-                reply.append(Tag.to_json_object(tag))
-
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(json.dumps(reply))     
-
 class TagHandler(webapp2.RequestHandler):
-    def get(self, collection, csv_tags):
+    def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        if collection == 'photos':
-            tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
-            photos = Photo.query(Photo.tags.IN(tags)).order(-Photo.up_vote, -Photo.added).fetch(20)
+        tags = Tag.query().order(-Tag.count, -Tag.added).fetch(20)
+        reply = []
+        for tag in tags:
+            reply.append(Tag.to_json_object(tag))
 
-            reply = []
-            for photo in photos:
-                reply.append(Photo.to_json_object(photo))
-
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(json.dumps(reply))
-        if collection == 'masks':
-            tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
-            masks = Mask.query(Mask.tags.IN(tags)).order(-Mask.up_vote, -Mask.added).fetch(20)
-
-            reply = []
-            for mask in masks:
-                reply.append(Mask.to_json_object(mask))
-
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(json.dumps(reply))  
-
-
-
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(reply))     
 
 class PhotoHandler(webapp2.RequestHandler):
-    def get(self, _id):
+
+    def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        photo = Photo.get_by_id(_id)
-        if photo is None:
-            self.response.set_status('404')
-            return
-        
+
+        photos = Photo.query().order(-Photo.up_vote, -Photo.added).fetch(20)
+
+        reply = []
+        for photo in photos:
+            reply.append(Photo.to_json_object(photo))
+
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(Photo.to_json_string(photo))
+        self.response.write(json.dumps(reply))
 
-    def post(self, _id ,action):
-        self.response.headers['Access-Control-Allow-Origin'] = "*"
-        photo = Photo.get_by_id(_id)
-        if photo is None:
-            self.response.set_status('404')
-            return 
-
-        if action == 'up':
-            photo.up_vote +=1 
-            photo.put()
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote })
-            return
-
-        if action == 'dw':
-            photo.dwn_vote +=1
-            photo.put()
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote })
-            return 
-
-        self.response.set_status('400')
-
-    def put(self):
+    def post(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         # get all parameters
         image = self.request.POST.get("photo")
@@ -209,14 +141,62 @@ class PhotoHandler(webapp2.RequestHandler):
         photo.put()
 
         response_data = {
-            "photo" : "/photo/%s" % photo_id,
+            "photo" : "/photos/%s" % photo_id,
             "url" : "/p/%s" % filename
         }
 
         self.response.write(response_data)
+
+    def options(self):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+
+    def photo(self, _id):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+        photo = Photo.get_by_id(_id)
+        if photo is None:
+            self.response.set_status('404')
+            return
         
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(Photo.to_json_string(photo))
+
+    def vote(self, _id ,action):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+        photo = Photo.get_by_id(_id)
+        if photo is None:
+            self.response.set_status('404')
+            return 
+
+        if action == 'up':
+            photo.up_vote +=1 
+            photo.put()
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote })
+            return
+
+        if action == 'dw':
+            photo.dwn_vote +=1
+            photo.put()
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote })
+            return 
+
+        self.response.set_status('400')
+
+    def search_tags(self, csv_tags):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+        tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
+        photos = Photo.query(Photo.tags.IN(tags)).order(-Photo.up_vote, -Photo.added).fetch(20)
+
+        reply = []
+        for photo in photos:
+            reply.append(Photo.to_json_object(photo))
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(reply))
+
 class MaskHandler(webapp2.RequestHandler):
-    def get(self, _id):
+    def mask(self, _id):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         mask = Mask.get_by_id(_id)
         if mask is None:
@@ -226,7 +206,18 @@ class MaskHandler(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(Mask.to_json_string(mask))
 
-    def post(self, _id ,action):
+    def get(self):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+        masks = Mask.query().order(-Mask.up_vote, -Mask.added).fetch(20)
+
+        reply = []
+        for mask in masks:
+            reply.append(Mask.to_json_object(mask))
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(reply))   
+
+    def vote(self, _id ,action):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         mask = Mask.get_by_id(_id)
         if mask is None:
@@ -249,7 +240,7 @@ class MaskHandler(webapp2.RequestHandler):
 
         self.response.set_status('400')
 
-    def put(self):
+    def post(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         #image_file = self.request.get('image', default_value=None)
         image = self.request.POST.get("mask")
@@ -312,12 +303,26 @@ class MaskHandler(webapp2.RequestHandler):
         mask.put()
 
         response_data = {
-            "mask" : "/mask/%s" % mask_id,
+            "mask" : "/masks/%s" % mask_id,
             "url" : "/m/%s" % filename
         }
 
         self.response.write(response_data)
 
+    def options(self):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+
+    def search_tags(self, csv_tags):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+        tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
+        masks = Mask.query(Mask.tags.IN(tags)).order(-Mask.up_vote, -Mask.added).fetch(20)
+
+        reply = []
+        for mask in masks:
+            reply.append(Mask.to_json_object(mask))
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(reply))  
 
 class ImageHandler(webapp2.RequestHandler):
     def get(self,_id, img_type):
@@ -338,19 +343,37 @@ class ImageHandler(webapp2.RequestHandler):
         self.response.write(gcs_file.read())
         gcs_file.close()
 
+# POST /masks crea
+# PUT /masks/:id/up
+# PUT /masks/:id/dw
+# GET /masks #lista di maschere
+# GET /masks/:id  # get mask with id
+# GET /masks/tags/t1|t2 #lista di maschere
+
+# POST /photos crea
+# PUT /photos/:id/up
+# PUT /photos/:id/dw
+# GET /photos #lista di maschere
+# GET /photos/:id  # get mask with id
+# GET /photos/tags/t1|t2 #lista di maschere
+
+# GET /tags #lista di maschere
+# GET /tags/:id  # get mask with id
+
 
 app = webapp2.WSGIApplication([
     # webapp2.Route('/', handler=MainHandler),
-    webapp2.Route(r'/<collection:(photos|masks|tags)>', handler=CollectionsHandler),
-    webapp2.Route(r'/tags/<collection:(photos|masks)>/<csv_tags>', handler=TagHandler),
+    webapp2.Route(r'/photos', handler=PhotoHandler),
+    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo', handler_method='photo', methods=['GET']),
+    webapp2.Route(r'/photos/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=PhotoHandler, handler_method='vote', methods=['PUT']),
+    webapp2.Route(r'/photos/tags/<csv_tags>', handler=PhotoHandler, handler_method='search_tags', methods=['GET']),
 
-    webapp2.Route(r'/photo/<_id:[a-z0-9]+>', handler=PhotoHandler),
-    webapp2.Route(r'/photo/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=PhotoHandler),
+    webapp2.Route(r'/masks', handler=MaskHandler),
+    webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='photo', handler_method='mask', methods=['GET']),
+    webapp2.Route(r'/masks/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=MaskHandler, handler_method='vote', methods=['PUT']),
+    webapp2.Route(r'/masks/tags/<csv_tags>', handler=MaskHandler, handler_method='search_tags', methods=['GET']),
 
-    webapp2.Route('/mask', handler=MaskHandler),
-    webapp2.Route(r'/mask/<_id:[a-z0-9]+>', handler=MaskHandler),
-    webapp2.Route(r'/mask/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=MaskHandler),
-
+    webapp2.Route(r'/tags', handler=TagHandler),
     webapp2.Route(r'/<img_type:(m|p)>/<_id:[a-z0-9]+\.(gif|png)>', handler=ImageHandler)
 
 ], debug=True)
