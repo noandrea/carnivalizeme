@@ -147,7 +147,7 @@ class PhotoHandler(webapp2.RequestHandler):
 
         self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(response_data)
+        self.response.write(json.dumps(response_data))
 
     def options(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
@@ -254,13 +254,12 @@ class MaskHandler(webapp2.RequestHandler):
 
             image = base64.b64decode(data.get('image').replace('data:image/%s;base64,' % ext,''))
             ip = self.request.remote_addr
-            
-            meta = data.get('meta')
-            credits = meta.get('credits', '')
-            tags = meta.get('tags', [])
-            lang = meta.get('lang', 'en')
-            audience = meta.get('audience', 0)
-            email = meta.get('email', None)
+
+            credits = data.get('credits', '')
+            tags = data.get('tags', [])
+            lang = data.get('lang', 'en')
+            audience = data.get('audience', 0)
+            email = data.get('email', None)
             
 
             # image must be present
@@ -313,7 +312,7 @@ class MaskHandler(webapp2.RequestHandler):
 
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(response_data)
+            self.response.write(json.dumps(response_data))
         except Exception, e:
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.set_status('400')
