@@ -62,92 +62,94 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(reply))
 
     def post(self):
-        # get all parameters
-        image = self.request.POST.get("photo")
-        ip = self.request.remote_addr
-        meta = json.loads(self.request.get("meta"))
-        user = meta.get('user')
-        tags = meta.get('tags', [])
-        lang = meta.get('lang', 'en')
-        audience = meta.get('audience', 0)
-        masks = meta.get('masks', [])
+        try:
+            # get all parameters
+            data = json.loads(self.request.body)
+            ext = data.get('type')
 
-        # mask must be present
-        if masks is None or len(masks) == 0:
+            # mime type must be present and must be png or gif
+            if ext is None or ext not in ['png', 'gif']:
+                raise Exception('invalid format')
+
+            # image must be present
+            image = data.get('image', None)
+            if image is None:
+                raise Exception('missing image')
+
+            # parse image
+            image = base64.b64decode(data.get('image').replace('data:image/%s;base64,' % ext,''))
+            ip = self.request.remote_addr
+
+            email = data.get('email', '')
+            tags = data.get('tags', [])
+            lang = data.get('lang', 'en')
+            audience = data.get('audience', 0)
+            masks = data.get('masks', [])
+
+
+            # mask must be present
+            if len(masks) == 0:
+                raise Exception('masks is empty')
+
+
+            # caclulate photo id
+            photo_id = hashlib.sha1(image).hexdigest()
+            photo = Photo.get_by_id(photo_id)
+
+            # check if phot exists
+            if photo is not None:
+                self.response.headers['Access-Control-Allow-Origin'] = "*"
+                self.response.set_status('304')
+                return
+            
+
+            tags_list = []
+
+            # if there are new tags create them
+            for tag in tags:
+                tag = Tag.get_or_create(tag, source='USER', lang=lang)
+                tags_list.append(tag.key.id())
+
+            # find the other tags in the masks
+            for mask_id in masks:
+                mask = Mask.get_by_id(mask_id)
+                if mask is not None:
+                    tags_list.extend(mask.tags)
+                    mask.photo_count += 1
+                    mask.put()
+            tags_list = list(set(tags_list))
+            
+
+            # save it on cloud storage
+            bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
+
+            filename = '%s.%s' % (photo_id, ext)
+
+            gcs_file = gcs.open('/%s/%s/%s' % (bucket_name, FOLDER_PHOTOS, filename), 'w', content_type='image/%s' % ext, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
+            gcs_file.write(image)
+            gcs_file.close()
+
+            photo = Photo(id=photo_id)
+            photo.populate(filename = filename,
+                ip = ip,
+                audience = audience,
+                masks = masks,
+                tags = tags_list,
+                email= email)
+            photo.put()
+
+            response_data = {
+                "photo" : "/photos/%s" % photo_id,
+                "url" : "/p/%s" % filename
+            }
+
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write(json.dumps(response_data))
+        except Exception, e:
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.set_status('400')
-            return
-
-        # image must be present
-        if image is None:
-            self.response.set_status('400')
-            return
-
-        # mime type must be present and must be png or gif
-        mime = image.type
-        if mime is None or mime not in ['image/png', 'image/gif']:
-            self.response.set_status('400')
-            return
-
-        # if there is no mask error
-        if len(masks) == 0:
-            self.response.set_status('400')
-            return
-
-
-        # caclulate photo id
-        photo_id = hashlib.sha1(image.file.getvalue()).hexdigest()
-        photo = Photo.get_by_id(photo_id)
-
-        # check if phot exists
-        if photo is not None:
-            self.response.set_status('304')
-            return
-        
-
-        tags_list = []
-
-        # if there are new tags create them
-        for tag in tags:
-            tag = Tag.get_or_create(tag, source='USER', lang=lang)
-            tags_list.append(tag.key.id())
-
-        # find the other tags in the masks
-        for mask_id in masks:
-            mask = Mask.get_by_id(mask_id)
-            if mask is not None:
-                tags_list.extend(mask.tags)
-                mask.photo_count += 1
-                mask.put()
-        tags_list = list(set(tags_list))
-        
-
-        # save it on cloud storage
-        bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
-
-        filename = '%s.%s' % (photo_id, mime[-3:])
-
-        gcs_file = gcs.open('/%s/%s/%s' % (bucket_name, FOLDER_PHOTOS, filename), 'w', content_type=mime, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
-        gcs_file.write(image.file.getvalue())
-        gcs_file.close()
-
-        
-
-        photo = Photo(id=photo_id)
-        photo.populate(filename = filename,
-            ip = ip,
-            audience = audience,
-            masks = masks,
-            tags = tags_list)
-        photo.put()
-
-        response_data = {
-            "photo" : "/photos/%s" % photo_id,
-            "url" : "/p/%s" % filename
-        }
-
-        self.response.headers['Access-Control-Allow-Origin'] = '*'
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(response_data))
+            self.response.write(e.message)
 
     def options(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
@@ -252,6 +254,10 @@ class MaskHandler(webapp2.RequestHandler):
             if ext is None or ext not in ['png', 'gif']:
                 raise Exception('invalid format')
 
+            # image must be present
+            if data.get('image', None) is None:
+                raise Exception('missing image')
+
             image = base64.b64decode(data.get('image').replace('data:image/%s;base64,' % ext,''))
             ip = self.request.remote_addr
 
@@ -261,10 +267,6 @@ class MaskHandler(webapp2.RequestHandler):
             audience = data.get('audience', 0)
             email = data.get('email', None)
             
-
-            # image must be present
-            if image is None:
-                raise Exception('missing image')
 
             # caclulate mask id
             mask_id = hashlib.sha1(image).hexdigest()
