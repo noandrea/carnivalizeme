@@ -273,6 +273,7 @@ class MaskHandler(webapp2.RequestHandler):
 
             # check if mask exists
             if Mask.get_by_id(mask_id) is not None:
+                self.response.headers['Access-Control-Allow-Origin'] = "*"
                 self.response.set_status('304')
                 return
 
