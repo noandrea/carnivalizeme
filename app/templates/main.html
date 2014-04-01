@@ -20,7 +20,7 @@
 
             <div class="cover" ng-show="searchMask"></div>
 
-            <div class="changeMask" ng-show="isRunning">
+            <div class="changeMask" ng-show="isRunning && mode !== 'save'">
                 <div class="roundBtn left" ng-click="changeMask(1);"></div>
                 <div class="roundBtn right" ng-click="changeMask(-1);"></div>
             </div>
@@ -40,11 +40,9 @@
                 <!-- <div class="control loading"><span class="spinning"></span></div> -->
             </div>
               
-            <div id="fullPic">
+            <div id="fullPic" width="640" height="460">
                 <video-canvas></video-canvas>
-                <div ng-show="showMask">
-                    <overlay-face></overlay-face>
-                </div>
+                <overlay-face ng-if="showMask"></overlay-face>
                 <video-html5></video-html5>
             </div>
               
@@ -57,7 +55,7 @@
 
     <div class="aligner" ng-if="mode === 'save'">
         <div>
-            <a>SAVE MASK</a>
+            <a ng-click="saveMask();">SAVE MASK</a>
             <a href="/editor">GO TO EDITOR</a> 
         </div>
     </div>
@@ -77,7 +75,7 @@
     </div>
 
     <div class="aligner">
-        <ul class="userImages">
+        <ul class="userImages" ng-if="images">
             <li ng-repeat="img in images | orderBy:'ts':true"> <!-- | orderBy:'ts':true -->
                 <personal-image source="img"></personal-image>
             </li>

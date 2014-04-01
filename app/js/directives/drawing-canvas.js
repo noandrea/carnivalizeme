@@ -20,7 +20,7 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         var fillStyle = scope.fillStyle = "#9c9c9c",
             lineWidth = scope.lineWidth = 2;
         
-        var previousCanvas = html5Storage.get('drawing_canvas', 'canvas');
+        var previousCanvas = html5Storage.get('drawing_canvas', 'canvas') ? html5Storage.get('drawing_canvas', 'canvas') : null;
         console.log(previousCanvas);
 
 

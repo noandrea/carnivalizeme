@@ -1,7 +1,7 @@
 <div class="imgContainer">
 
 menu: {{showMenu}}
-    <div class="imgWrap">
+    <!-- <div class="imgWrap">
         <div class="imgCover" ></div>
         <div class="imgMenu" >
             <div class="form">
@@ -15,9 +15,11 @@ menu: {{showMenu}}
             </div>
         </div>
     </div>
-    <img src="{{theImage.image ? theImage.image : imageUrl}}"></img>
+
+    -->
+    <img ng-if="theImage" src="{{theImage ? theImage.image : imageUrl}}"></img>
     
-    <div class="credits"> 
+    <div ng-if="theImage" class="credits"> 
         {{theImage.ext}} | <span>{{img.ts | timeago}} </span>
     </div>
 

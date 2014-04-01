@@ -17,22 +17,15 @@
 
     app.get('/masks', function (req, res) {
 
-        var data = {
-
-            status: {
-                code: 200,
-                message: 'Good'
-            },
-
-            response: [
-                  {image: 'mask_scuba.png', credits: 'http://www.scuba.com'},
-                  {image: 'mask_headglass.png', credits: 'http://headglass.com'},
-                  {image: 'mask_beard.png', credits: 'http://beard.com'},
-                  {image: 'mask_another.png', credits: 'http://beard.com'},
-                  {image: 'mask_lotsofshit.png', credits: 'http://lotsofstuff.com'},
-                  {image: 'mask_manual.png', credits: 'http://WIIII.com'}
-            ]
-        };
+        var data = 
+                [
+                {image: 'mask_scuba.png', credits: 'http://www.scuba.com'},
+                {image: 'mask_headglass.png', credits: 'http://headglass.com'},
+                {image: 'mask_beard.png', credits: 'http://beard.com'},
+                {image: 'mask_another.png', credits: 'http://beard.com'},
+                {image: 'mask_lotsofshit.png', credits: 'http://lotsofstuff.com'},
+                {image: 'mask_manual.png', credits: 'http://WIIII.com'}
+                ];
 
       res.json(data);
 

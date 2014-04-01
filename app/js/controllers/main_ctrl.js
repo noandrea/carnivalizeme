@@ -40,7 +40,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     var degrees = 0;
 
     var stickImage      = new Image();
-        stickImage.src  = "img/mask_scuba.png"; //"img/mask_headglass.png";
+        stickImage.src  = "img/mask_basic.png"; //"img/mask_headglass.png";
     var maskIndex       = Math.floor((Math.random()*5));
     
 
@@ -53,17 +53,21 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             // get data for the "upcoming reservations" panel
             Masks.query(filter).$promise.then(function(response){
                 if($scope.parseAPIResponse(response)){
-                    $scope.masks = response.response;
-                    //pic random image
-                    stickImage.src = 'img/' + $scope.masks[maskIndex].image;
-                    $scope.credits = $scope.masks[maskIndex].credits;
+                    if(response.length){
+                        $scope.masks = response;
+                        //pic random image
+                        stickImage.src = 'img/' + $scope.masks[maskIndex].image;
+                        $scope.credits = $scope.masks[maskIndex].credits;
+                    }else{
+                        alert('NO masks!');
+                    }
                 }
             });
         }else{
             $scope.masks    = [];
             $scope.masks.push(html5Storage.get('the_mask'));
             stickImage.src  = $scope.masks[0].image;
-            $scope.credits = $scope.masks[maskIndex].credits;
+            $scope.credits  = $scope.masks[0].credits;
         }
     };
 
@@ -83,7 +87,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         }else{
             alert('There are NO masks!');
         }
-    };    
+    };
+
+    $scope.saveMask = function (){
+        alert('save!');
+    };
 
 
     $scope.videoPlayerStyle = function(style){

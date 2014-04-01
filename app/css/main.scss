@@ -34,6 +34,7 @@ header{
 
 html {
     font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
+
 }
 
 body{
@@ -350,6 +351,7 @@ body{
 }
 
 #fullPic{
+
     #overlay{
         z-index: 100052;
         position: absolute;
@@ -874,4 +876,8 @@ input[type="range"] {
     img{
 
     }
+}
+
+#vid{
+    display: none;
 }

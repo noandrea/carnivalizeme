@@ -13,7 +13,7 @@ angular.module("app").directive('fileUpload', function () {
                 //iterate files since 'multiple' may be specified on the element
                 for (var i = 0;i<files.length;i++) {
                     
-                    if(files[i].type !== "image/png" && files[i].type !== "image/PNG"){
+                    if(files[i].type !== "image/png" && files[i].type !== "image/PNG" && files[i].type !== "image/svg+xml"){
                         //emit event upward
                         scope.$emit("fileError", { file: files[i] });
                     }else{

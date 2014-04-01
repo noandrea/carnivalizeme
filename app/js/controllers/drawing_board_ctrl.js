@@ -1,4 +1,4 @@
-angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage) {
+angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage, Masks) {
 
     $scope.showGrid     = true;
     $scope.brushSize    = 4;
@@ -48,10 +48,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
         var uppedImage      = new Image();
             uppedImage.src  = $scope.uploadedImage.fileBase64; //"img/mask_headglass.png";
 
-
         canvasContext.drawImage(uppedImage, 0 ,0);
-
-
         var dataURL = $scope.canvas.toDataURL();
 
         var head = 'data:image/png;base64,';
@@ -78,11 +75,25 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
                 html5Storage.set('the_mask', $scope.customMask);
 
                 $scope.$apply();
+
+
+                var mask = {};
+                mask = {
+                            'mask' : img,   
+                            'meta' : { 'tags'       : ['sto', 'caz', 'ciccio', 'bastardo'], 
+                                        'audience'  : 0, 
+                                        'email'     : "ciccio@bastardo.com",
+                                        'credit'    : "ciccio bastardo http://www.cicciobastardo.com"
+                                     }
+                        };
+                
+                alert('saving to DB');
+                Masks.save(mask);
+                alert('saved to DB');
+
             },
             background: undefined
         });
-        
-
     };
 
 

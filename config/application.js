@@ -13,20 +13,31 @@
  */
  module.exports = function(lineman) {
   //Override application configuration here. Common examples follow in the comments.
+  var app = lineman.config.application;
   return {
     // grunt-angular-templates assumes your module is named "app", but
     // you can override it like so:
     //
-    // ngtemplates: {
-    //   options: {
-    //     module: "myModuleName"
-    //   }
-    // }
+     ngtemplates: {
+       /*options: {
+         module: "myModuleName"
+       }*/
+     },
+    // 
+    // configure lineman to load additional angular related npm tasks
+    loadNpmTasks: app.loadNpmTasks.concat("grunt-ng-constant"),
+
     removeTasks: {
       common: ["handlebars", "jst", "less", "coffee"] //concat
     },
 
-  server: {
+    // task override configuration
+    prependTasks: {
+      common: ["ngconstant"] // ngtemplates runs in dist and dev
+    },
+
+  
+   server: {
       pushState: true,
       // API Proxying
       //
@@ -40,11 +51,40 @@
       // Lineman will serve `generated/index.html` for any request that does not match the apiProxy.prefix
       apiProxy: {
         enabled: true,
-        host: 'localhost',
-        port: 3000,
-        prefix: 'api' // request paths that contain 'api' will now be the only ones forwarded to the apiProxy
+        host: 'http://localhost',
+        port: 8080,
+        prefix: '/masks' // request paths that contain 'api' will now be the only ones forwarded to the apiProxy
       }
     },
+
+  //configurations of constants using ngconstant loaded through "loadNpmTasks" (from this file)
+  //following is the same as a "Gruntfile.js" would do.
+  ngconstant: {
+    options: {
+      space: '    '
+    },
+
+    dist: {
+      options: {
+        dest: 'dist/js/config.js',
+        name: 'config'
+      },
+      constants: {
+        ENVIRONMENT: 'production',
+        API_BASE_URL: 'http://carnivalizemeapi.appspot.com'
+      }
+    },
+    dev: {
+      options: {
+        dest: 'generated/js/config.js',
+        name: 'config'
+      },
+      constants: {
+        ENVIRONMENT: 'development',
+        API_BASE_URL: 'http://localhost:8000' //'https://optix.api' //http://localhost:8000 or //change it to "http://optix.api" to use the local API server (to test and/or to adjust calls)
+      }
+    }
+  },
 
     // Sass
     //
@@ -58,10 +98,10 @@
       compile: {
         options: {
           loadPath: ["app/sass", "app/css", "vendor/css"]
-      }
+        }
         //files: ["<%= files.sass.generatedApp %>", "<%= files.sass.main %>"]
-    }
-},
+      }
+    },
 
     // Asset Fingerprints
     //
