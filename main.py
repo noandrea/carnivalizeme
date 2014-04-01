@@ -61,6 +61,7 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(reply))
 
     def post(self):
+        self.response.headers['Access-Control-Allow-Methods'] = "POST,PUT,GET"
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         # get all parameters
         image = self.request.POST.get("photo")
@@ -148,6 +149,8 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.write(response_data)
 
     def options(self):
+        self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE"
+        self.response.headers['Access-Control-Allow-Headers'] = "Accept,Accept-Encoding,Accept-Language,Content-Type,Cache-Control,Connection,Host,Origin,Pragma,Referer,User-Agent"
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
     def photo(self, _id):
@@ -241,6 +244,8 @@ class MaskHandler(webapp2.RequestHandler):
         self.response.set_status('400')
 
     def post(self):
+        self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE,HEAD"
+        self.response.headers['Access-Control-Allow-Headers'] = "X-Requested-With,Accept,Accept-Encoding,Accept-Language,Content-Type,Cache-Control,Connection,Host,Origin,Pragma,Referer,User-Agent"
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         #image_file = self.request.get('image', default_value=None)
         image = self.request.POST.get("mask")
@@ -310,6 +315,8 @@ class MaskHandler(webapp2.RequestHandler):
         self.response.write(response_data)
 
     def options(self):
+        self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE,HEAD"
+        self.response.headers['Access-Control-Allow-Headers'] = "Accept,Accept-Encoding,Accept-Language,Content-Type,Cache-Control,Connection,Host,Origin,Pragma,Referer,User-Agent"
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
     def search_tags(self, csv_tags):

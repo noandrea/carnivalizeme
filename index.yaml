@@ -40,7 +40,6 @@ indexes:
   - name: added
     direction: desc
 
-
 - kind: Tag
   properties:
   - name: count
