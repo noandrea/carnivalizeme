@@ -314,6 +314,7 @@ class MaskHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(response_data)
         except Exception, e:
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.set_status('400')
             self.response.write(e.message)
 
@@ -322,7 +323,7 @@ class MaskHandler(webapp2.RequestHandler):
     def options(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE"
-        self.response.headers['Access-Control-Allow-Headers'] = 'Accept,Accept-Encoding,Accept-Language,Cache-Control,Connection,Host,Origin,Pragma,Referer,User-Agent'
+        self.response.headers['Access-Control-Allow-Headers'] = 'Accept,Accept-Encoding,Accept-Language,Cache-Control,Connection,Content-Type,Host,Origin,Pragma,Referer,User-Agent'
 
     def search_tags(self, csv_tags):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
