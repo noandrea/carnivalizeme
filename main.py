@@ -252,7 +252,7 @@ class MaskHandler(webapp2.RequestHandler):
             if ext is None or ext not in ['png', 'gif']:
                 raise Exception('invalid format')
 
-            image = base64.b64decode(data.get('mask').replace('data:image/%s;base64,' % ext,''))
+            image = base64.b64decode(data.get('image').replace('data:image/%s;base64,' % ext,''))
             ip = self.request.remote_addr
             
             meta = data.get('meta')
