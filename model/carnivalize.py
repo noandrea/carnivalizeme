@@ -35,6 +35,7 @@ class Photo(ndb.Model):
 
 class Mask(ndb.Model):
     email = ndb.StringProperty()
+    credits = ndb.StringProperty()
     added = ndb.DateTimeProperty(auto_now_add=True)
     tags = ndb.StringProperty(repeated=True)
     filename = ndb.StringProperty(required=True)

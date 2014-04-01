@@ -20,6 +20,7 @@ import json
 import lib.cloudstorage as gcs
 import logging
 import os
+import base64
 from google.appengine.api import app_identity
 from model.carnivalize import Tag
 from model.carnivalize import Mask
@@ -61,7 +62,6 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(reply))
 
     def post(self):
-        self.response.headers['Access-Control-Allow-Origin'] = "*"
         # get all parameters
         image = self.request.POST.get("photo")
         ip = self.request.remote_addr
@@ -145,6 +145,8 @@ class PhotoHandler(webapp2.RequestHandler):
             "url" : "/p/%s" % filename
         }
 
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
+        self.response.headers['Content-Type'] = 'application/json'
         self.response.write(response_data)
 
     def options(self):
@@ -241,76 +243,86 @@ class MaskHandler(webapp2.RequestHandler):
         self.response.set_status('400')
 
     def post(self):
-        self.response.headers['Access-Control-Allow-Origin'] = "*"
-        #image_file = self.request.get('image', default_value=None)
-        image = self.request.POST.get("mask")
-        ip = self.request.remote_addr
-        meta = json.loads(self.request.get("meta"))
-        user = meta.get('email')
-        tags = meta.get('tags', [])
-        lang = meta.get('lang', 'en')
-        audience = meta.get('audience', 0)
-        email = meta.get('email', None)
+        try:
+            #image_file = self.request.get('image', default_value=None)
+            data = json.loads(self.request.body)
+            ext = data.get('type')
+
+            # mime type must be present and must be png or gif
+            if ext is None or ext not in ['png', 'gif']:
+                raise Exception('invalid format')
+
+            image = base64.b64decode(data.get('mask').replace('data:image/%s;base64,' % ext,''))
+            ip = self.request.remote_addr
+            
+            meta = data.get('meta')
+            credits = meta.get('credits', '')
+            tags = meta.get('tags', [])
+            lang = meta.get('lang', 'en')
+            audience = meta.get('audience', 0)
+            email = meta.get('email', None)
+            
+
+            # image must be present
+            if image is None:
+                raise Exception('missing image')
+
+            # caclulate mask id
+            mask_id = hashlib.sha1(image).hexdigest()
+            print mask_id
+
+            # check if mask exists
+            if Mask.get_by_id(mask_id) is not None:
+                self.response.set_status('304')
+                return
+
+            if len(tags) == 0:
+                raise Exception('missing tags')
+
+            tags_list = []
+
+            # if there are new tags create them
+            for tag in tags:
+                tag = Tag.get_or_create(tag, source='MASK', lang=lang)
+                tags_list.append(str(tag.key.id()))
 
 
-        # image must be present
-        if image is None:
+            # save it on cloud storage
+            bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
+            filename = '%s.%s' % (mask_id, ext)
+            gcs_file = gcs.open('/%s/%s/%s' % (bucket_name,FOLDER_MASKS,filename), 'w', content_type='image/%s' % ext, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
+            gcs_file.write(image)
+            gcs_file.close()
+
+            
+            mask = Mask(id=mask_id)
+            mask.populate(
+                filename = filename,
+                ip = ip,
+                audience = audience,
+                email = email,
+                tags = tags_list,
+                credits = credits)
+            mask.put()
+
+            response_data = {
+                "mask" : "/masks/%s" % mask_id,
+                "url" : "/m/%s" % filename
+            }
+
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write(response_data)
+        except Exception, e:
             self.response.set_status('400')
-            return
-
-        # mime type must be present and must be png or gif
-        mime = image.type
-        if mime is None or mime not in ['image/png', 'image/gif']:
-            self.response.set_status('400')
-            return
-
-        # caclulate mask id
-        mask_id = hashlib.sha1(image.file.getvalue()).hexdigest()
-        print mask_id
-
-        # check if mask exists
-        if Mask.get_by_id(mask_id) is not None:
-            self.response.set_status('304')
-            return
-
-        if len(tags) == 0:
-            self.response.set_status('400')
-            return
-
-        tags_list = []
-
-        # if there are new tags create them
-        for tag in tags:
-            tag = Tag.get_or_create(tag, source='MASK', lang=lang)
-            tags_list.append(str(tag.key.id()))
+            self.response.write(e.message)
 
 
-        # save it on cloud storage
-        bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
-        filename = '%s.%s' % (mask_id, mime[-3:])
-        gcs_file = gcs.open('/%s/%s/%s' % (bucket_name,FOLDER_MASKS,filename), 'w', content_type=mime, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
-        gcs_file.write(image.file.getvalue())
-        gcs_file.close()
-
-        
-        mask = Mask(id=mask_id)
-        mask.populate(
-            filename = filename,
-            ip = ip,
-            audience = audience,
-            email = email,
-            tags = tags_list)
-        mask.put()
-
-        response_data = {
-            "mask" : "/masks/%s" % mask_id,
-            "url" : "/m/%s" % filename
-        }
-
-        self.response.write(response_data)
 
     def options(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
+        self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE"
+        self.response.headers['Access-Control-Allow-Headers'] = 'Accept,Accept-Encoding,Accept-Language,Cache-Control,Connection,Host,Origin,Pragma,Referer,User-Agent'
 
     def search_tags(self, csv_tags):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
