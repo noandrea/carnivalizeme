@@ -83,7 +83,7 @@ class PhotoHandler(webapp2.RequestHandler):
             email = data.get('email', '')
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
-            audience = data.get('audience', 0)
+            audience = int(data.get('audience', 0))
             masks = data.get('masks', [])
 
 
@@ -264,7 +264,7 @@ class MaskHandler(webapp2.RequestHandler):
             credits = data.get('credits', '')
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
-            audience = data.get('audience', 0)
+            audience = int(data.get('audience', 0))
             email = data.get('email', None)
             
 
