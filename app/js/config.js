@@ -1,7 +1,7 @@
 angular.module("config", [])
 
-.constant("ENVIRONMENT", "production")
+.constant("ENVIRONMENT", "dist")
 
-.constant("API_BASE_URL", "http://localhost:8000")
+.constant("API_BASE_URL", "http://carnivalizemeapi.appspot.com")
 
 ;
