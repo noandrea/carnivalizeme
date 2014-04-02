@@ -8,5 +8,29 @@
     "NO_CAMERA"             : "webcam non trovata o streaming non consentito",
     "WHITE_BALANCE"         : "individuazione volto, per favore attendi",
     "DETECTING"             : "accendi le luci e <br/><strong>mostrami il tuo volto</strong>!",
-    "HINTS"                 : "non ti vedo.<br/>prova ad accendere qualche luce in più"
+    "HINTS"                 : "non ti vedo.<br/>prova ad accendere qualche luce in più",
+    
+    "MODIFY_MASK"           : "modifica maschera",
+    "SAVE_MASK"             : "salva maschera",
+
+    "GUIDES"                : "Guide",
+    "BRUSH"                 : "Pennello",
+    "ERASER_BRUSH_MASK"     : "Cancellino",
+    "SIZE_BRUSH_MASK"       : "Dimensione",
+    "BLUR_BRUSH_MASK"       : "Sfocatura",
+    "COLOR_BRUSH_MASK"      : "Colore",
+    "ADD_IMAGE_MASK"        : "carica immagine",
+    "FROM_PC_MASK"          : "da Computer",
+    "UPLOADED_IMAGE_MASK"   : "immagine caricata",
+    "TRY_MASK"              : "prova maschera",
+    "RESTART_MASK"          : "ricomincia",
+    "HELP_MASK"             : "aiuto",
+
+    "SAFE"                  : "ok",
+    "RUDE"                  : "volgare",
+    "ADULT"                 : "per adulti",
+    "XXX"                   : "osceno",
+    "PLACEHOLDER_MAIL"      : "e-mail (per Login futuro)",
+    "PLACEHOLDER_TAGS"      : "tags, separate, da, virgola",
+    "PLACEHOLDER_CREDITS"   : "crediti (es. nome, sito, etc.)"
 }

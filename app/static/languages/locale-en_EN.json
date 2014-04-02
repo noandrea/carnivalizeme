@@ -2,11 +2,37 @@
     "CARNIVALIZE_YOURSELF"  : "carnivalize yourself",
     "GOTO_CARNIVAL"         : "check out the carnival",
     "CREATE_MASK"           : "create a mask",
-    
+
     "CAMERA_SUPPORT"        : "camera is not supported",
     "GET_USER_MEDIA"        : "camera is not supported by your browser",
     "NO_CAMERA"             : "camera not found or streaming not allowed",
     "WHITE_BALANCE"         : "detecting face, please wait",
     "DETECTING"             : "Switch on the lights and <br/><strong>show me your face</strong>!",
-    "HINTS"                 : "i can't see you.<br/>try switching on some lights"
+    "HINTS"                 : "i can't see you.<br/>try switching on some lights",
+
+    "MODIFY_MASK"           : "modify mask",
+    "SAVE_MASK"             : "save mask",
+
+    "GUIDES"                : "Guides",
+    "BRUSH"                 : "Brush",
+    "ERASER_BRUSH_MASK"     : "Eraser",
+    "SIZE_BRUSH_MASK"       : "Size",
+    "BLUR_BRUSH_MASK"       : "Blur",
+    "COLOR_BRUSH_MASK"      : "Color",
+    "ADD_IMAGE_MASK"        : "add image",
+    "FROM_PC_MASK"          : "from Computer",
+    "UPLOADED_IMAGE_MASK"   : "uploaded image",
+    "TRY_MASK"              : "try mask",
+    "RESTART_MASK"          : "restart",
+    "HELP_MASK"             : "help",
+
+    "SAFE"                  : "safe",
+    "RUDE"                  : "rude",
+    "ADULT"                 : "adult",
+    "XXX"                   : "xxx",
+    "PLACEHOLDER_MAIL"      : "e-mail (for future Login)",
+    "PLACEHOLDER_TAGS"      : "tags, comma, separated",
+    "PLACEHOLDER_CREDITS"   : "credits"
+
+    
 }

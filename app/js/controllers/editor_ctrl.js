@@ -1,4 +1,5 @@
 angular.module("app").controller('EditorCtrl', function($scope, $location, $timeout, trackingService, $document) {
+    
     $scope.pageClass = 'page-editor';
 
     $scope.showModal = function(){

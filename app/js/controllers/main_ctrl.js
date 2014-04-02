@@ -1,13 +1,10 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, $translate, $filter, scroller) {
+angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT) {
 
-
-    console.log(scroller);
 
     $scope.mode = 'play';
     if($location.$$path === '/trymask'){
         $scope.mode = 'save';
     }
-    $translate.use('it_IT');
 
     $scope.showVideo        = false;
     $scope.showControls     = false;
@@ -41,10 +38,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
     var stickImage      = new Image();
         stickImage.src  = "img/mask_basic.png"; //"img/mask_headglass.png";
-    var maskIndex       = Math.floor((Math.random()*5));
-    
-
-    
+    var maskIndex       = 0;
 
     var filter = {};//{upcoming: true, workstation_id: $routeParams.workstation_id, order : 'check_in_date,check_in_time'};
 
@@ -52,26 +46,75 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         if($scope.mode !== 'save'){
             // get data for the "upcoming reservations" panel
             Masks.query(filter).$promise.then(function(response){
-                if($scope.parseAPIResponse(response)){
-                    if(response.length){
-                        $scope.masks = response;
-                        //pic random image
-                        stickImage.src = 'img/' + $scope.masks[maskIndex].image;
-                        $scope.credits = $scope.masks[maskIndex].credits;
+                if(response.length){
+                    console.log('THE MASKS:', response);
+                    $scope.masks = response;
+
+                    console.log($scope.masks);
+                    //pic random image
+                    maskIndex               = Math.floor((Math.random()*response.length));
+
+                    //image to attach to the facetrackr
+                    if(ENVIRONMENT === 'dev'){
+                        stickImage.src          = "img/mask_basic.png";
                     }else{
-                        alert('NO masks!');
+                        stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
                     }
+                    //current (selected) mask
+                    $scope.selectedMask    = $scope.masks[maskIndex];
+                }else{
+                    alert('NO masks!');
                 }
             });
         }else{
-            $scope.masks    = [];
-            $scope.masks.push(html5Storage.get('the_mask'));
-            stickImage.src  = $scope.masks[0].image;
-            $scope.credits  = $scope.masks[0].credits;
+            //current mask (user handmade one) ...... //TODO: error here in case there is no mask
+            $scope.selectedMask     = html5Storage.get('the_mask');
+            $scope.masks            = [];
+            $scope.masks.push($scope.selectedMask);
+
+            //image to attach to the facetrackr
+            stickImage.src          = $scope.masks[0].image;
         }
     };
 
-    $scope.getMasks();
+    /**
+     * simply move to another path doing whatever is necessary
+     * 
+     * @param  {string} path [adding "/" is necessary...eg "/editor"]
+     * @return route the app where it should be routed
+     */
+    $scope.goTo = function(path){
+
+        $scope.stopTracking();
+        $location.path(path);
+    };
+
+    /**
+     * Saves the mask on DB!
+     * @return {object} [the mask object]
+     *
+     * Example MASK OBJECT:
+     *
+        {   'image'     : img,
+            'type'      : 'png', 
+            'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
+            'audience'  : 0, 
+            'email'     : "ciccio@bastardo.com",
+            'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
+            'lang'      : "en",
+            'size'      : imgFileSize,
+            'ts'        : moment().format("X")
+        };
+     * 
+     */
+    $scope.saveMaskOnDB = function(maskObj){
+        console.log('about to save:', maskObj);
+        Masks.save(maskObj).$promise.then(function(response){
+            alert('SAVED!', maskObj);
+        },function(response){
+            alert('ERROR! NOT SAVED!', maskObj);
+        });
+    };
 
     $scope.changeMask = function (step){
 
@@ -82,15 +125,22 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             }else if(maskIndex < 0){
                 maskIndex = $scope.masks.length-1;
             }
-            stickImage.src = 'img/' + $scope.masks[maskIndex].image;
+            console.log('MASK #'+maskIndex);
+            
+            //image to attach to the facetrackr
+            if(ENVIRONMENT === 'dev'){
+                stickImage.src          = "img/mask_basic.png";
+            }else{
+                stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
+            }
+
+
             $scope.credits = $scope.masks[maskIndex].credits;
+            //current (selected) mask
+            $scope.selectedMask    = $scope.masks[maskIndex];
         }else{
             alert('There are NO masks!');
         }
-    };
-
-    $scope.saveMask = function (){
-        alert('save!');
     };
 
 
@@ -147,7 +197,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
         //init and start tracking
         if($scope.isRunning){ $scope.stopTracking(); }
-        trackingService.init(videoInput, canvasInput, videoWidth, videoHeight);
+        trackingService.init(videoInput, canvasInput, debugOverlay);
         $scope.restartTracking();
 
         $scope.showVideo    = true;
@@ -165,8 +215,10 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         // "lost" : lost tracking of face
         // "redetecting" : trying to redetect face
         // "stopped" : face tracking was stopped
-        document.addEventListener('headtrackrStatus', 
-          function (event) {
+        document.addEventListener('headtrackrStatus', function (event) {
+
+            console.log('rollin headtrackrStatus');
+
             $scope.cameraMsg        = {};
             $scope.cameraMsg.icon   = ''; 
             canvasOverlay.style.display = "none";
@@ -203,37 +255,45 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     break;
             }
             if(!$scope.$$phase){ $scope.$apply(); }
-          }
-        );
+        });
 
         //listen to tracking events
         document.addEventListener("facetrackingEvent", function( event ) {
-            // clear canvas
-            overlayContext.clearRect(0,0,videoWidth,videoHeight);
-            // once we have stable tracking, draw rectangle
-            if (event.detection === "CS") {
 
-                //enlarge! For the overlay to be 3x bigger for more fun!
-                enlargetWidth     = event.width  * 3;
-                enlargetHeight    = event.height * 3 ;
 
-                overlayContext.translate(event.x, event.y);
-                overlayContext.rotate(event.angle-(Math.PI/2));
-                overlayContext.strokeStyle = "red";
-                //overlayContext.strokeRect((-(event.width/2)) >> 0, (-(event.height/2)) >> 0, event.width, event.height);
-                degrees = (Math.PI/2)-event.angle;
+            try {
+                console.log('rollin faceTrackingEvent');
 
-                
-                overlayContext.drawImage(stickImage,-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
+                // clear canvas
+                overlayContext.clearRect(0,0,videoWidth,videoHeight);
+                // once we have stable tracking, draw rectangle
+                if (event.detection === "CS") {
 
-                overlayContext.rotate(degrees);
-                overlayContext.translate(-event.x, -event.y);
+                    //enlarge! For the overlay to be 3x bigger for more fun!
+                    enlargetWidth     = event.width  * 3;
+                    enlargetHeight    = event.height * 3 ;
+
+                    overlayContext.translate(event.x, event.y);
+                    overlayContext.rotate(event.angle-(Math.PI/2));
+                    //overlayContext.strokeStyle = "red";
+                    //overlayContext.strokeRect((-(event.width/2)) >> 0, (-(event.height/2)) >> 0, event.width, event.height);
+                    degrees = (Math.PI/2)-event.angle;
+                    overlayContext.drawImage(stickImage,-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
+                    overlayContext.rotate(degrees);
+                    overlayContext.translate(-event.x, -event.y);
+                }
+            }catch(e){
+                console.log(e);
+                $scope.stopTracking();
+                return;
             }
 
         });
     };
 
     $scope.startFun = function(dimension){
+        //get MAsks
+        $scope.getMasks();
         //remove "go! button"
         $scope.showStart = false;
         //resize video
@@ -253,9 +313,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         trackingService.stop();
         $scope.restartTracking();
     };
-    
+
     $scope.canvasToImage = function(){
-        
+        var canvas = null;
         html2canvas(document.querySelector('#fullPic'), {
             onrendered: function(canvas) {
                 var img    = canvas.toDataURL("image/png");
@@ -308,13 +368,15 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             var blob        = b64toBlob(b64Image, 'image/gif');
             var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
 
-            $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': blob.size, 'ext': 'GIF', 'ts' : moment().format("X"), 'binary': binary_gif});   // moment().format("X") gives unix timestamp
+            $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': blob.size, 'ext': 'GIF', 'ts' : moment().format("X"), 'image': animatedGIF});   // moment().format("X") gives unix timestamp
                                                                                                                                                     // to get it back in human readable "14 minutes ago" format:
                                                                                                                                                     // var timestamp = moment.unix(1390348800);
                                                                                                                                                     // console.log(timestamp.fromNow());
-                                                                                                                                                    // 
+            console.log($scope.images);
+            //scroll to new pic just taken
             scroller.scrollTo(0, 580, 1000);
 
+            //reset number of pics
             $scope.pics = 0;
             $scope.GIFprogress = '0%';
 
@@ -332,6 +394,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             });
 
         }
+        //update progress
         $scope.GIFprogress = ($scope.pics*10) + '%';
 
 

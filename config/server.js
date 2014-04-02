@@ -11,9 +11,30 @@
  *   defining a spec based on the needs of the client code that emerge.
  *
  */
-
  module.exports = {
+
   drawRoutes: function(app) {
+
+    //var proxy = require('http-proxy');
+
+    // var proxy = require('./../node_modules/lineman/node_modules/http-proxy');
+
+    // var hp = proxy.createServer( { target: {
+    //                                         host: 'localhost',
+    //                                         port: 8080
+    //                                       }
+    //                             });
+/*
+console.log('------------------------------------------------');
+console.log('PROXY');
+console.log(proxy);
+console.log('------------------------------------------------');
+console.log('SERVER');
+console.log(hp);
+console.log('------------------------------------------------');
+console.log('APPPPPPAPPPPPPAPPPPPPAPPPPPP');
+console.log(app);
+*/
 
     app.get('/masks', function (req, res) {
 
@@ -29,7 +50,22 @@
 
       res.json(data);
 
-
   });
+
+    
+  // app.get('/q', function(req, res, next){
+  //     alert('proxy mm');
+  //   });
+  // app.use('/m', function(req, res, next){
+
+
+  //     console.log(req, res);
+  //     //if(req.url.match(new RegExp('^\/m\/.*'))) {
+  //       hp.proxyRequest(req, res);
+  //       //hp.web(req, res);
+  //     // } else {
+  //     //   next();
+  //     // }    
+  // });
 }
 };

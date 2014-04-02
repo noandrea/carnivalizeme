@@ -1,7 +1,7 @@
 <div class="toolbox">
    
     <fieldset class="tool">
-        <legend>Guides</legend>
+        <legend>{{'GUIDES' | translate}}</legend>
         <div class="inner">
             <div class="el">
                 <div class="checkbox switch">
@@ -13,29 +13,29 @@
     </fieldset>
 
     <fieldset class="tool">
-        <legend>Brush</legend>
+        <legend>{{'BRUSH' | translate}}</legend>
         <div class="inner">
             <div class="el">
                 <div class="checkbox regular">
                     <input id="eraser" type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
                     <label for="eraser"></label>
-                    Eraser
+                    {{'ERASER_BRUSH_MASK' | translate}}
                 </div>
             </div>
 
 
             <div class="el">
-                <div class="label">Size</div>
+                <div class="label">{{'SIZE_BRUSH_MASK' | translate}}</div>
                 <input type="range" ng-model="brushSize" name="points" min="2" step="2" max="20">
             </div>
 
             <div class="el">
-                <div class="label">Blur</div>
+                <div class="label">{{'BLUR_BRUSH_MASK' | translate}}</div>
                 <input class="range-blur" type="range" ng-model="blur" name="points" min="0.1" step="0.1" max="1">
             </div>
 
             <div class="el">
-                <div class="label">Color</div>
+                <div class="label">{{'COLOR_BRUSH_MASK' | translate}}</div>
                 <div ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{fillStyle}}"></div>
                 <div ng-show="ctx.globalCompositeOperation === 'destination-out'" class="cpicker transparent"></div>
             </div>
@@ -44,13 +44,16 @@
     </fieldset>
 
     <fieldset class="tool upload-area">
-        <legend><span ng-show="!uploadedImage">Add </span><span ng-show="uploadedImage">Uploaded </span>Image</legend>
+        <legend>
+            <span ng-show="!uploadedImage">{{'ADD_IMAGE_MASK' | translate}}</span>
+            <span ng-show="uploadedImage">{{'UPLOADED_IMAGE_MASK' | translate}}</span>
+        </legend>
 
         <div class="inner">
             <div ng-if="!uploadedImage">
                 <div class="file-container">
                     <label for="uploaded_image">
-                        from Computer
+                        {{'FROM_PC_MASK' | translate}}
                     </label>
                     <input type="file" file-upload name="uploaded_image" />
                 </div>
@@ -72,12 +75,12 @@
 
     <fieldset class="tool upload-area">
         <div class="inner">
-            <a class="btn" ng-click="save();" href="/trymask">Try mask</a>
+            <a class="btn" ng-click="save();">{{'TRY_MASK' | translate}}</a>
             <div class="help">
                 <br/><br/>
-                <a href="#" ng-click="erase();">RESTART</a>
+                <a href="#" ng-click="erase();">{{'RESTART_MASK' | translate}}</a>
                 <br/><br/><br/>
-                <a href="#" ng-click="showModal();">HELP</a>
+                <a href="#" ng-click="showModal();">{{'HELP_MASK' | translate}}</a>
             </div>
         </div>
     </fieldset>

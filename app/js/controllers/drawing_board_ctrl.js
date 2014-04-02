@@ -1,4 +1,4 @@
-angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage, Masks) {
+angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage, Masks, $location) {
 
     $scope.showGrid     = true;
     $scope.brushSize    = 4;
@@ -59,43 +59,37 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
         
         //localStorage the mask (excluding the IMAGE)
         html5Storage.set('drawing_canvas', $scope.canvas, 'canvas');
+        html5Storage.set('the_mask', '');
         
         html2canvas(document.querySelector('#customMask'), 
 
             {
             onrendered: function(canvas) {
+
                 var img    = canvas.toDataURL("image/png");
 
                 var head = 'data:image/png;base64,';
                 var imgFileSize = Math.round((img.length - head.length)*3/4) ;
 
-                $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': img, credits: 'http://www.ciao.com'};
+                $scope.customMask = {   'image'     : img,
+                                        'type'      : 'png', 
+                                        'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
+                                        'audience'  : 0, 
+                                        'email'     : "ciccio@bastardo.com",
+                                        'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
+                                        'lang'      : "en",
+                                        'size'      : imgFileSize,
+                                        'ts'        : moment().format("X")
+                                    };
 
                 //save the PNG image to test!
                 html5Storage.set('the_mask', $scope.customMask);
-
-                $scope.$apply();
-
-
-                var mask = {};
-                mask = {
-                            'mask' : img,   
-                            'meta' : { 'tags'       : ['sto', 'caz', 'ciccio', 'bastardo'], 
-                                        'audience'  : 0, 
-                                        'email'     : "ciccio@bastardo.com",
-                                        'credit'    : "ciccio bastardo http://www.cicciobastardo.com"
-                                     }
-                        };
-                
-                alert('saving to DB');
-                Masks.save(mask);
-                alert('saved to DB');
+                $location.path('/trymask');
 
             },
             background: undefined
         });
     };
-
 
     /**
      * This activate the eraser so that you can delete previously drawn stuff

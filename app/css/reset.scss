@@ -14,7 +14,7 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
-time, mark, audio, video{
+time, mark, audio, video, input{
   margin: 0;
   padding: 0;
   border: 0;
@@ -61,11 +61,28 @@ html{
   user-select: none;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
 /* 
 
 Enrico's NOTES:
 
 22/03/2014 - i removed "em" and "strong"
+
+02/04/2014 - added "input"
+
+02/04/2014 - added:
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
 
 
 */

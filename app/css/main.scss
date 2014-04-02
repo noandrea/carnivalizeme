@@ -420,7 +420,7 @@ body{
     }
     .canvasBg{
         z-index: 996;
-        background: url("/img/mask_scuba.png") no-repeat center;
+        background: url("/img/mask_basic.png") no-repeat center;
         width: 720px;
         height: 960px;
         margin-top: -963px;
@@ -703,7 +703,7 @@ input[type="range"] {
 .btn{
     padding: 5px 0;
     border: 2px solid black;
-    background: white;
+    background: #f1f1f1;
     cursor: pointer;
     color: black;
     text-transform: uppercase;
@@ -712,6 +712,7 @@ input[type="range"] {
     width: 100%;
     display: inline-block;
     text-decoration: none;
+    letter-spacing: 0.02em;
 
     //-webkit-transition-property:color, background; 
     @include transitionProperty((color, background));
@@ -740,6 +741,8 @@ input[type="range"] {
         text-decoration: none;
         color: #999;
         padding: 5px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
 
         //-webkit-transition-property:color, background; 
         @include transitionProperty((color, background));
@@ -866,11 +869,6 @@ input[type="range"] {
             @include flexbox;
             @include align-items(center);
             @include justify-content(center);
-            
-            .form{
-                width:340px;
-                text-align: center;
-            }
         }
     }
     img{
@@ -880,4 +878,91 @@ input[type="range"] {
 
 #vid{
     display: none;
+}
+
+
+
+
+.formMask{
+    max-width: 450px;
+    //background: rgba(0,0,0,.4);
+
+    .el:last-child{
+        margin-top: 50px;
+    }
+    .el{
+        display: block;
+        margin: 10px 0;
+        text-align: center;
+
+        label{
+            display: block;
+            padding: 5px;
+            text-transform: uppercase;
+            font-weight: 100;
+            letter-spacing: 0.05em;
+        }
+        /* replace the hidden input radio type with the pseudo-element :before. */
+        .radio {
+            label { 
+                font-size: 14px;
+                letter-spacing: 0;
+                display: inline-block;
+                padding: 15px 6px;
+                cursor: pointer;
+                font-weight: 400;
+                color: black;
+                background: #f1f1f1;
+                border-top: 2px solid black;
+                &:hover { 
+                    background-color: black; 
+                    color:white;
+                    &.xxxA{
+                        background-color: $green-editor;
+                    }
+                    &.xxxB{
+                        background-color: #FF6F00;
+                    }
+                    &.xxxC{
+                        background-color: red;
+                    }
+                    &.xxxD{
+                        background-color: black;
+                    }
+                }
+            }
+            input[type="radio"] { display: none; }
+            input[type="radio"].checked + label,
+            input[type="radio"]:checked + label { 
+                background-color: black;
+                color: white;
+                &.xxxA{
+                    background-color: $green-editor;
+                }
+                &.xxxB{
+                    background-color: #FF6F00;
+                }
+                &.xxxC{
+                    background-color: red;
+                }
+                &.xxxD{
+                    background-color: black;
+                }
+            }
+        }
+        input[type="text"],input[type="email"]{
+            padding:10px;
+            border:2px solid black;
+            font-weight: 400;
+            &:focus{
+                border:2px solid #f1f1f1;
+                outline: none;
+            }
+        }
+        .btn{
+            max-width: 155px;
+            padding: 10px;
+            margin: 0;
+        }
+    }
 }

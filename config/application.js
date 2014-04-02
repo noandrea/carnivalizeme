@@ -52,8 +52,8 @@
       apiProxy: {
         enabled: true,
         host: 'http://localhost',
-        port: 8080,
-        prefix: '/masks' // request paths that contain 'api' will now be the only ones forwarded to the apiProxy
+        port: 8000,
+        prefix: '' // request paths that contain 'api' will now be the only ones forwarded to the apiProxy
       }
     },
 
@@ -70,7 +70,7 @@
         name: 'config'
       },
       constants: {
-        ENVIRONMENT: 'production',
+        ENVIRONMENT: 'dist',
         API_BASE_URL: 'http://carnivalizemeapi.appspot.com'
       }
     },
@@ -80,8 +80,8 @@
         name: 'config'
       },
       constants: {
-        ENVIRONMENT: 'development',
-        API_BASE_URL: 'http://localhost:8000' //'https://optix.api' //http://localhost:8000 or //change it to "http://optix.api" to use the local API server (to test and/or to adjust calls)
+        ENVIRONMENT: 'dev',
+        API_BASE_URL: 'http://localhost:8080' //'https://optix.api' //http://localhost:8000 or //change it to "http://optix.api" to use the local API server (to test and/or to adjust calls)
       }
     }
   },
