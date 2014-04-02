@@ -22,6 +22,7 @@ import logging
 import os
 import base64
 from google.appengine.api import app_identity
+from google.appengine.api import images
 from model.carnivalize import Tag
 from model.carnivalize import Mask
 from model.carnivalize import Photo
@@ -91,7 +92,6 @@ class PhotoHandler(webapp2.RequestHandler):
             if len(masks) == 0:
                 raise Exception('masks is empty')
 
-
             # caclulate photo id
             photo_id = hashlib.sha1(image).hexdigest()
             photo = Photo.get_by_id(photo_id)
@@ -118,7 +118,6 @@ class PhotoHandler(webapp2.RequestHandler):
                     mask.photo_count += 1
                     mask.put()
             tags_list = list(set(tags_list))
-            
 
             # save it on cloud storage
             bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
@@ -267,6 +266,10 @@ class MaskHandler(webapp2.RequestHandler):
             audience = int(data.get('audience', 0))
             email = data.get('email', None)
             
+            # flip image horizontally
+            image_object = images.Image(image)
+            image_object.horizontal_flip()
+            image = image_object.execute_transforms()
 
             # caclulate mask id
             mask_id = hashlib.sha1(image).hexdigest()
@@ -319,8 +322,6 @@ class MaskHandler(webapp2.RequestHandler):
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.set_status('400')
             self.response.write(e.message)
-
-
 
     def options(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
