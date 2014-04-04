@@ -5,36 +5,30 @@
         <div class="imgCover" ></div>
         <div class="imgMenu" >
             <div class="formMask">
-                <div class="el">
-                    <label>Content</label>
+
+                <div class="el center">
                     <div class="radio">
-                        <input id="safe" type="radio" ng-model="selectedMask.audience" name="gender" value="1">
-                        <label for="safe">{{'SAFE' | translate}}</label>
-                        <input id="rude" type="radio"  ng-model="selectedMask.audience" name="gender" value="2">
-                        <label for="rude">{{'RUDE' | translate}}</label>
-                        <input id="nokids" type="radio"  ng-model="selectedMask.audience" name="gender" value="3">
-                        <label class="xxx" for="nokids">{{'ADULT' | translate}}</label>
-                        <input id="hardcore" type="radio" ng-model="selectedMask.audience" name="gender" value="4">
-                        <label class="xxx" for="hardcore">{{'XXX' | translate}}</label>                
+                        <input id="safe" type="radio" ng-model="img.audience" name="gender" value="1">
+                        <label class="xxxA" for="safe">{{'SAFE' | translate}}</label>
+                        <input id="rude" type="radio"  ng-model="img.audience" name="gender" value="2">
+                        <label class="xxxB" for="rude">{{'RUDE' | translate}}</label>
+                        <input id="nokids" type="radio"  ng-model="img.audience" name="gender" value="3">
+                        <label class="xxxC" for="nokids">{{'ADULT' | translate}}</label>
+                        <input id="hardcore" type="radio" ng-model="img.audience" name="gender" value="4">
+                        <label class="xxxD" for="hardcore">{{'XXX' | translate}}</label>     
                     </div>
                 </div>
 
-                <div class="el">
-                    <label>Email (NEVER public)</label>
-                    <input maxlength="80" type="text" ng-model="selectedMask.email" placeholder="e-mail">
-                </div>
-                <div class="el">
-                    <label>Tags</label>
-                    <input maxlength="100"  type="text" ng-model="selectedMask.tags" ng-list placeholder="tags, comma, separated">
-                </div>
-                <div class="el">
-                    <label>Credits</label>
-                    <input maxlength="100"  type="text" ng-model="selectedMask.credits" placeholder="credits">
-                </div>
-
-                <div class="el">
-                    <a class="btn" ng-click="saveMaskOnDB(selectedMask);">{{'SAVE_MASK' | translate}}</a>
-                    <a class="btn" ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</a> 
+                <div ng-show="img.audience">
+                    <div class="el center">
+                        <input maxlength="100"  type="text" ng-model="img.tags" ng-list placeholder="{{'PLACEHOLDER_TAGS' | translate}}">
+                    </div>
+                    <div class="el center">
+                        <input maxlength="80" type="email" ng-model="img.email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
+                    </div>
+                    <div class="el center">
+                        <a class="btn" ng-click="savePhotoOnDB(img);">{{'SAVE_PHOTO' | translate}}</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,7 +36,12 @@
 
     <img ng-if="img" src="{{img.image}}"></img>
     
+    <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
+        {{img}}
+    </pre>
+
     <div ng-if="img" class="credits"> 
+        {{img.tags}}<br/>
         {{img.ext}} | <span>{{img.ts | timeago}} </span>
     </div>
 

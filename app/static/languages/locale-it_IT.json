@@ -32,5 +32,7 @@
     "XXX"                   : "osceno",
     "PLACEHOLDER_MAIL"      : "e-mail (per Login futuro)",
     "PLACEHOLDER_TAGS"      : "tags, separate, da, virgola",
-    "PLACEHOLDER_CREDITS"   : "crediti (es. nome, sito, etc.)"
+    "PLACEHOLDER_CREDITS"   : "crediti (es. nome, sito, etc.)",
+
+    "SAVE_PHOTO"            : "aggiungi al carnevale"
 }

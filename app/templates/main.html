@@ -3,9 +3,9 @@
 
         <div class="bigPlay" ng-show="showStart" ng-if="mode !== 'save'">
             <div>
-                <a class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
-                <br/>
                 <a class="playButton" ng-click="startFun();">{{'GOTO_CARNIVAL' | translate}}</a>
+                <br/>
+                <a class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
                 <br/>
                 <a class="playButton" href="/editor">{{'CREATE_MASK' | translate}}</a>
             </div>
@@ -61,13 +61,11 @@
 
     <div class="aligner" ng-if="mode === 'save'">
         <div class="formMask">
-
-            <div class="el">
+            <div class="el center">
                 <a class="btn" ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</a> 
             </div>
 
-            <div class="el">
-                <label><br/>– INFO –<br/><br/></label>
+            <div class="el center">
                 <div class="radio">
                     <input id="safe" type="radio" ng-model="selectedMask.audience" name="gender" value="1">
                     <label class="xxxA" for="safe">{{'SAFE' | translate}}</label>
@@ -81,21 +79,21 @@
             </div>
 
             <div ng-show="selectedMask.audience">
-                <div class="el">
-                    <input maxlength="80" type="email" ng-model="selectedMask.email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
-                </div>
-                <div class="el">
+                <div class="el center">
                     <input maxlength="100"  type="text" ng-model="selectedMask.tags" ng-list placeholder="{{'PLACEHOLDER_TAGS' | translate}}">
                 </div>
-                <div class="el">
+                <div class="el center">
                     <input maxlength="100"  type="text" ng-model="selectedMask.credits" placeholder="{{'PLACEHOLDER_CREDITS' | translate}}">
                 </div>
-
-                <div class="el">
+                <div class="el center">
+                    <div class="wrap">
+                        <input maxlength="80" type="email" ng-model="selectedMask.email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
+                    </div>
+                </div>
+                <div class="el center">
                     <a class="btn" ng-click="saveMaskOnDB(selectedMask);">{{'SAVE_MASK' | translate}}</a>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -111,8 +109,9 @@
         </div>
     </div>
 
-    <br/><br/>MASK:
-    <br/>{{selectedMask}}
+    <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
+        {{selectedMask}}
+    </pre>
 
     <div class="aligner">
         <ul class="userImages">

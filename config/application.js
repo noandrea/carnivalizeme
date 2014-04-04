@@ -13,19 +13,19 @@
  */
  module.exports = function(lineman) {
   //Override application configuration here. Common examples follow in the comments.
-  var app = lineman.config.application;
+  var the_app = lineman.config.application;
   return {
     // grunt-angular-templates assumes your module is named "app", but
     // you can override it like so:
     //
-     ngtemplates: {
-       /*options: {
-         module: "myModuleName"
-       }*/
-     },
+    // ngtemplates: {
+    //   options: {
+    //     module: "myModuleName"
+    //   }
+    // },
     // 
     // configure lineman to load additional angular related npm tasks
-    loadNpmTasks: app.loadNpmTasks.concat("grunt-ng-constant"),
+    loadNpmTasks: the_app.loadNpmTasks.concat("grunt-ng-constant"),
 
     removeTasks: {
       common: ["handlebars", "jst", "less", "coffee"] //concat
@@ -57,34 +57,34 @@
       }
     },
 
-  //configurations of constants using ngconstant loaded through "loadNpmTasks" (from this file)
-  //following is the same as a "Gruntfile.js" would do.
-  ngconstant: {
-    options: {
-      space: '    '
-    },
+    //configurations of constants using ngconstant loaded through "loadNpmTasks" (from this file)
+    //following is the same as a "Gruntfile.js" would do.
+    ngconstant: {
+      options: {
+        space: '    '
+      },
 
-    dist: {
-      options: {
-        dest: 'dist/js/config.js',
-        name: 'config'
+      dist: {
+        options: {
+          dest: 'dist/js/config.js',
+          name: 'config'
+        },
+        constants: {
+          ENVIRONMENT: 'dist',
+          API_BASE_URL: 'http://carnivalizemeapi.appspot.com'
+        }
       },
-      constants: {
-        ENVIRONMENT: 'dist',
-        API_BASE_URL: 'http://carnivalizemeapi.appspot.com'
+      dev: {
+        options: {
+          dest: 'generated/js/config.js',
+          name: 'config'
+        },
+        constants: {
+          ENVIRONMENT: 'dev',
+          API_BASE_URL: 'http://localhost:8080' //'https://optix.api' //http://localhost:8000 or //change it to "http://optix.api" to use the local API server (to test and/or to adjust calls)
+        }
       }
     },
-    dev: {
-      options: {
-        dest: 'generated/js/config.js',
-        name: 'config'
-      },
-      constants: {
-        ENVIRONMENT: 'dev',
-        API_BASE_URL: 'http://localhost:8080' //'https://optix.api' //http://localhost:8000 or //change it to "http://optix.api" to use the local API server (to test and/or to adjust calls)
-      }
-    }
-  },
 
     // Sass
     //
@@ -111,5 +111,5 @@
     //
     // enableAssetFingerprint: true
 
-};
+  };
 };

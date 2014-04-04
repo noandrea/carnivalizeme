@@ -71,7 +71,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
                 var head = 'data:image/png;base64,';
                 var imgFileSize = Math.round((img.length - head.length)*3/4) ;
 
-                $scope.customMask = {   'image'     : img,
+                $scope.customMask = {   
                                         'type'      : 'png', 
                                         'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
                                         'audience'  : 0, 
@@ -79,7 +79,8 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
                                         'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
                                         'lang'      : "en",
                                         'size'      : imgFileSize,
-                                        'ts'        : moment().format("X")
+                                        'ts'        : moment().format("X"),
+                                        'image'     : img
                                     };
 
                 //save the PNG image to test!

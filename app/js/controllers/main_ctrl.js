@@ -325,6 +325,20 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
                 //stop tracking
                 $scope.stopTracking();
+
+                var image = {           $$hashKey   : Math.floor((Math.random()*9999999999)+1),
+                                        'type'      : 'png', 
+                                        'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
+                                        'audience'  : 0, 
+                                        'email'     : "ciccio@bastardo.com",
+                                        'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
+                                        'lang'      : "en",
+                                        'size'      : imgFileSize,
+                                        'ts'        : moment().format("X"),
+                                        'image'     : img
+                                    };
+
+
                 $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': imgFileSize, 'ext': 'PNG','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
                                                                                     // to get it back in human readable "14 minutes ago" format:
                                                                                     // var timestamp = moment.unix(1390348800);
