@@ -32,7 +32,8 @@
     "XXX"                   : "xxx",
     "PLACEHOLDER_MAIL"      : "e-mail (for future Login)",
     "PLACEHOLDER_TAGS"      : "tags, comma, separated",
-    "PLACEHOLDER_CREDITS"   : "credits"
+    "PLACEHOLDER_CREDITS"   : "credits",
 
+    "SAVE_PHOTO"            : "add to carnival"
     
 }

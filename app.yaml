@@ -13,6 +13,10 @@ handlers:
   static_files: app/index.html
   upload: app/index\.html
 
+- url: /now
+  static_files: app/index.html
+  upload: app/index\.html
+
 - url: /trymask
   static_files: app/index.html
   upload: app/index\.html
