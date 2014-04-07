@@ -2,7 +2,7 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
 
   $locationProvider.html5Mode(true);
 
-  $routeProvider.when('/', {
+  $routeProvider.when('/now', {
     templateUrl: 'main.html',
     controller: 'MainCtrl'
   });
@@ -17,6 +17,6 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
     controller: 'MainCtrl'
   });
 
-  $routeProvider.otherwise({redirectTo: '/'});
+  $routeProvider.otherwise({redirectTo: '/now'});
 
 });

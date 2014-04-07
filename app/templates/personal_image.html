@@ -41,8 +41,8 @@
     </pre>
 
     <div ng-if="img" class="credits"> 
-        {{img.tags}}<br/>
-        {{img.ext}} | <span>{{img.ts | timeago}} </span>
+        <span ng-model="img.tags"></span><br/>
+        {{img.type}} file | <span>{{img.ts | timeago}} </span>
     </div>
 
 </div>

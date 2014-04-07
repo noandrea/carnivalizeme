@@ -1,5 +1,4 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT) {
-
+angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT) {
 
     $scope.mode = 'play';
     if($location.$$path === '/trymask'){
@@ -13,6 +12,34 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     $scope.isRunning        = false;
     $scope.showMask         = true;
     $scope.showImage        = true;
+
+    $scope.allSelectedMasks = [];
+
+    $scope.selectedMask     = {   
+                                'id'        : 0, 
+                                'type'      : 'png', 
+                                'tags'      : [], 
+                                'audience'  : 0, 
+                                'email'     : "",
+                                'credits'   : "",
+                                'lang'      : "",
+                                'size'      : 0,
+                                'ts'        : moment().format("X"),
+                                'image'     : "img/mask_basic.png"
+                            };
+
+    $scope.currentPhoto     = {   
+                                'id'        : 0, 
+                                'type'      : 'png', 
+                                'tags'      : [],
+                                'masks'     : [], 
+                                'audience'  : 0, 
+                                'email'     : "",
+                                'lang'      : "",
+                                'size'      : 0,
+                                'ts'        : moment().format("X"),
+                                'image'     : "",
+                            };
 
     //get previously HTML5 storage images or reset the array
     $scope.images = html5Storage.get('myCarnival');
@@ -95,7 +122,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
      *
      * Example MASK OBJECT:
      *
-        {   'image'     : img,
+        {   
             'type'      : 'png', 
             'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
             'audience'  : 0, 
@@ -103,7 +130,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
             'lang'      : "en",
             'size'      : imgFileSize,
-            'ts'        : moment().format("X")
+            'ts'        : moment().format("X"),
+            'image'     : img
         };
      * 
      */
@@ -113,6 +141,15 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             alert('SAVED!', maskObj);
         },function(response){
             alert('ERROR! NOT SAVED!', maskObj);
+        });
+    };
+
+    $scope.savePhotoOnDB = function(photoObj){
+        console.log('about to save:', photoObj);
+        Photos.save(photoObj).$promise.then(function(response){
+            alert('PHOTO SAVED!', photoObj);
+        },function(response){
+            alert('ERROR! PHOTO NOT SAVED!', photoObj);
         });
     };
 
@@ -217,8 +254,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         // "stopped" : face tracking was stopped
         document.addEventListener('headtrackrStatus', function (event) {
 
-            console.log('rollin headtrackrStatus');
-
             $scope.cameraMsg        = {};
             $scope.cameraMsg.icon   = ''; 
             canvasOverlay.style.display = "none";
@@ -262,8 +297,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
 
             try {
-                console.log('rollin faceTrackingEvent');
-
                 // clear canvas
                 overlayContext.clearRect(0,0,videoWidth,videoHeight);
                 // once we have stable tracking, draw rectangle
@@ -326,26 +359,23 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                 //stop tracking
                 $scope.stopTracking();
 
-                var image = {           $$hashKey   : Math.floor((Math.random()*9999999999)+1),
-                                        'type'      : 'png', 
-                                        'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
-                                        'audience'  : 0, 
-                                        'email'     : "ciccio@bastardo.com",
-                                        'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
-                                        'lang'      : "en",
-                                        'size'      : imgFileSize,
-                                        'ts'        : moment().format("X"),
-                                        'image'     : img
-                                    };
+                $scope.currentPhoto     = {   
+                                            'type'      : 'png', 
+                                            'tags'      : [],
+                                            'masks'     : [], 
+                                            'audience'  : 0, 
+                                            'email'     : "hello@carnivalize.me",
+                                            'lang'      : "",
+                                            'size'      : imgFileSize,
+                                            'ts'        : moment().format("X"),
+                                            'image'     : img,
+                                            $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
+                                          };
 
+                //add the ID of the used mask 
+                $scope.currentPhoto.masks.push($scope.selectedMask.id);
 
-                $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': imgFileSize, 'ext': 'PNG','ts' : moment().format("X"), 'image': img});   // moment().format("X") gives unix timestamp
-                                                                                    // to get it back in human readable "14 minutes ago" format:
-                                                                                    // var timestamp = moment.unix(1390348800);
-                                                                                    // console.log(timestamp.fromNow());
-                /*if(html5Storage.set('myCarnival', $scope.images)){
-                    $scope.$apply();
-                }*/
+                $scope.images.push($scope.currentPhoto);
                 $scope.$apply();
                 scroller.scrollTo(0, 580, 1000);
             }
@@ -369,7 +399,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             encoder.start();
         }
 
-
         if($scope.pics === 10){
             //stop tracking
             $scope.stopTracking();
@@ -382,10 +411,22 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             var blob        = b64toBlob(b64Image, 'image/gif');
             var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
 
-            $scope.images.push( {$$hashKey: Math.floor((Math.random()*9999999999)+1), 'size': blob.size, 'ext': 'GIF', 'ts' : moment().format("X"), 'image': animatedGIF});   // moment().format("X") gives unix timestamp
-                                                                                                                                                    // to get it back in human readable "14 minutes ago" format:
-                                                                                                                                                    // var timestamp = moment.unix(1390348800);
-                                                                                                                                                    // console.log(timestamp.fromNow());
+            console.log('NO DUP? ALLLLLLL MASK: ', $scope.allSelectedMasks);
+
+            $scope.currentPhoto     = {   
+                                        'type'      : 'gif', 
+                                        'tags'      : [],
+                                        'masks'     : [], 
+                                        'audience'  : 0, 
+                                        'email'     : "hello@carnivalize.me",
+                                        'lang'      : "",
+                                        'size'      : blob.size,
+                                        'ts'        : moment().format("X"),
+                                        'image'     : animatedGIF,
+                                        $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
+                                    };
+
+            $scope.images.push($scope.currentPhoto);
             console.log($scope.images);
             //scroll to new pic just taken
             scroller.scrollTo(0, 580, 1000);
@@ -400,10 +441,21 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
             html2canvas(document.querySelector('#fullPic'), {
                 onrendered: function(canvas) {
+
+                    //if the mask has never been used to build this photo
+                    if($scope.allSelectedMasks.indexOf($scope.selectedMask.id) < 0){
+                        $scope.allSelectedMasks.push($scope.selectedMask.id);
+                        //assign masks
+                        $scope.currentPhoto.masks = $scope.allSelectedMasks;
+                        //assign audience (only if the current masks's audience is lower than the previously used mask)
+                        if($scope.currentPhoto.audience < $scope.selectedMask.audience){
+                            $scope.currentPhoto.audience = $scope.selectedMask.audience;
+                        }
+                    }
+
+                    
                     var context = canvas.getContext('2d');
-                    encoder.setQuality(20);
                     encoder.addFrame(context);
-                    encoder.setQuality(20);
                 }
             });
 
@@ -431,28 +483,4 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         }, 1000); 
     }
 
-});
-
-
-//returns a timestamp into "5 minutes ago" format
-angular.module("app").filter('timeago', function() {
-  return function(input) {
-    var timestamp = moment.unix(input);
-    return timestamp.fromNow();
-  };
-});
-
-angular.module("app").filter('bytes', function() {
-    return function(bytes, precision) {
-        if (isNaN(parseFloat(bytes)) || !isFinite(bytes)){
-            return '-';
-        }
-
-        if (typeof precision === 'undefined'){
-            precision = 1;
-        }
-        var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
-            number = Math.floor(Math.log(bytes) / Math.log(1024));
-        return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
-    };
 });

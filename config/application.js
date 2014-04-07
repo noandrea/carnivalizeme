@@ -13,7 +13,6 @@
  */
  module.exports = function(lineman) {
   //Override application configuration here. Common examples follow in the comments.
-  var the_app = lineman.config.application;
   return {
     // grunt-angular-templates assumes your module is named "app", but
     // you can override it like so:
@@ -25,7 +24,7 @@
     // },
     // 
     // configure lineman to load additional angular related npm tasks
-    loadNpmTasks: the_app.loadNpmTasks.concat("grunt-ng-constant"),
+    loadNpmTasks: lineman.config.application.loadNpmTasks.concat("grunt-ng-constant"),
 
     removeTasks: {
       common: ["handlebars", "jst", "less", "coffee"] //concat

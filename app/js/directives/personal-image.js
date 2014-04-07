@@ -7,23 +7,19 @@ angular.module("app").directive('personalImage', function() {
         templateUrl: "personal_image.html",
         link: function(scope, element, attrs) {
 
-            scope.showMenu = true;
+            scope.showMenu = false;
 
             scope.$watch('showMenu', function(newVal, oldVal) {
-                console.log('changed showMenu');
+                //console.log('changed showMenu');
             });
 
             element.bind('mouseover', function () {
-                console.log('over');
-                //scope.showMenu = true;
-                console.log(scope.showMenu);
+                scope.showMenu = true;
                 scope.$apply();
             });
 
             element.bind('mouseout', function () {
-                console.log('out');
-                //scope.showMenu = false;
-                console.log(scope.showMenu);
+                scope.showMenu = false;
                 scope.$apply();
             });
         }
