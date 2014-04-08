@@ -73,19 +73,19 @@ angular.module("app").directive('drawingControls', function($document, $location
         }
 
         function setBrushSize(size){
-            scope.brushSize = size;
+            scope.controls.brush.size = size;
         }
 
         function changeBlur(how){
             switch(how){
                 case 'less':
-                    if(scope.blur - 0.1 > 0.1){
-                        scope.blur -= 0.1;
+                    if(scope.controls.brush.blur - 0.1 > 0.1){
+                        scope.controls.brush.blur -= 0.1;
                     }
                     break;
                 case 'more':
-                    if(scope.blur + 0.1 <= 1){
-                        scope.blur += 0.1;
+                    if(scope.controls.brush.blur + 0.1 <= 1){
+                        scope.controls.brush.blur += 0.1;
                     }
                     break;
             }

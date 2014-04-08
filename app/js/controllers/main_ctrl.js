@@ -364,10 +364,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                             'tags'      : [],
                                             'masks'     : [], 
                                             'audience'  : 0, 
-                                            'email'     : "hello@carnivalize.me",
+                                            'email'     : "",
                                             'lang'      : "",
                                             'size'      : imgFileSize,
                                             'ts'        : moment().format("X"),
+                                            'image_url' : img,
                                             'image'     : img,
                                             $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
                                           };
@@ -416,13 +417,14 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             $scope.currentPhoto     = {   
                                         'type'      : 'gif', 
                                         'tags'      : [],
-                                        'masks'     : [], 
+                                        'masks'     : $scope.allSelectedMasks, 
                                         'audience'  : 0, 
-                                        'email'     : "hello@carnivalize.me",
+                                        'email'     : "",
                                         'lang'      : "",
                                         'size'      : blob.size,
                                         'ts'        : moment().format("X"),
-                                        'image'     : animatedGIF,
+                                        'image_url' : animatedGIF,
+                                        'image'     : blob,
                                         $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
                                     };
 
@@ -467,12 +469,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     };
 
     $scope.clearStorage = function(){
-        html5Storage.set('myCarnival', []);
-        html5Storage.set('drawing_canvas', '');
         html5Storage.set('the_mask', '');
-        html5Storage.set('uploadedImage', '');
-        html5Storage.set('uploadedImage_style', '');
-        html5Storage.set('uploadedImage_position', '');
+
+        //clear canvas and controls (which include image, image position, brush size, brush blur, etc.)
+        html5Storage.set('controls', '');
+        html5Storage.set('drawing_canvas', '');
         alert('html5 storage cleared!');
     };
 

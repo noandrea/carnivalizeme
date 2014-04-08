@@ -16,9 +16,6 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         prevY = 0,
         currY = 0,
         dot_flag = false;
-
-        var fillStyle = scope.fillStyle = "#9c9c9c",
-            lineWidth = scope.lineWidth = 2;
         
         var previousCanvas = html5Storage.get('drawing_canvas', 'canvas') ? html5Storage.get('drawing_canvas', 'canvas') : null;
         console.log(previousCanvas);
@@ -55,14 +52,14 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
                 x = lastPoint.x + (Math.sin(angle) * i);
                 y = lastPoint.y + (Math.cos(angle) * i);
 
-                var rgbaFillStyle = hexToRgb(scope.fillStyle);
-                var innerRadius = scope.brushSize/20;
-                var outerRadius = scope.brushSize;
+                var rgbaFillStyle = hexToRgb(scope.controls.brush.fillStyle);
+                var innerRadius = scope.controls.brush.size/20;
+                var outerRadius = scope.controls.brush.size;
 
                 var radgrad = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
 
-                radgrad.addColorStop(0, scope.fillStyle);
-                radgrad.addColorStop(0.2, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', ' + scope.blur + ')');
+                radgrad.addColorStop(0, scope.controls.brush.fillStyle);
+                radgrad.addColorStop(0.2, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', ' + scope.controls.brush.blur + ')');
                 radgrad.addColorStop(1, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', 0)');
 
                 ctx.fillStyle = radgrad;
@@ -78,6 +75,7 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         });
 
         element.bind('mouseup', function (e) {
+            html5Storage.set('drawing_canvas', canvas, 'canvas');
             isDrawing = false;
         });
 

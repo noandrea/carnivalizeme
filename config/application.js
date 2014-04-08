@@ -23,15 +23,8 @@
     //   }
     // },
     // 
-    // configure lineman to load additional angular related npm tasks
-    loadNpmTasks: lineman.config.application.loadNpmTasks.concat("grunt-ng-constant"),
-
-    removeTasks: {
-      common: ["handlebars", "jst", "less", "coffee"] //concat
-    },
-
     // task override configuration
-    prependTasks: {
+    appendTasks: {
       common: ["ngconstant"] // ngtemplates runs in dist and dev
     },
 
@@ -109,6 +102,14 @@
     // via grunt-asset-fingerprint
     //
     // enableAssetFingerprint: true
+
+    // configure lineman to load additional angular related npm tasks
+    loadNpmTasks: lineman.config.application.loadNpmTasks.concat("grunt-ng-constant"),
+
+    removeTasks: {
+      common: ["handlebars", "jst", "less", "coffee"] //concat
+    }
+
 
   };
 };

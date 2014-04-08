@@ -433,7 +433,7 @@ body{
 
 .toolbox{
     background: #F1F1F1;
-    height: 445px;
+    max-width: 250px;
     @include radius( 0 3px 3px 0);
     
 
@@ -515,7 +515,7 @@ input[type="file"] {
         overflow: hidden;
         cursor: pointer;
         background: white;
-        color:#ddd;
+        color:#666;
 
         //-webkit-transition-property:color, background; 
         @include transitionProperty((color, background, border));
@@ -631,7 +631,7 @@ input[type="file"] {
             background: transparent;
             top: -4px;
             left: 2px;
-            border: 4px solid $green-editor;
+            border: 4px solid $pink-mask;
             border-top: none;
             border-right: none;
 
@@ -703,7 +703,7 @@ input[type="range"] {
 .btn{
     padding: 5px 0;
     border: 2px solid black;
-    background: #f1f1f1;
+    background: white;
     cursor: pointer;
     color: black;
     text-transform: uppercase;
@@ -736,14 +736,18 @@ input[type="range"] {
     text-align: center;
     margin-left: 2px;
     a{
+        &:last-child{
+            border-bottom: 1px solid #666;
+        }
         width: 100%;
         display: inline-block;
         text-decoration: none;
-        color: #999;
+        color: #666;
         padding: 5px 0;
         text-transform: uppercase;
         letter-spacing: 0.02em;
 
+        border-top: 1px solid #666;
         //-webkit-transition-property:color, background; 
         @include transitionProperty((color, background));
         //-webkit-transition-duration: 0.3s, 0.3s; 

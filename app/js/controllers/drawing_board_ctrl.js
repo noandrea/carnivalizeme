@@ -1,8 +1,16 @@
-angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage, Masks, $location) {
+angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage, Masks, $location, $filter) {
 
-    $scope.showGrid     = true;
-    $scope.brushSize    = 4;
-    $scope.blur         = 0.9;
+    //init controls (from Storage if they exist)
+    if(!html5Storage.get('controls')){
+        $scope.controls     =   {
+                                    showGrid    : true,
+                                    brush       : { size : 4, blur : 0.9, fillStyle : "#9c9c9c" },
+                                    image       : { info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1 }
+                                };
+        html5Storage.set('controls', $scope.controls);
+    }else{
+        $scope.controls     = html5Storage.get('controls');
+    }
 
     /**
      * delete everything from the board and leaves the board empty
@@ -10,7 +18,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
      * @return {null}   [simply empty the board]
      */
     $scope.erase = function() {
-        var m = confirm("You're about to destroy yout masterpiece!");
+        var m = confirm($filter('translate')('CLEAR_MASTERPIECE'));
         if (m) {
             $scope.eraseImage();
             html5Storage.set('drawing_canvas', '');
@@ -18,20 +26,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
         }
     };
     $scope.eraseImage = function() {
-        html5Storage.set('uploadedImage_style', '');
-        html5Storage.set('uploadedImage_position', '');
-        html5Storage.set('uploadedImage', '');
-        if(document.querySelector('#upped-image')){
-            angular.element(document.querySelector('#upped-image')).css({   webkitTransform : '',
-                                                                            MozTransform    : '',
-                                                                            msTransform     : '',
-                                                                            OTransform      : '',
-                                                                            top             : '',
-                                                                            left            : ''
-                                                                        });
-        }
-        console.log(document.querySelector('#upped-image'));
-        $scope.uploadedImage = '';
+        $scope.controls.image = {info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1};
     };
 
 
@@ -42,23 +37,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
      */
     $scope.save = function() {
 
-        /*
-        canvasContext      = $scope.canvas.getContext('2d');
-
-        var uppedImage      = new Image();
-            uppedImage.src  = $scope.uploadedImage.fileBase64; //"img/mask_headglass.png";
-
-        canvasContext.drawImage(uppedImage, 0 ,0);
-        var dataURL = $scope.canvas.toDataURL();
-
-        var head = 'data:image/png;base64,';
-        var imgFileSize = Math.round((dataURL.length - head.length)*3/4) ;
-
-        $scope.customMask = {'size': imgFileSize, 'type': 'png','ts' : moment().format("X"), 'image': dataURL};
-        */
-        
         //localStorage the mask (excluding the IMAGE)
-        html5Storage.set('drawing_canvas', $scope.canvas, 'canvas');
         html5Storage.set('the_mask', '');
         
         html2canvas(document.querySelector('#customMask'), 
@@ -109,5 +88,27 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
     $scope.setBrush = function() {
         $scope.ctx.globalCompositeOperation = "source-over";
     };
+
+
+    //+++++++++++++++++++++++++++++++++++++++ MANAGE UPLOAD of a USER IMAGE
+    //listen for the file selected event
+    $scope.$on("fileError", function (event, args) {
+        console.log(args);
+        //$scope.$apply(function () {            
+            //add the file object to the scope's files collection
+            //$scope.files.push(args.file);
+            alert('Sorry, you can upload PNG images only.');
+        //});
+    });
+    //listen for the file selected event
+    $scope.$on("fileUploaded", function (event, args) {
+        $scope.$apply(function () {
+            console.log('uploaded');
+            //here i could already send the image to the server
+            //
+            $scope.controls.image.info      = args;
+            html5Storage.set('controls', $scope.controls);
+        });
+    });
 
 });

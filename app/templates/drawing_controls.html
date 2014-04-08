@@ -5,7 +5,7 @@
         <div class="inner">
             <div class="el">
                 <div class="checkbox switch">
-                    <input id="grid" type="checkbox" ng-model="showGrid" ng-checked="1" ng-false-value="false" ng-true-value="true">
+                    <input id="grid" type="checkbox" ng-model="controls.showGrid" ng-checked="1" ng-false-value="false" ng-true-value="true">
                     <label for="grid"></label>
                 </div>
             </div>
@@ -26,17 +26,17 @@
 
             <div class="el">
                 <div class="label">{{'SIZE_BRUSH_MASK' | translate}}</div>
-                <input type="range" ng-model="brushSize" name="points" min="2" step="2" max="20">
+                <input type="range" ng-model="controls.brush.size" name="points" min="2" step="2" max="20">
             </div>
 
             <div class="el">
                 <div class="label">{{'BLUR_BRUSH_MASK' | translate}}</div>
-                <input class="range-blur" type="range" ng-model="blur" name="points" min="0.1" step="0.1" max="1">
+                <input class="range-blur" type="range" ng-model="controls.brush.blur" name="points" min="0.1" step="0.1" max="1">
             </div>
 
             <div class="el">
                 <div class="label">{{'COLOR_BRUSH_MASK' | translate}}</div>
-                <div ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{fillStyle}}"></div>
+                <div ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="controls.brush.fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{controls.brush.fillStyle}}"></div>
                 <div ng-show="ctx.globalCompositeOperation === 'destination-out'" class="cpicker transparent"></div>
             </div>
         </div>
@@ -45,12 +45,12 @@
 
     <fieldset class="tool upload-area">
         <legend>
-            <span ng-show="!uploadedImage">{{'ADD_IMAGE_MASK' | translate}}</span>
-            <span ng-show="uploadedImage">{{'UPLOADED_IMAGE_MASK' | translate}}</span>
+            <span ng-show="!controls.image.info.size">{{'ADD_IMAGE_MASK' | translate}}</span>
+            <span ng-show="controls.image.info.size">{{'UPLOADED_IMAGE_MASK' | translate}}</span>
         </legend>
 
         <div class="inner">
-            <div ng-if="!uploadedImage">
+            <div ng-if="!controls.image.info.size">
                 <div class="file-container">
                     <label for="uploaded_image">
                         {{'FROM_PC_MASK' | translate}}
@@ -61,13 +61,23 @@
                 <div class="suggestion">SVG or PNG</div>
             </div>
 
-            <div ng-if="uploadedImage">
+            <div ng-if="controls.image.info.size">
                 <div class="file-container delete" ng-click="eraseImage();">
                     <label>
-                        Remove Image
+                        {{'DELETE_IMAGE' | translate}}
                     </label>
                 </div>
-                <div class="suggestion" ng-if="uploadedImage">PNG - {{uploadedImage.size | bytes}}</div>
+                <div class="suggestion" ng-if="controls.image.info.size">{{controls.image.info.size | bytes}}</div>
+                <br/>
+                <div class="el">
+                    <div class="label">{{'IMAGE_RESIZE' | translate}}</div>
+                    <input type="range" ng-model="controls.image.scale" name="points" min="0" step="0.1" max="4">
+                </div>
+
+                <div class="el">
+                    <div class="label">{{'IMAGE_ROTATE' | translate}}</div>
+                    <input class="range" type="range" ng-model="controls.image.rotation" name="points" min="0" step="1" max="360">
+                </div>
             </div>
         </div>
 
@@ -77,9 +87,9 @@
         <div class="inner">
             <a class="btn" ng-click="save();">{{'TRY_MASK' | translate}}</a>
             <div class="help">
-                <br/><br/>
+                <br/>
                 <a href="#" ng-click="erase();">{{'RESTART_MASK' | translate}}</a>
-                <br/><br/><br/>
+                <br/>
                 <a href="#" ng-click="showModal();">{{'HELP_MASK' | translate}}</a>
             </div>
         </div>
