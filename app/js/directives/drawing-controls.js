@@ -1,4 +1,4 @@
-angular.module("app").directive('drawingControls', function($document, $location) {
+angular.module("app").directive('drawingControls', function($document, $location, html5Storage) {
   return {
     restrict: "E",
     controller: 'drawingBoardCtrl',

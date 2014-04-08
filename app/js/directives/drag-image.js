@@ -1,4 +1,4 @@
-angular.module("app").directive('dragRotateResize', function($document, html5Storage) {
+angular.module("app").directive('dragRotateResize', function($document) {
     return {
         restrict: 'EA',
         replace: true,
@@ -141,13 +141,9 @@ angular.module("app").directive('dragRotateResize', function($document, html5Sto
                 };
                 element.css(style);
 
-                html5Storage.set('controls', scope.controls);
-
             }
 
             function mouseup() {
-                //save current control settings
-                html5Storage.set('controls', scope.controls);
                 //console.log(scope.controls.image.scale, scope.controls.image.positionX, scope.controls.image.positionY);
                 $document.unbind('mousemove', mousemove);
                 $document.unbind('mouseup', mouseup);

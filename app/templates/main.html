@@ -28,7 +28,7 @@
             <div class="controls" ng-show="showControls">
                 <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div>
                 <div class="control image" ng-click="canvasToImage();" ng-show="isRunning && showImage"></div>
-                <div class="control mask" ng-show="isRunning"></div>
+                <div class="control mask" ng-show="isRunning && (mode !== 'save')"></div>
                 <div class="control video" ng-click="canvasToGif();" ng-show="isRunning"></div>
                 <div class="videoProgress">
                     <div class="progress" style="width: {{GIFprogress}}">
@@ -61,9 +61,6 @@
 
     <div class="aligner" ng-if="mode === 'save'">
         <div class="formMask">
-            <div class="el center">
-                <a class="btn" ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</a> 
-            </div>
 
             <div class="el center">
                 <div class="radio">
@@ -93,6 +90,13 @@
                 <div class="el center">
                     <a class="btn" ng-click="saveMaskOnDB(selectedMask);">{{'SAVE_MASK' | translate}}</a>
                 </div>
+                <div class="el center">
+                    <span ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</span>
+                </div>
+            </div>
+                
+            <div ng-hide="selectedMask.audience" class="el center">
+                <a class="btn" ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</a>  
             </div>
         </div>
     </div>

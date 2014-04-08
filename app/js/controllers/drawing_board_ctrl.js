@@ -109,7 +109,6 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
             //here i could already send the image to the server
             //
             $scope.controls.image.info      = args;
-            html5Storage.set('controls', $scope.controls);
         });
     });
 
