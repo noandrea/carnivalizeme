@@ -27,6 +27,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
     };
     $scope.eraseImage = function() {
         $scope.controls.image = {info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1};
+        html5Storage.set('controls', $scope.controls);
     };
 
 
@@ -65,6 +66,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
                 //save the PNG image to test!
                 html5Storage.set('the_mask', $scope.customMask);
                 $location.path('/trymask');
+                $scope.$apply();
 
             },
             background: undefined

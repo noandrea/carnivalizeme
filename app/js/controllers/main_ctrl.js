@@ -412,8 +412,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             var blob        = b64toBlob(b64Image, 'image/gif');
             var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
 
-            console.log('NO DUP? ALLLLLLL MASK: ', $scope.allSelectedMasks);
-
             $scope.currentPhoto     = {   
                                         'type'      : 'gif', 
                                         'tags'      : [],
