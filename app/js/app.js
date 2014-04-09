@@ -5,6 +5,7 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
      * DO GENERAL STUFF HERE
      * 
      */
+    
 
 }).config(function($compileProvider, $translateProvider) {
 

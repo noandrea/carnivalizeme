@@ -6,25 +6,37 @@
 	<link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
 </head>
 
-
-
-
 	<body class="site">
-
 		<header>
-			{{ 'TEST' | translate }}
+			<div class="content">
+				<div data-goole-adsense>
+				  <!-- Google AdSense -->
+				  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+				  <ins class="adsbygoogle"
+				       style="display:inline-block;width:468px;height:15px"
+				       data-ad-client="ca-pub-2238924743498473"
+				       data-ad-slot="8584494004"></ins>
+				  <script>
+				  (adsbygoogle = window.adsbygoogle || []).push({});
+				  </script>
+				</div>
+				<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on Facebook</a> - <a target="_blank" href="https://twitter.com/home?status=check%20this%20on%20@something%20http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on Twitter</a> - <a target="_blank" href="https://pinterest.com/pin/create/button/?url=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg&media=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg&description=This%20is%20a%20good%20image!">Pin on Pinterest</a>
+			</div>
+			<div class="inner"></div>
+
+
+
+
 		</header>
 
 		<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>
 
 
-	<footer>
-		footer
-	</footer>
-
-	<script type="text/javascript" src="/js/app.js"></script>
-	<script type="text/javascript" src="/js/config.js"></script>
-
+		<footer>
+			footer
+		</footer>
+		<script type="text/javascript" src="/js/app.js"></script>
+		<script type="text/javascript" src="/js/config.js"></script>
 
 	</body>
 </html>

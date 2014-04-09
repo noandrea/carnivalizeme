@@ -53,10 +53,10 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
 
                 $scope.customMask = {   
                                         'type'      : 'png', 
-                                        'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
+                                        'tags'      : [],
                                         'audience'  : 0, 
-                                        'email'     : "ciccio@bastardo.com",
-                                        'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
+                                        'email'     : "",
+                                        'credits'   : "",
                                         'lang'      : "en",
                                         'size'      : imgFileSize,
                                         'ts'        : moment().format("X"),

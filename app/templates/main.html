@@ -1,4 +1,8 @@
 <div>
+    <div ng-if="(isCanvasBlank() && showVideo)" class="noCamBar stripe">
+        <span class="animateCamBar">{{'ALLOW_CAMERA' | translate}}</span>
+    </div>
+
     <div class="aligner">
 
         <div class="bigPlay" ng-show="showStart" ng-if="mode !== 'save'">
@@ -16,7 +20,9 @@
             <p ng-bind-html="cameraMsg.msg"></p>
         </div>
 
-        <div class="videoBlock" ng-show="showVideo">
+
+
+        <div class="videoBlock" ng-show="(!isCanvasBlank() && showVideo)">
 
             <div class="cover" ng-show="searchMask"></div>
 
@@ -102,7 +108,11 @@
     </div>
 
     <div class="aligner" ng-show="isRunning && mode !== 'save'">
-        <a class="playButton" ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
+        <div class="formMask">
+            <div class="el center">
+                <a class="btn" ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
+            </div>
+        </div>
     </div>
     
     <div class="aligner" ng-if="mode !== 'save'">
@@ -110,6 +120,10 @@
         <div>
             <br/>
             <a ng-click="clearStorage();">clearStorage</a>
+            <br/>
+            <a href="/trymask">tryMask</a>
+            <br/>
+            <a ng-click="isCanvasBlank();">canvasBLANK</a>
         </div>
     </div>
 

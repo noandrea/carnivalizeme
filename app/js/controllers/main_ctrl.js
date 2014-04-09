@@ -1,10 +1,5 @@
 angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT) {
 
-    $scope.mode = 'play';
-    if($location.$$path === '/trymask'){
-        $scope.mode = 'save';
-    }
-
     $scope.showVideo        = false;
     $scope.showControls     = false;
     $scope.showStart        = true;
@@ -41,10 +36,19 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                 'image'     : "",
                             };
 
-    //get previously HTML5 storage images or reset the array
-    $scope.images = html5Storage.get('myCarnival');
+    $scope.mode = 'play';
+    if($location.$$path === '/trymask'){
+        $scope.mode         = 'save';
+        $scope.showVideo    = true;
+    }
 
-    if(!$scope.images){ $scope.images = []; }
+    //wait one second to start tracking
+    //this makes sure that elements are already on the DOM
+    if($scope.mode === 'save'){
+        setTimeout(function() {
+            $scope.startFun();
+        }, 1000); 
+    }
 
 
     var videoInput,
@@ -111,7 +115,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
      * @return route the app where it should be routed
      */
     $scope.goTo = function(path){
-
         $scope.stopTracking();
         $location.path(path);
     };
@@ -143,7 +146,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             alert('ERROR! NOT SAVED!', maskObj);
         });
     };
-
     $scope.savePhotoOnDB = function(photoObj){
         console.log('about to save:', photoObj);
         Photos.save(photoObj).$promise.then(function(response){
@@ -153,6 +155,13 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         });
     };
 
+
+    /**
+     * activate the possibility to click on left-right arrow and change the mask
+     * 
+     * @param  {number} step    [negative or positive steps...eg: "+1" or "-1"]
+     * @return {null}           [changes stickImage and set selectedMask obj]
+     */
     $scope.changeMask = function (step){
 
         if($scope.masks.length){
@@ -181,6 +190,13 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     };
 
 
+    /**
+     * starts the video player and put the controls (play/stop/picture/reset, etc.) in the right place
+     * depending on the player style (big, small, default)
+     * 
+     * @param  {string} style   [big, small, default]
+     * @return {null}           [put in position all controls, messages, etc.]
+     */
     $scope.videoPlayerStyle = function(style){
 
         if(style === 'big'){
@@ -215,6 +231,32 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
     };
 
+
+    $scope.isCanvasBlank = function(){
+        //the canvas containing the video
+        var canvas = document.querySelector('#compare');
+
+        //an empty canvas using the same video dimensions
+        var blank = document.createElement('canvas');
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+
+        var isBlank = canvas.toDataURL() === blank.toDataURL();
+
+        if(isBlank && $scope.showVideo){
+            document.querySelector('header').style.display = "none";
+        }else{
+            document.querySelector('header').style.display = "block";
+        }
+
+        return isBlank;
+    };
+
+    /**
+     * Starts the webcam (GetUserMedia) by firing "init" from the trackingService
+     * 
+     * @return {null} [starts the tracker and its tracking events]
+     */
     $scope.startWebCam = function(){
         videoInput          = document.querySelector('#vid');
         canvasInput         = document.querySelector('#compare');
@@ -289,6 +331,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     canvasOverlay.style.display = "block";
                     break;
             }
+
+            console.log('STATUSSSS:',event.status);
             if(!$scope.$$phase){ $scope.$apply(); }
         });
 
@@ -324,6 +368,12 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         });
     };
 
+    /**
+     * Starts the experience: 1)get masks from server, 2)initiate the player, 3)starts webcam and tracking
+     * 
+     * @param  {string} style   [videoplayer styles: "big", "small", "default"]
+     * @return {null}           [starts the fun part of the app]
+     */
     $scope.startFun = function(dimension){
         //get MAsks
         $scope.getMasks();
@@ -333,6 +383,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         $scope.videoPlayerStyle(dimension);
         $scope.startWebCam();
     };
+
 
     $scope.stopTracking = function(){
         trackingService.stop();
@@ -347,6 +398,12 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         $scope.restartTracking();
     };
 
+
+    /**
+     * creates a PNG photo out of videoCanvas+overlayCanvas
+     * 
+     * @return {null}   [add the PNG photo to the images array printed in the main section of the website]
+     */
     $scope.canvasToImage = function(){
         var canvas = null;
         html2canvas(document.querySelector('#fullPic'), {
@@ -383,6 +440,17 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         });
     };
 
+
+
+
+    /**
+     * creates a frame out of videoCanvas+overlayCanvas
+     * and attach it to an animated GIF object
+     * when reached X amount of frams it gets the data of the GIF
+     * and stores it in a blob obj...
+     * 
+     * @return {null}   [add the GIF photo to the images array printed in the main section of the website]
+     */
     $scope.pics = 0;
     var node, encoder = new GIFEncoder();
     //as seen on https://github.com/antimatter15/jsgif
@@ -466,6 +534,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
     };
 
+    /**
+     * Helper function to clear the stuff saved on localStorage
+     * 
+     * @return {bool:true} [empty previously set objs]
+     */
     $scope.clearStorage = function(){
         html5Storage.set('the_mask', '');
 
@@ -473,13 +546,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         html5Storage.set('controls', '');
         html5Storage.set('drawing_canvas', '');
         alert('html5 storage cleared!');
+        return true;
     };
 
-
-    if($scope.mode === 'save'){
-        setTimeout(function() {
-            $scope.startFun();
-        }, 1000); 
-    }
 
 });

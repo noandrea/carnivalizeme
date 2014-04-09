@@ -28,7 +28,20 @@
 @import "animations.scss";
 
 header{
+    z-index: 999999999999999999999999999999999999999999999999999999;
+    position: fixed;
+    width: 100%;
     height: $header-height;
+    .inner{
+        position: fixed;
+        width: 100%;
+        height: $header-height;
+        @include opacity(.6);
+        background: white;
+    }
+    .content{
+        
+    }
 }
 
 
@@ -55,6 +68,7 @@ body{
     max-width:100%;
     margin:0;
     -ms-flex-preferred-size:auto;
+    padding-top: $header-height;
 }
 
 .aligner {
@@ -972,4 +986,90 @@ input[type="range"] {
             margin: 0;
         }
     }
+}
+
+.noCamBar {
+   background: #B10000;
+   overflow: hidden;
+
+    &.stripe > span{
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        padding-top: 10px;
+        color: white;
+        text-align: center;
+        display: block;
+        height: 25px;
+        background-size: 30px 30px;
+        
+        background-image: -moz-linear-gradient(-45deg, 
+          rgba(255,255,255,0.15) 0%, 
+          rgba(255,255,255,0.15) 25%, 
+          rgba(255,255,255,0) 25%, 
+          rgba(255,255,255,0) 50%, 
+          rgba(255,255,255,0.15) 50%, 
+          rgba(255,255,255,0.15) 75%, 
+          rgba(255,255,255,0) 75%, 
+          rgba(255,255,255,0) 100%);
+        background-image: -webkit-gradient(linear, left top, right bottom, 
+          color-stop(0%,rgba(255,255,255,0.2)), 
+          color-stop(25%,rgba(255,255,255,0.2)), 
+          color-stop(25%,rgba(255,255,255,0)), 
+          color-stop(50%,rgba(255,255,255,0)), 
+          color-stop(50%,rgba(255,255,255,0.2)), 
+          color-stop(75%,rgba(255,255,255,0.2)),
+          color-stop(75%,rgba(255,255,255,0)),
+          color-stop(100%,rgba(255,255,255,0)));
+         background-image: -webkit-linear-gradient(-45deg, 
+          rgba(255,255,255,0.3) 0%,
+          rgba(255,255,255,0.3) 25%,
+          rgba(255,255,255,0) 25%,
+          rgba(255,255,255,0) 50%,
+          rgba(255,255,255,0.3) 50%,
+          rgba(255,255,255,0.3) 75%,
+          rgba(255,255,255,0) 75%,
+          rgba(255,255,255,0) 100%);
+        background-image: -o-linear-gradient(-45deg, 
+          rgba(255,255,255,0.15) 0%,
+          rgba(255,255,255,0.15) 25%,
+          rgba(255,255,255,0) 25%,
+          rgba(255,255,255,0) 50%,
+          rgba(255,255,255,0.15) 50%,
+          rgba(255,255,255,0.15) 75%,
+          rgba(255,255,255,0) 75%,
+          rgba(255,255,255,0) 100%);
+        background-image: -ms-linear-gradient(-45deg, 
+          rgba(255,255,255,0.15) 0%,
+          rgba(255,255,255,0.15) 25%,
+          rgba(255,255,255,0) 25%,
+          rgba(255,255,255,0) 50%,
+          rgba(255,255,255,0.15) 50%,
+          rgba(255,255,255,0.15) 75%,
+          rgba(255,255,255,0) 75%,
+          rgba(255,255,255,0) 100%);
+        background-image: linear-gradient(135deg, 
+          rgba(255,255,255,0.15) 0%,
+          rgba(255,255,255,0.15) 25%,
+          rgba(255,255,255,0) 25%,
+          rgba(255,255,255,0) 50%,
+          rgba(255,255,255,0.15) 50%,
+          rgba(255,255,255,0.15) 75%,
+          rgba(255,255,255,0) 75%,
+          rgba(255,255,255,0) 100%);
+
+        &.animateCamBar {
+           animation: progressNoCam 2s linear infinite;
+           -moz-animation: progressNoCam 2s linear infinite;
+           -webkit-animation: progressNoCam 2s linear infinite;
+           -ms-animation: progressNoCam 2s linear infinite;
+           -o-animation: progressNoCam 2s linear infinite;
+        }
+    }
+
+}
+
+
+
+#twitter-widget-0{
+    width:60px!important;
 }
