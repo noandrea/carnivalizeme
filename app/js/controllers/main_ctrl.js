@@ -9,6 +9,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     $scope.showImage        = true;
 
     $scope.allSelectedMasks = [];
+    $scope.images           = [];
 
     $scope.selectedMask     = {   
                                 'id'        : 0, 
