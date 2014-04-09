@@ -28,7 +28,7 @@
 @import "animations.scss";
 
 header{
-    z-index: 999999999999999999999999999999999999999999999999999999;
+    z-index: 100099;
     position: fixed;
     width: 100%;
     height: $header-height;
@@ -36,11 +36,32 @@ header{
         position: fixed;
         width: 100%;
         height: $header-height;
-        @include opacity(.6);
         background: white;
     }
     .content{
-        
+        z-index: 1000999;
+        width: 100%;
+        position: fixed;
+
+        ul.headerSocials{
+            padding-top: 13px;
+            float:right;
+
+            li {
+                width: auto;
+                float: left;
+                margin: 0 20px;
+                a{
+                    color: #333;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+    .headerAds{
+        float: right;
+        padding-top: 15px;
+        padding-right: 20px;
     }
 }
 

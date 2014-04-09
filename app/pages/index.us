@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
-	<title><%= pkg.name %></title>
-
+	<title>Carnivalize.me - Carnival Online</title>
 	<link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+	<meta name="description" content="Carnivalize yourself, because life's a masquerade.">
+	<meta name="keywords" content="carnival, masquerade, masks, game, mask game, effects, webcam, fun, toy, carnivalize">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 	<body class="site">
 		<header>
 			<div class="content">
-				<div data-goole-adsense>
+				<div data-goole-adsense class="headerAds">
 				  <!-- Google AdSense -->
 				  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 				  <ins class="adsbygoogle"
@@ -20,7 +23,17 @@
 				  (adsbygoogle = window.adsbygoogle || []).push({});
 				  </script>
 				</div>
-				<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on Facebook</a> - <a target="_blank" href="https://twitter.com/home?status=check%20this%20on%20@something%20http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on Twitter</a> - <a target="_blank" href="https://pinterest.com/pin/create/button/?url=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg&media=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg&description=This%20is%20a%20good%20image!">Pin on Pinterest</a>
+				<ul class="headerSocials">
+					<li>
+						<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on <strong>Facebook</strong></a>
+					</li>
+					<li>
+						<a target="_blank" href="https://twitter.com/home?status=check%20this%20on%20@something%20http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on <strong>Twitter</strong></a>
+					</li>
+					<li>
+						<a target="_blank" href="https://pinterest.com/pin/create/button/?url=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg&media=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg&description=This%20is%20a%20good%20image!">Pin on <strong>Pinterest</strong></a>
+					</li>
+				</ul>
 			</div>
 			<div class="inner"></div>
 

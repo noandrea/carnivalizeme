@@ -245,8 +245,10 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
         if(isBlank && $scope.showVideo){
             document.querySelector('header').style.display = "none";
+            document.querySelector('.site-content').style.paddingTop = "0";
         }else{
             document.querySelector('header').style.display = "block";
+            document.querySelector('.site-content').style.paddingTop = "50px";
         }
 
         return isBlank;
