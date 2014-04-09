@@ -2,6 +2,7 @@
     "CARNIVALIZE_YOURSELF"  : "carnivalize yourself",
     "GOTO_CARNIVAL"         : "check out the carnival",
     "CREATE_MASK"           : "create a mask",
+    "ALLOW_CAMERA"          : "I need you to allow me to use your WebCam",
 
     "CAMERA_SUPPORT"        : "camera is not supported",
     "GET_USER_MEDIA"        : "camera is not supported by your browser",
