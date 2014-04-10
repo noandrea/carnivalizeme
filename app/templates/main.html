@@ -59,7 +59,7 @@
 
     </div>
 
-    <div class="aligner" ng-show="selectedMask.credits.length">
+    <div class="aligner" ng-if="selectedMask.credits.length">
         <div class="credits"> 
             CREDITS <span ng-bind-html="selectedMask.credits | linky"></span>
         </div>
@@ -70,13 +70,13 @@
 
             <div class="el center">
                 <div class="radio">
-                    <input id="safe" type="radio" ng-model="selectedMask.audience" name="gender" value="1">
+                    <input id="safe" type="radio" ng-model="selectedMask.audience" ng-click="saveMaskOnDB(selectedMask);" name="gender" value="1">
                     <label class="xxxA" for="safe">{{'SAFE' | translate}}</label>
-                    <input id="rude" type="radio"  ng-model="selectedMask.audience" name="gender" value="2">
+                    <input id="rude" type="radio"  ng-model="selectedMask.audience" ng-click="saveMaskOnDB(selectedMask);" name="gender" value="2">
                     <label class="xxxB" for="rude">{{'RUDE' | translate}}</label>
-                    <input id="nokids" type="radio"  ng-model="selectedMask.audience" name="gender" value="3">
+                    <input id="nokids" type="radio"  ng-model="selectedMask.audience" ng-click="saveMaskOnDB(selectedMask);" name="gender" value="3">
                     <label class="xxxC" for="nokids">{{'ADULT' | translate}}</label>
-                    <input id="hardcore" type="radio" ng-model="selectedMask.audience" name="gender" value="4">
+                    <input id="hardcore" type="radio" ng-model="selectedMask.audience" ng-click="saveMaskOnDB(selectedMask);" name="gender" value="4">
                     <label class="xxxD" for="hardcore">{{'XXX' | translate}}</label>     
                 </div>
             </div>
@@ -116,15 +116,7 @@
     </div>
     
     <div class="aligner" ng-if="mode !== 'save'">
-            <br/>
-        <div>
-            <br/>
-            <a ng-click="clearStorage();">clearStorage</a>
-            <br/>
-            <a href="/trymask">tryMask</a>
-            <br/>
-            <a ng-click="isCanvasBlank();">canvasBLANK</a>
-        </div>
+        <a ng-click="clearStorage();">clearStorage</a>
     </div>
 
 <!--
@@ -134,7 +126,7 @@
 -->
 
 
-    <div class="aligner">
+    <div class="aligner" ng-if="images.length>=1">
         <ul class="userImages">
             <li ng-repeat="img in images | orderBy:'ts':true"> <!-- | orderBy:'ts':true -->
                 <personal-image></personal-image>

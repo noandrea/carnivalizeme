@@ -1,11 +1,17 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope) {
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope, $location, trackingService) {
     
     /**
-     *
-     * DO GENERAL STUFF HERE
+     * simply move to another path doing whatever is necessary
      * 
+     * @param  {string} path [adding "/" is necessary...eg "/editor"]
+     * @return route the app where it should be routed
      */
-    
+    $rootScope.goTo = function(path){
+        if(trackingService.isActive()){
+            trackingService.stop();
+        }
+        $location.path(path);
+    };
 
 }).config(function($compileProvider, $translateProvider) {
 

@@ -8,13 +8,13 @@
 
                 <div class="el center">
                     <div class="radio">
-                        <input id="safe" type="radio" ng-model="img.audience" name="gender" value="1">
+                        <input id="safe" type="radio" ng-model="img.audience" ng-click="savePhotoOnDB(img);" name="gender" value="1">
                         <label class="xxxA" for="safe">{{'SAFE' | translate}}</label>
-                        <input id="rude" type="radio"  ng-model="img.audience" name="gender" value="2">
+                        <input id="rude" type="radio"  ng-model="img.audience" ng-click="savePhotoOnDB(img);" name="gender" value="2">
                         <label class="xxxB" for="rude">{{'RUDE' | translate}}</label>
-                        <input id="nokids" type="radio"  ng-model="img.audience" name="gender" value="3">
+                        <input id="nokids" type="radio"  ng-model="img.audience" ng-click="savePhotoOnDB(img);" name="gender" value="3">
                         <label class="xxxC" for="nokids">{{'ADULT' | translate}}</label>
-                        <input id="hardcore" type="radio" ng-model="img.audience" name="gender" value="4">
+                        <input id="hardcore" type="radio" ng-model="img.audience" ng-click="savePhotoOnDB(img);" name="gender" value="4">
                         <label class="xxxD" for="hardcore">{{'XXX' | translate}}</label>     
                     </div>
                 </div>

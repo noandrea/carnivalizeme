@@ -110,17 +110,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     };
 
     /**
-     * simply move to another path doing whatever is necessary
-     * 
-     * @param  {string} path [adding "/" is necessary...eg "/editor"]
-     * @return route the app where it should be routed
-     */
-    $scope.goTo = function(path){
-        $scope.stopTracking();
-        $location.path(path);
-    };
-
-    /**
      * Saves the mask on DB!
      * @return {object} [the mask object]
      *
@@ -141,19 +130,35 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
      */
     $scope.saveMaskOnDB = function(maskObj){
         console.log('about to save:', maskObj);
-        Masks.save(maskObj).$promise.then(function(response){
-            alert('SAVED!', maskObj);
-        },function(response){
-            alert('ERROR! NOT SAVED!', maskObj);
-        });
+        if(!maskObj.id){
+            Masks.save(maskObj).$promise.then(function(response){
+                alert('SAVED!', maskObj);
+            },function(response){
+                alert('ERROR! NOT SAVED!', maskObj);
+            });
+        }else{
+            Masks.update(maskObj).$promise.then(function(response){
+                alert('UPDATED!', maskObj);
+            },function(response){
+                alert('ERROR! NOT UPDATED!', maskObj);
+            });
+        }
     };
     $scope.savePhotoOnDB = function(photoObj){
         console.log('about to save:', photoObj);
-        Photos.save(photoObj).$promise.then(function(response){
-            alert('PHOTO SAVED!', photoObj);
-        },function(response){
-            alert('ERROR! PHOTO NOT SAVED!', photoObj);
-        });
+        if(!photoObj.id){
+            Photos.save(photoObj).$promise.then(function(response){
+                alert('PHOTO SAVED!', photoObj);
+            },function(response){
+                alert('ERROR! PHOTO NOT SAVED!', photoObj);
+            });
+        }else{
+            Photos.update(photoObj).$promise.then(function(response){
+                alert('PHOTO UPDATED!', photoObj);
+            },function(response){
+                alert('ERROR! PHOTO NOT UPDATED!', photoObj);
+            });
+        }
     };
 
 
@@ -335,7 +340,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     break;
             }
 
-            console.log('STATUSSSS:',event.status);
             if(!$scope.$$phase){ $scope.$apply(); }
         });
 

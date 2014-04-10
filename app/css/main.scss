@@ -27,24 +27,30 @@
 //animations (eg for ng-view)
 @import "animations.scss";
 
+
 header{
-    z-index: 100099;
-    position: fixed;
     width: 100%;
     height: $header-height;
-    .inner{
-        position: fixed;
-        width: 100%;
-        height: $header-height;
-        background: white;
-    }
-    .content{
-        z-index: 1000999;
-        width: 100%;
-        position: fixed;
+}
 
-        ul.headerSocials{
-            padding-top: 13px;
+footer{
+    width: 100%;
+    height: $footer-height;
+    background: white;
+    overflow: hidden;
+
+    .content{
+        width: 100%;
+
+        ul.internal{
+            border-right: 1px solid black;
+            margin-right: 15px;
+        }
+        ul.socials{
+            border-right: 1px solid black;
+        }
+        ul.socials, ul.internal{
+            margin-top: 14px;
             float:right;
 
             li {
@@ -68,7 +74,10 @@ header{
 
 html {
     font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
-
+    /*background-image: url(/img/carnivalizeGIGA.jpg);
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center; */
 }
 
 body{
@@ -85,11 +94,13 @@ body{
 
 .site-content {
     @include flex(1);
-    background-color: white;
+    &.page-editor{
+        background-color: white;
+    }
     max-width:100%;
     margin:0;
     -ms-flex-preferred-size:auto;
-    padding-top: $header-height;
+    padding-bottom: $footer-height;
 }
 
 .aligner {
@@ -164,8 +175,8 @@ body{
             color: white;
         }
         &:active{
-            background-color: green;
-            color: black;
+            background-color: black;
+            color: white;
         }
     }
 }
@@ -206,7 +217,7 @@ body{
             }
 
             &.left{
-                border: 1px solid #FF0099;
+                border: 2px solid #FF0099;
                 float:left;
                 margin-left: 15px;
                 background-image:url("/img/arrow_mask_selection.png");
@@ -761,8 +772,8 @@ input[type="range"] {
         color: white;
     }
     &:active{
-        background-color: white;
-        color: black;
+        background-color: black;
+        color: white;
     }
 }
 .help{
@@ -1093,4 +1104,14 @@ input[type="range"] {
 
 #twitter-widget-0{
     width:60px!important;
+}
+
+
+.textBlock{
+    max-width: 640px;
+    p{
+        line-height: 30px;
+        color:#666;
+        text-align: justify;
+    }
 }

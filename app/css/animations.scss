@@ -21,13 +21,13 @@
     -webkit-animation-delay:0.5s; /* Safari and Chrome */
 }
 
-/* about ------------------------ */
-.page-editor.ng-leave        {
+/* editor, about ------------------------ */
+.page-editor.ng-leave, .page-about.ng-leave, .page-terms.ng-leave, .page-carnival.ng-leave {
     -webkit-animation:slideOutRight 0.5s both ease-in;
     -moz-animation:slideOutRight 0.5s both ease-in;
     animation:slideOutRight 0.5s both ease-in;   
 }
-.page-editor.ng-enter    {  
+.page-editor.ng-enter, .page-about.ng-enter, .page-terms.ng-enter, .page-carnival.ng-enter {
     -webkit-animation:bounceInRight 0.5s both ease-in;
     -moz-animation:bounceInRight 0.5s both ease-in;
     animation:bounceInRight 0.5s both ease-in;    

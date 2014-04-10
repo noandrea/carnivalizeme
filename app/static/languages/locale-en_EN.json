@@ -48,6 +48,9 @@
     "PLACEHOLDER_TAGS"      : "tags, comma, separated",
     "PLACEHOLDER_CREDITS"   : "credits",
 
-    "SAVE_PHOTO"            : "add to carnival"
+    "SAVE_PHOTO"            : "add to carnival",
+
+    "TERMS_AND_CONDITIONS_PRIVACY" : "Terms, Conditions and Privacy",
+    "About"                 : "About"
     
 }

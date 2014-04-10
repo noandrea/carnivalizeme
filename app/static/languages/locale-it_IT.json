@@ -48,5 +48,8 @@
     "PLACEHOLDER_TAGS"      : "tags, separate, da, virgola",
     "PLACEHOLDER_CREDITS"   : "crediti (es. nome, sito, etc.)",
 
-    "SAVE_PHOTO"            : "aggiungi al carnevale"
+    "SAVE_PHOTO"            : "aggiungi al carnevale",
+
+    "TERMS_AND_CONDITIONS_PRIVACY" : "Termini, Condizioni e Privacy",
+    "About"                 : "Informazioni"
 }
