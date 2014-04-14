@@ -89,6 +89,7 @@ body{
         @include flexbox;
         @include flex-direction(column); //vertical orient + normal direction
         min-height:100vh;
+        background: #f1f1f1;
     }
 }
 
@@ -116,6 +117,7 @@ body{
     @include justify-content(center);
 
     position: absolute;
+    top: 0;
 
     .icon{
         margin-right: -285px;
@@ -187,11 +189,47 @@ body{
 
 .videoBlock {
     
-    .cover{
-        z-index: 100051;
+
+    .findMasks{
+        width: 640px;
+        height: 480px;
         position: absolute;
-        @include linear-gradient(rgba(black, 1), rgba(black, .2)); // Stick in your favourite HEX colours
-        @include opacity(.6);
+
+        .input{
+            width:100%;
+            z-index: 100053;
+            position: absolute;
+            top:15px;
+            right: 12px;
+            text-align: right; 
+            color: #e1e1e1;
+            font-weight: 100;
+            font-size: 12px;
+            a{
+                cursor: pointer;
+                line-height: 30px;
+                &:hover{
+                    color: white;
+                }
+            }
+            input[type="text"]{
+                width: 590px;
+                line-height: 80px;
+                font-size: 50px;
+                padding: 10px;
+                color: white;
+                background: none;
+                border: 1px solid white;
+                font-weight: 100;
+                text-transform: uppercase;
+            }
+        }
+        .cover{
+            z-index: 100051;
+            position: absolute;
+            @include linear-gradient(rgba(black, 1), rgba(black, .2)); // Stick in your favourite HEX colours
+            @include opacity(.6);
+        }
     }
 
     .changeMask{
@@ -248,7 +286,7 @@ body{
 
 
         .videoProgress{
-            width: 430px;
+            width: 490px;
             background: rgba(0,0,0,.2);
             margin-right: 5px;
             height: 40px;
@@ -265,6 +303,13 @@ body{
                     float: right;
                     padding-right: 10px;
                     color: white;
+                    span{
+                        font-size: 12px;
+                        display: inline;
+                        font-weight: 100;
+                        margin-right: 5px;
+                        cursor: pointer;
+                    }
                 }
             }
         }
@@ -280,6 +325,9 @@ body{
             align:center;
 
             background-color: rgba(0,0,0,.7);
+
+            @include radius(3px);
+
             &.play{
                 margin-right: 5px;
                 background-repeat:no-repeat;
@@ -323,18 +371,28 @@ body{
                 }
             }
             &.video{
+                @include radius(3px 0 0 3px);
                 background-repeat:no-repeat;
                 background-position: -208px -82px;
                 &:hover{
                     background-repeat:no-repeat;
                     background-position: -208px -41px;
                 }
-                &:active{
+                &:active, &.active{
                     background-repeat:no-repeat;
                     background-position: -208px 1px;
                 }
+                &.active{
+                    &:hover{
+                        background-repeat:no-repeat;
+                        background-position: -208px -41px;
+                    }
+                }
             }
             &.mask{
+                position: absolute;
+                right:0;
+                margin-top: -420px;
                 background-repeat:no-repeat;
                 background-position: -250px -82px;
                 &:hover{
@@ -345,6 +403,9 @@ body{
                     background-repeat:no-repeat;
                     background-position: -250px 1px;
                 }
+            }
+            &.empty{
+                background:none;
             }
             &.loading{
                 background-image: none;
@@ -383,6 +444,21 @@ body{
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
 
+    &.minimenu {
+        .right{
+            float: right;
+        }
+        text-transform: lowercase;
+        a{
+            font-weight: 400;
+            text-transform: uppercase;
+            color: black;
+            cursor: pointer;
+            &:hover{
+                color: $pink-mask;
+            }
+        }
+    }
     span{
         text-transform: lowercase;
         font-size: 12px;
@@ -453,6 +529,14 @@ body{
             background: transparent;
             z-index: 999;
             position: relative;
+            &.flipped{
+                -moz-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+                filter: FlipH;
+                -ms-filter: "FlipH";
+            }
         }
         overflow: hidden;
     }
@@ -908,13 +992,13 @@ input[type="range"] {
     .imgWrap{
         .imgCover{
             position: absolute;
-            width:640px;
+            width:320px;
             height:480px;
-            background-color:rgba(45,235,55,.6);
+            background-color:rgba(255,255,255,.8);
         }
         .imgMenu{
             position: absolute;
-            width:640px;
+            width:320px;
             height:480px;
             @include flexbox;
             @include align-items(center);

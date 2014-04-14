@@ -3,6 +3,10 @@
     "GOTO_CARNIVAL"         : "check out the carnival",
     "CREATE_MASK"           : "create a mask",
     "ALLOW_CAMERA"          : "I need you to allow me to use your WebCam",
+    "OK_DONE"               : "ok, done.",
+    "SEARCH_MASK_BY_TAG"    : "search mask",
+    "RECALIBRATE_FACE_DETECT": "re-calibrate face detection",
+    "FIND_MASKS"            : "FIND MASKS",
 
     "CAMERA_SUPPORT"        : "camera is not supported",
     "GET_USER_MEDIA"        : "camera is not supported by your browser",
@@ -51,6 +55,6 @@
     "SAVE_PHOTO"            : "add to carnival",
 
     "TERMS_AND_CONDITIONS_PRIVACY" : "Terms, Conditions and Privacy",
-    "About"                 : "About"
+    "ABOUT"                 : "About"
     
 }

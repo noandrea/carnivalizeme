@@ -9,16 +9,12 @@ angular.module("app").directive('personalImage', function() {
 
             scope.showMenu = false;
 
-            scope.$watch('showMenu', function(newVal, oldVal) {
-                //console.log('changed showMenu');
-            });
-
-            element.bind('mouseover', function () {
+            element.bind('mouseenter', function () {
                 scope.showMenu = true;
                 scope.$apply();
             });
 
-            element.bind('mouseout', function () {
+            element.bind('mouseleave', function () {
                 scope.showMenu = false;
                 scope.$apply();
             });

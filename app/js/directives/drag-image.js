@@ -50,8 +50,6 @@ angular.module("app").directive('dragRotateResize', function($document) {
                     startY = event.pageY - positionY;
                 }
 
-                console.log("MOUSEDOWN", event.pageX - startX, event.pageX, startX);
-
                 $document.on('mousemove', mousemove);
                 $document.on('mouseup', mouseup);
             });

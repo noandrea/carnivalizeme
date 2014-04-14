@@ -1,4 +1,4 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope, $location, trackingService) {
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope, $location, trackingService, $translate) {
     
     /**
      * simply move to another path doing whatever is necessary
@@ -13,6 +13,18 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         $location.path(path);
     };
 
+    /**
+     * changes the language of the application
+     * 
+     * @param  {string} language code eg "it_IT" or "en_EN"
+     * @return {null} assigns  $rootScope.lang
+     */
+    $rootScope.lang = 'en_EN';
+    $rootScope.changeLanguage = function(lang){
+        $translate.use(lang);
+        $rootScope.lang = lang;
+    };
+
 }).config(function($compileProvider, $translateProvider) {
 
     var oldWhiteList = $compileProvider.imgSrcSanitizationWhitelist();
@@ -24,7 +36,7 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         suffix: '.json'
     });
 
-    $translateProvider.preferredLanguage('it_IT');
+    $translateProvider.preferredLanguage('en_EN');
 
 });
 

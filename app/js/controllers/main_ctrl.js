@@ -1,4 +1,4 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT) {
+angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT, $rootScope) {
 
     $scope.showVideo        = false;
     $scope.showControls     = false;
@@ -18,7 +18,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                 'audience'  : 0, 
                                 'email'     : "",
                                 'credits'   : "",
-                                'lang'      : "",
+                                'lang'      : $rootScope.lang,
                                 'size'      : 0,
                                 'ts'        : moment().format("X"),
                                 'image'     : "img/mask_basic.png"
@@ -31,7 +31,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                 'masks'     : [], 
                                 'audience'  : 0, 
                                 'email'     : "",
-                                'lang'      : "",
+                                'lang'      : $rootScope.lang,
                                 'size'      : 0,
                                 'ts'        : moment().format("X"),
                                 'image'     : "",
@@ -59,10 +59,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         overlayContext,
         enlargetWidth,
         enlargetHeight,
-        composition,
         videoBlock;
 
-    var controlsAmount  = 3; //number of buttons in videoPlayer
     var controlsWidth   = 40; //squares 38x38px (with border:1px)
 
     var videoWidth,videoHeight;
@@ -232,8 +230,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         messages.style.height   = (videoHeight-40) + "px";
         //set controls position
         var controls            = document.querySelector('.controls');
-        controls.style.marginLeft   = "0px";
-        controls.style.marginTop    = (videoHeight - controlsWidth) + "px";
+        controls.style.marginLeft   = "10px";
+        controls.style.marginTop    = ((videoHeight - controlsWidth)-10) + "px";
 
     };
 
@@ -269,8 +267,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         videoInput          = document.querySelector('#vid');
         canvasInput         = document.querySelector('#compare');
         canvasOverlay       = document.querySelector('#overlay');
-        debugOverlay        = document.querySelector('#debug');
-        composition         = document.querySelector('#vid');
+        //debugOverlay        = document.querySelector('#debug');
         
         overlayContext      = canvasOverlay.getContext('2d');
 
@@ -284,7 +281,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
         //init and start tracking
         if($scope.isRunning){ $scope.stopTracking(); }
-        trackingService.init(videoInput, canvasInput, debugOverlay);
+        trackingService.init(videoInput, canvasInput, false);
         $scope.restartTracking();
 
         $scope.showVideo    = true;
@@ -346,7 +343,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         //listen to tracking events
         document.addEventListener("facetrackingEvent", function( event ) {
 
-
             try {
                 // clear canvas
                 overlayContext.clearRect(0,0,videoWidth,videoHeight);
@@ -394,6 +390,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
     $scope.stopTracking = function(){
         trackingService.stop();
+        //trackingService.stopStream();
         $scope.isRunning = false;
     };
     $scope.restartTracking = function(){
@@ -429,7 +426,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                             'masks'     : [], 
                                             'audience'  : 0, 
                                             'email'     : "",
-                                            'lang'      : "",
+                                            'lang'      : $rootScope.lang,
                                             'size'      : imgFileSize,
                                             'ts'        : moment().format("X"),
                                             'image_url' : img,
@@ -459,10 +456,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
      * @return {null}   [add the GIF photo to the images array printed in the main section of the website]
      */
     $scope.pics = 0;
-    var node, encoder = new GIFEncoder();
+    var encoder = new GIFEncoder();
     //as seen on https://github.com/antimatter15/jsgif
     $scope.canvasToGif = function(){
-
         //hide the button to take images again
         $scope.showImage = false;
 
@@ -493,7 +489,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                                         'masks'     : $scope.allSelectedMasks, 
                                         'audience'  : 0, 
                                         'email'     : "",
-                                        'lang'      : "",
+                                        'lang'      : $rootScope.lang,
                                         'size'      : blob.size,
                                         'ts'        : moment().format("X"),
                                         'image_url' : animatedGIF,
@@ -513,10 +509,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             //show the button to take images again
             $scope.showImage = true;
         }else{
-
             html2canvas(document.querySelector('#fullPic'), {
                 onrendered: function(canvas) {
-
                     //if the mask has never been used to build this photo
                     if($scope.allSelectedMasks.indexOf($scope.selectedMask.id) < 0){
                         $scope.allSelectedMasks.push($scope.selectedMask.id);
@@ -531,13 +525,31 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     
                     var context = canvas.getContext('2d');
                     encoder.addFrame(context);
+
+                    $scope.$apply();
                 }
             });
+            //update progress
+            $scope.GIFprogress = ($scope.pics*10) + '%';
 
         }
-        //update progress
-        $scope.GIFprogress = ($scope.pics*10) + '%';
 
+
+    };
+
+    /**
+     * reset the "video" (GIF)
+     * @return {null} 
+     */
+    $scope.resetVideo = function(){
+
+        //reinit encoder
+        encoder = new GIFEncoder();
+        //reset number of pics
+        $scope.pics = 0;
+        $scope.GIFprogress = '0%';
+        //show the button to take images again
+        $scope.showImage = true;
 
     };
 

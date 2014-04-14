@@ -5,14 +5,14 @@ angular.module("app").factory('trackingService', function() {
 
     return {
         init: function (videoInput, canvasInput, debugOverlay) {
-            htracker = new headtrackr.Tracker   ({  altVideo :   { ogv : "./media/capture5.ogv", mp4 : "./media/capture5.mp4"},
-                                                calcAngles      : true,
-                                                ui              : false, 
-                                                headPosition    : false, 
-                                                cameraOffset    : 11.5,
-                                                detectionInterval: 0.2,
-                                                debug           : debugOverlay
-                                            });
+            htracker = new headtrackr.Tracker   ({  altVideo    : false,
+                                                    calcAngles      : true,
+                                                    ui              : false, 
+                                                    headPosition    : false, 
+                                                    cameraOffset    : 11.5,
+                                                    detectionInterval: 0.2,
+                                                    debug           : debugOverlay
+                                                });
             htracker.init(videoInput, canvasInput);
         },
 
@@ -22,6 +22,11 @@ angular.module("app").factory('trackingService', function() {
 
         stop: function () {
             htracker.stop();
+        },
+
+        stopStream: function () {
+            //stop camera Stream
+            htracker.stopStream();
         },
 
         isActive: function () {

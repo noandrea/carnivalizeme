@@ -37,16 +37,29 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
      * @return {dataURL}    [the base64 image in an dataURL format eg. "data://bgf684df8s4s8..."]
      */
     $scope.save = function() {
-
-        //localStorage the mask (excluding the IMAGE)
-        html5Storage.set('the_mask', '');
         
         html2canvas(document.querySelector('#customMask'), 
 
             {
             onrendered: function(canvas) {
 
+                //localStorage the mask (excluding the IMAGE)
+                html5Storage.set('the_mask', '');
+                var image         = new Image(canvas.width, canvas.height);
+                image.src         = canvas.toDataURL("image/png");
+
+                //flip the canvas to correctly display and show the image (generated with toDataURL)
+                //and restore the context to correctly display it again in the "/editor" section
+                canvasContext = canvas.getContext('2d');
+                canvasContext.clearRect(0,0,canvas.width,canvas.height);
+                canvasContext.save();
+                canvasContext.translate(canvas.width, 0);
+                canvasContext.scale(-1, 1);
+                canvasContext.drawImage(image, 0, 0);
+                canvasContext.restore();
+
                 var img    = canvas.toDataURL("image/png");
+
 
                 var head = 'data:image/png;base64,';
                 var imgFileSize = Math.round((img.length - head.length)*3/4) ;
@@ -63,6 +76,8 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
                                         'image'     : img
                                     };
 
+                                    console.log(img);
+
                 //save the PNG image to test!
                 html5Storage.set('the_mask', $scope.customMask);
                 $location.path('/trymask');
@@ -71,6 +86,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
             },
             background: undefined
         });
+
     };
 
     /**

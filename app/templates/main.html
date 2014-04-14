@@ -3,9 +3,10 @@
         <span class="animateCamBar">{{'ALLOW_CAMERA' | translate}}</span>
     </div>
 
-    <div class="aligner">
 
-        <div class="bigPlay" ng-show="showStart" ng-if="mode !== 'save'">
+    <div class="aligner" ng-show="showStart" ng-if="mode !== 'save'">
+
+        <div class="bigPlay">
             <div>
                 <a class="playButton" ng-click="startFun();">{{'GOTO_CARNIVAL' | translate}}</a>
                 <br/>
@@ -15,56 +16,109 @@
             </div>
         </div>
 
+    </div>
+
+
+    <div class="aligner">
+
+
+<!-- VIDEO STATUS MESSAGES *************************** -->
         <div class="messages" ng-show="cameraMsg.msg">
             <i class="icon {{cameraMsg.icon}}"></i>
             <p ng-bind-html="cameraMsg.msg"></p>
         </div>
 
 
-
         <div class="videoBlock" ng-show="(!isCanvasBlank() && showVideo)">
+            
 
-            <div class="cover" ng-show="searchMask"></div>
+<!-- SEARCH MASK *************************** -->
+            <div class="findMasks" ng-show="searchMask">
+                <div class="cover"></div>
+                <div class="input">
+                    <input placeholder="{{'SEARCH_MASK_BY_TAG' | translate}}" ng-model="searchTags" type="text"/>
+                    <br/>
+                    <a ng-click="searchMask = !searchMask">{{'OK_DONE' | translate}}</a>
+                </div>
+            </div>
 
+
+
+
+<!-- CHANGE MASK *************************** -->
             <div class="changeMask" ng-show="isRunning && mode !== 'save' && masks.length > 1">
                 <div class="roundBtn left" ng-click="changeMask(1);"></div>
                 <div class="roundBtn right" ng-click="changeMask(-1);"></div>
             </div>
 
+
+
+<!-- CONTROLS (buttons) *************************** -->
             <div class="controls" ng-show="showControls">
-                <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div>
+                <!-- <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div> -->
+                <div class="control mask" ng-click="searchMask = !searchMask" ng-show="!searchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''"></div>
                 <div class="control image" ng-click="canvasToImage();" ng-show="isRunning && showImage"></div>
-                <div class="control mask" ng-show="isRunning && (mode !== 'save')"></div>
-                <div class="control video" ng-click="canvasToGif();" ng-show="isRunning"></div>
+                <div class="control empty" ng-hide="isRunning && showImage"></div>
                 <div class="videoProgress">
                     <div class="progress" style="width: {{GIFprogress}}">
-                        <div class="framesCounter" ng-show="GIFprogress">{{pics}}/10</div>
+                        <div class="framesCounter" ng-if="pics>0">
+                            <span ng-if="pics>=2" ng-click="resetVideo();">
+                                reset 
+                            </span>
+                            {{pics}}/10
+                        </div>
                     </div>
                 </div>
+                <div class="control video" ng-class="{active: pics>0}" ng-click="canvasToGif();"    ng-show="isRunning"></div>
                 <div class="control pause" ng-click="stopTracking();"   ng-show="isRunning"></div>
                 <div class="control play" ng-click="restartTracking();" ng-hide="isRunning"></div>
                 <!-- <div class="control loading"><span class="spinning"></span></div> -->
             </div>
-              
+
+
+
+
+<!-- fullPic (video canvas + overlay) *************************** -->
             <div id="fullPic" width="640" height="460">
                 <video-canvas></video-canvas>
                 <overlay-face ng-if="showMask"></overlay-face>
                 <video-html5></video-html5>
             </div>
-              
-            <!-- take the following code off when possible -->
-            <canvas id="debug" style="position:absolute; top:0; z-index: 100002; display: none;"></canvas>
 
         </div>
 
     </div>
 
+
+
+
+<!-- find mask and re-calibrate buttons *************************** -->
+    <div class="aligner" ng-show="(!isCanvasBlank() && showVideo)">
+        <div class="credits minimenu"> 
+            <a ng-click="searchMask = !searchMask" ng-show="isRunning && (mode !== 'save') && cameraMsg.msg === ''"> {{'FIND_MASKS' | translate}} </a>
+            <div class="right">
+                <a ng-click="refreshTracking();">{{'RECALIBRATE_FACE_DETECT' | translate}}</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!-- credits *************************** -->
     <div class="aligner" ng-if="selectedMask.credits.length">
         <div class="credits"> 
             CREDITS <span ng-bind-html="selectedMask.credits | linky"></span>
         </div>
     </div>
 
+
+
+
+
+
+
+<!-- SAVE MASK! *************************** -->
     <div class="aligner" ng-if="mode === 'save'">
         <div class="formMask">
 
@@ -107,7 +161,11 @@
         </div>
     </div>
 
-    <div class="aligner" ng-show="isRunning && mode !== 'save'">
+
+
+
+<!-- create MASK button *************************** -->
+    <div class="aligner" ng-show="mode !== 'save'">
         <div class="formMask">
             <div class="el center">
                 <a class="btn" ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
@@ -115,6 +173,9 @@
         </div>
     </div>
     
+
+
+<!-- clear storage (DEBUG) button *************************** -->
     <div class="aligner" ng-if="mode !== 'save'">
         <a ng-click="clearStorage();">clearStorage</a>
     </div>
@@ -126,7 +187,11 @@
 -->
 
 
-    <div class="aligner" ng-if="images.length>=1">
+
+
+
+<!-- previously taken PHOTOS *************************** -->
+    <div class="aligner" ng-if="images.length > 0">
         <ul class="userImages">
             <li ng-repeat="img in images | orderBy:'ts':true"> <!-- | orderBy:'ts':true -->
                 <personal-image></personal-image>

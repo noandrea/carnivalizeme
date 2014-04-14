@@ -3,6 +3,10 @@
     "GOTO_CARNIVAL"         : "guarda il carnevale",
     "CREATE_MASK"           : "crea una maschera",
     "ALLOW_CAMERA"          : "E' necessario il tuo consenso per utilizzare la WebCam",
+    "OK_DONE"               : "ok, fatto.",
+    "SEARCH_MASK_BY_TAG"    : "cerca maschera",
+    "RECALIBRATE_FACE_DETECT": "ri-calibra rilevamento volto",
+    "FIND_MASKS"            : "CERCA ALTRE MACHERE",
 
     "CAMERA_SUPPORT"        : "la tua webcam non è supportata",
     "GET_USER_MEDIA"        : "il tuo browser non supporta la webcam",
@@ -51,5 +55,5 @@
     "SAVE_PHOTO"            : "aggiungi al carnevale",
 
     "TERMS_AND_CONDITIONS_PRIVACY" : "Termini, Condizioni e Privacy",
-    "About"                 : "Informazioni"
+    "ABOUT"                 : "Informazioni"
 }

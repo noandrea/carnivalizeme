@@ -6,6 +6,8 @@
         <div class="imgMenu" >
             <div class="formMask">
 
+                <label>SALVA</label>
+                
                 <div class="el center">
                     <div class="radio">
                         <input id="safe" type="radio" ng-model="img.audience" ng-click="savePhotoOnDB(img);" name="gender" value="1">
@@ -33,8 +35,8 @@
             </div>
         </div>
     </div>
-
-    <img ng-if="img" src="{{img.image_url ? img.image_url : img.image}}"></img>
+    
+    <img ng-src="{{img.image_url ? img.image_url : img.image}}"></img>
 
 <!--    
     <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
