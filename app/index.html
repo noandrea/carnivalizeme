@@ -11,7 +11,7 @@
 
 	<body class="site">
 		<header>
-			head
+			<a ng-click="changeLanguage('en_EN');">english</a> - <a ng-click="changeLanguage('it_IT');">italiano</a>
 		</header>
 
 		<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>
@@ -19,8 +19,7 @@
 
 		<footer>
 			<div class="content">
-				<div data-goole-adsense class="headerAds">
-				  <!-- Google AdSense -->
+				<!-- <div data-goole-adsense class="headerAds">
 				  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 				  <ins class="adsbygoogle"
 				       style="display:inline-block;width:468px;height:15px"
@@ -30,6 +29,7 @@
 				  (adsbygoogle = window.adsbygoogle || []).push({});
 				  </script>
 				</div>
+				-->
 
 				<ul class="internal">
 					<li>
