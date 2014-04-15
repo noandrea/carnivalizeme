@@ -7,7 +7,7 @@ angular.module("app").directive('personalImage', function() {
         templateUrl: "personal_image.html",
         link: function(scope, element, attrs) {
 
-            scope.showMenu = false;
+            scope.showMenu = true;
 
             element.bind('mouseenter', function () {
                 scope.showMenu = true;

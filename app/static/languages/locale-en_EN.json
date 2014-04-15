@@ -7,6 +7,7 @@
     "SEARCH_MASK_BY_TAG"    : "search mask",
     "RECALIBRATE_FACE_DETECT": "re-calibrate face detection",
     "FIND_MASKS"            : "FIND MASKS",
+    "DELETE_THIS_PHOTO"     : "delete this image!",
 
     "CAMERA_SUPPORT"        : "camera is not supported",
     "GET_USER_MEDIA"        : "camera is not supported by your browser",

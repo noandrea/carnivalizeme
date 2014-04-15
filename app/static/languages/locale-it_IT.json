@@ -7,6 +7,7 @@
     "SEARCH_MASK_BY_TAG"    : "cerca maschera",
     "RECALIBRATE_FACE_DETECT": "ri-calibra rilevamento volto",
     "FIND_MASKS"            : "CERCA ALTRE MACHERE",
+    "DELETE_THIS_PHOTO"     : "cancella questa immagine!",
 
     "CAMERA_SUPPORT"        : "la tua webcam non è supportata",
     "GET_USER_MEDIA"        : "il tuo browser non supporta la webcam",

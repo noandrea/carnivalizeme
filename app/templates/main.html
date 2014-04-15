@@ -1,5 +1,6 @@
 <div>
-    <div ng-if="(isCanvasBlank() && showVideo)" class="noCamBar stripe">
+
+    <div ng-if="(isCameraInactive && showVideo)" class="noCamBar stripe">
         <span class="animateCamBar">{{'ALLOW_CAMERA' | translate}}</span>
     </div>
 
@@ -8,7 +9,7 @@
 
         <div class="bigPlay">
             <div>
-                <a class="playButton" ng-click="startFun();">{{'GOTO_CARNIVAL' | translate}}</a>
+                <a class="playButton" ng-click="startFun('small');">{{'GOTO_CARNIVAL' | translate}}</a>
                 <br/>
                 <a class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
                 <br/>
@@ -29,7 +30,7 @@
         </div>
 
 
-        <div class="videoBlock" ng-show="(!isCanvasBlank() && showVideo)">
+        <div class="videoBlock" ng-show="(!isCameraInactive && showVideo)">
             
 
 <!-- SEARCH MASK *************************** -->
@@ -79,7 +80,7 @@
 
 
 <!-- fullPic (video canvas + overlay) *************************** -->
-            <div id="fullPic" width="640" height="460">
+            <div id="fullPic" width="{{videoWidth}}" height="{{videoHeight}}">
                 <video-canvas></video-canvas>
                 <overlay-face ng-if="showMask"></overlay-face>
                 <video-html5></video-html5>
@@ -93,7 +94,7 @@
 
 
 <!-- find mask and re-calibrate buttons *************************** -->
-    <div class="aligner" ng-show="(!isCanvasBlank() && showVideo)">
+    <div class="aligner" ng-show="(!isCameraInactive && showVideo)">
         <div class="credits minimenu"> 
             <a ng-click="searchMask = !searchMask" ng-show="isRunning && (mode !== 'save') && cameraMsg.msg === ''"> {{'FIND_MASKS' | translate}} </a>
             <div class="right">

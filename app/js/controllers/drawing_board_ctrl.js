@@ -70,7 +70,7 @@ angular.module("app").controller('drawingBoardCtrl', function($scope, $document,
                                         'audience'  : 0, 
                                         'email'     : "",
                                         'credits'   : "",
-                                        'lang'      : "en",
+                                        'lang'      : $rootScope.lang,
                                         'size'      : imgFileSize,
                                         'ts'        : moment().format("X"),
                                         'image'     : img

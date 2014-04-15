@@ -5,7 +5,7 @@ angular.module("app").factory('trackingService', function() {
 
     return {
         init: function (videoInput, canvasInput, debugOverlay) {
-            htracker = new headtrackr.Tracker   ({  altVideo    : false,
+            htracker = new headtrackr.Tracker   ({  altVideo        : false,
                                                     calcAngles      : true,
                                                     ui              : false, 
                                                     headPosition    : false, 

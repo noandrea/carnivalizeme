@@ -1,4 +1,4 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, $timeout, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT, $rootScope) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT, $rootScope) {
 
     $scope.showVideo        = false;
     $scope.showControls     = false;
@@ -7,6 +7,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
     $scope.isRunning        = false;
     $scope.showMask         = true;
     $scope.showImage        = true;
+    $scope.isCameraInactive   = true;
 
     $scope.allSelectedMasks = [];
     $scope.images           = [];
@@ -107,6 +108,19 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         }
     };
 
+
+    /**
+     * remove an image from the images array
+     * and scroll to the top
+     * 
+     * @param  {number} imageIndex  [the index of the array]
+     * @return {null}               [pops out the image from the $scope.images array]
+     */
+    $scope.removeImage = function(imageIndex){
+        $scope.images.splice(imageIndex, 1);
+        scroller.scrollTo(0, 0, 1000);
+    };
+
     /**
      * Saves the mask on DB!
      * @return {object} [the mask object]
@@ -119,7 +133,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             'audience'  : 0, 
             'email'     : "ciccio@bastardo.com",
             'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
-            'lang'      : "en",
+            'lang'      : "en_EN",
             'size'      : imgFileSize,
             'ts'        : moment().format("X"),
             'image'     : img
@@ -127,7 +141,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
      * 
      */
     $scope.saveMaskOnDB = function(maskObj){
-        console.log('about to save:', maskObj);
+        console.log('about to save mask:', maskObj);
         if(!maskObj.id){
             Masks.save(maskObj).$promise.then(function(response){
                 alert('SAVED!', maskObj);
@@ -143,7 +157,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
         }
     };
     $scope.savePhotoOnDB = function(photoObj){
-        console.log('about to save:', photoObj);
+        console.log('about to save photo:', photoObj);
         if(!photoObj.id){
             Photos.save(photoObj).$promise.then(function(response){
                 alert('PHOTO SAVED!', photoObj);
@@ -214,6 +228,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             videoHeight = 480;
         }
 
+        $scope.videoWidth   = videoWidth;
+        $scope.videoHeight  = videoHeight;
+
         //set video block dimention
         videoBlock              = document.querySelector('.videoBlock');
         videoBlock.style.width  = videoWidth  + "px";
@@ -235,28 +252,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
 
     };
 
-
-    $scope.isCanvasBlank = function(){
-        //the canvas containing the video
-        var canvas = document.querySelector('#compare');
-
-        //an empty canvas using the same video dimensions
-        var blank = document.createElement('canvas');
-        blank.width = canvas.width;
-        blank.height = canvas.height;
-
-        var isBlank = canvas.toDataURL() === blank.toDataURL();
-
-        if(isBlank && $scope.showVideo){
-            document.querySelector('header').style.display = "none";
-            document.querySelector('.site-content').style.paddingTop = "0";
-        }else{
-            document.querySelector('header').style.display = "block";
-            document.querySelector('.site-content').style.paddingTop = "50px";
-        }
-
-        return isBlank;
-    };
 
     /**
      * Starts the webcam (GetUserMedia) by firing "init" from the trackingService
@@ -308,44 +303,64 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
             switch(event.status){
                 case "getUserMedia":
                     $scope.cameraMsg.msg = $filter('translate')('CAMERA_SUPPORT');
+                    $scope.isCameraInactive = true;
                     break;
                 case "no getUserMedia":
                     $scope.cameraMsg.msg = $filter('translate')('GET_USER_MEDIA');
+                    $scope.isCameraInactive = true;
                     break;
                 case "no camera":
                     $scope.cameraMsg.msg = $filter('translate')('NO_CAMERA');
                     $scope.showControls = false;
+                    $scope.isCameraInactive = true;
                     break;
                 case "whitebalance":
                     $scope.cameraMsg.msg = $filter('translate')('WHITE_BALANCE');
+                    $scope.isCameraInactive = false;
                     break;
                 case "detecting":
                     $scope.cameraMsg.msg    = $filter('translate')('DETECTING');
                     $scope.cameraMsg.icon   = "face";
+                    $scope.isCameraInactive = false;
                     break;
                 case "found":
                     $scope.cameraMsg.msg = ""; //empy message so the DIV disappear
                     canvasOverlay.style.display = "block";
+                    $scope.isCameraInactive = false;
                     break;
                 case "hints":
                     $scope.cameraMsg.msg = $filter('translate')('HINTS');
                     $scope.cameraMsg.icon   = "brightness";
+                    $scope.isCameraInactive = false;
                     break;
                 case "stopped":
                     $scope.cameraMsg.msg = "";
                     canvasOverlay.style.display = "block";
+                    $scope.isCameraInactive = false;
                     break;
             }
 
             if(!$scope.$$phase){ $scope.$apply(); }
         });
 
+        //check if the camera is shown...if it's not, the "ALLOW CAMERA" message DIV will appear
+        //and the header has to go away....
+        $scope.$watch('isCameraInactive', function(newVal, oldVal){
+            if(newVal){
+                document.querySelector('header').style.display = "none";
+            }else{
+                document.querySelector('header').style.display = "block";
+            }
+        });
+
         //listen to tracking events
         document.addEventListener("facetrackingEvent", function( event ) {
 
             try {
-                // clear canvas
-                overlayContext.clearRect(0,0,videoWidth,videoHeight);
+                // clear canvas (HACK)                      // HACK! (from http://www.html5rocks.com/en/tutorials/canvas/performance/) 
+                canvasOverlay.width = canvasOverlay.width;  // this is an hack to clear the cnavas. the regular way would be:
+                                                            // overlayContext.clearRect(0,0,videoWidth,videoHeight);
+                
                 // once we have stable tracking, draw rectangle
                 if (event.detection === "CS") {
 
@@ -353,15 +368,22 @@ angular.module("app").controller('MainCtrl', function($scope, $location, $timeou
                     enlargetWidth     = event.width  * 3;
                     enlargetHeight    = event.height * 3 ;
 
+                    degrees = event.angle-(Math.PI/2);
+                    degrees = Math.round(degrees * 100) / 100;
                     overlayContext.translate(event.x, event.y);
-                    overlayContext.rotate(event.angle-(Math.PI/2));
+                    overlayContext.rotate(degrees);
+                    
+                    //Draw a rectangle where the face is:
                     //overlayContext.strokeStyle = "red";
                     //overlayContext.strokeRect((-(event.width/2)) >> 0, (-(event.height/2)) >> 0, event.width, event.height);
+                    
                     degrees = (Math.PI/2)-event.angle;
+                    degrees = Math.round(degrees * 100) / 100;
                     overlayContext.drawImage(stickImage,-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
                     overlayContext.rotate(degrees);
                     overlayContext.translate(-event.x, -event.y);
                 }
+
             }catch(e){
                 console.log(e);
                 $scope.stopTracking();
