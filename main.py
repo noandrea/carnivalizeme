@@ -152,6 +152,8 @@ class PhotoHandler(webapp2.RequestHandler):
 
     def options(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
+        self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE"
+        self.response.headers['Access-Control-Allow-Headers'] = 'Accept,Accept-Encoding,Accept-Language,Cache-Control,Connection,Content-Type,Host,Origin,Pragma,Referer,User-Agent'
 
     def photo(self, _id):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
