@@ -78,7 +78,9 @@ class PhotoHandler(webapp2.RequestHandler):
                 raise Exception('missing image')
 
             # parse image
-            image = base64.b64decode(data.get('image').replace('data:image/%s;base64,' % ext,''))
+            image = base64.b64decode(image.replace('data:image/%s;base64,' % ext,''))
+            
+            # source ip
             ip = self.request.remote_addr
 
             email = data.get('email', '')
@@ -129,7 +131,8 @@ class PhotoHandler(webapp2.RequestHandler):
             gcs_file.close()
 
             photo = Photo(id=photo_id)
-            photo.populate(filename = filename,
+            photo.populate(
+                filename = filename,
                 ip = ip,
                 audience = audience,
                 masks = masks,
@@ -138,6 +141,7 @@ class PhotoHandler(webapp2.RequestHandler):
             photo.put()
 
             response_data = {
+                "id" : photo_id,
                 "photo" : "/photos/%s" % photo_id,
                 "url" : "/p/%s" % filename
             }
@@ -283,8 +287,8 @@ class MaskHandler(webapp2.RequestHandler):
                 self.response.set_status('304')
                 return
 
-            if len(tags) == 0:
-                raise Exception('missing tags')
+            # if len(tags) == 0:
+            #     raise Exception('missing tags')
 
             tags_list = []
 
@@ -313,6 +317,7 @@ class MaskHandler(webapp2.RequestHandler):
             mask.put()
 
             response_data = {
+                "id" : mask_id,
                 "mask" : "/masks/%s" % mask_id,
                 "url" : "/m/%s" % filename
             }
@@ -346,20 +351,25 @@ class ImageHandler(webapp2.RequestHandler):
     def get(self,_id, img_type):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
-        bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
-        if img_type == 'p':
-            filename = '/%s/%s/%s' % (bucket_name, FOLDER_PHOTOS, _id)
-        if img_type == 'm':
-            filename = '/%s/%s/%s' % (bucket_name, FOLDER_MASKS, _id)
+        try:
+            bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
+            if img_type == 'p':
+                filename = '/%s/%s/%s' % (bucket_name, FOLDER_PHOTOS, _id)
+            if img_type == 'm':
+                filename = '/%s/%s/%s' % (bucket_name, FOLDER_MASKS, _id)
 
 
-        stat = gcs.stat(filename)
-        self.response.headers['Content-Type'] = stat.content_type
-        self.response.headers['Content-Length'] = stat.st_size
-        self.response.headers['etag'] = stat.etag
-        gcs_file = gcs.open(filename)
-        self.response.write(gcs_file.read())
-        gcs_file.close()
+            stat = gcs.stat(filename)
+            self.response.headers['Content-Type'] = stat.content_type
+            self.response.headers['Content-Length'] = stat.st_size
+            self.response.headers['etag'] = stat.etag
+            gcs_file = gcs.open(filename)
+            self.response.write(gcs_file.read())
+            gcs_file.close()
+        except Exception, e:
+            self.response.set_status('400')
+            self.response.write(e.message)
+
 
 # POST /masks crea
 # PUT /masks/:id/up
