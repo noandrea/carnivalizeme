@@ -1,11 +1,18 @@
-angular.module("app").directive('gifff', function($document) {
+angular.module("app").directive('gifff', function($document,ENVIRONMENT) {
     return {
         restrict: 'EA',
         replace: true,
         scope:  {
                     thePhoto: '=photo'
                 },
-        template: '<img id="{{thePhoto.id}}" src="http://localhost:8080{{thePhoto.stillimage}}" image="http://localhost:8080{{thePhoto.image}}" width="150px;">',
+        template: function(){
+            if(ENVIRONMENT === 'dev'){
+                return '<img id="{{thePhoto.id}}" src="http://placehold.it/150x113" image="http://localhost:8080{{thePhoto.image}}" width="150px;">';    
+            }else{
+                return '<img id="{{thePhoto.id}}" src="http://placehold.it/150x113" image="{{thePhoto.image}}" width="150px;">';
+            }
+            
+        },
         link: function(scope, element, attr) {
 
             

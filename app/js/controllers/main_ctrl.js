@@ -1,4 +1,4 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, ENVIRONMENT, $rootScope) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, $rootScope) {
 
     $scope.showVideo        = false;
     $scope.showControls     = false;
@@ -12,7 +12,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
     $scope.allSelectedMasks = [];
     $scope.images           = [];
 
-    $scope.selectedMask     = {   
+    $scope.selectedMask     = {
                                 'id'        : 0, 
                                 'type'      : 'png', 
                                 'tags'      : [], 
@@ -25,7 +25,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                                 'image'     : "img/mask_basic.png"
                             };
 
-    $scope.currentPhoto     = {   
+    $scope.currentPhoto     = {
                                 'id'        : 0, 
                                 'type'      : 'png', 
                                 'tags'      : [],
@@ -125,7 +125,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      *
      * Example MASK OBJECT:
      *
-        {   
+        {   'id'        : 0,
             'type'      : 'png', 
             'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
             'audience'  : 0, 
@@ -142,31 +142,38 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         console.log('about to save mask:', maskObj);
         if(!maskObj.id){
             Masks.save(maskObj).$promise.then(function(response){
-                alert('SAVED!', maskObj);
+                maskObj.id = response.id;
+                $scope.selectedMask = maskObj;
+                html5Storage.set('the_mask', $scope.selectedMask);
+                alert('SAVED!');
             },function(response){
-                alert('ERROR! NOT SAVED!', maskObj);
+                alert('ERROR! NOT -SAVED-! Why??? ' + response);
             });
         }else{
             Masks.update(maskObj).$promise.then(function(response){
-                alert('UPDATED!', maskObj);
+                $scope.selectedMask = maskObj;
+                html5Storage.set('the_mask', $scope.selectedMask);
+                alert('UPDATED!');
             },function(response){
-                alert('ERROR! NOT UPDATED!', maskObj);
+                alert('ERROR! NOT -UPDATED-! Why??? ' + response);
             });
         }
     };
-    $scope.savePhotoOnDB = function(photoObj){
+    $scope.savePhotoOnDB = function(photoObj, imageIndex){
         console.log('about to save photo:', photoObj);
         if(!photoObj.id){
             Photos.save(photoObj).$promise.then(function(response){
                 alert('PHOTO SAVED!', photoObj);
+                photoObj.id = response.id;
+                $scope.images['imageIndex'] = photoObj;
             },function(response){
-                alert('ERROR! PHOTO NOT SAVED!', photoObj);
+                alert('ERROR! NOT -SAVED-! Why??? ' + response);
             });
         }else{
             Photos.update(photoObj).$promise.then(function(response){
                 alert('PHOTO UPDATED!', photoObj);
             },function(response){
-                alert('ERROR! PHOTO NOT UPDATED!', photoObj);
+                alert('ERROR! NOT -UPDATED-! Why??? ' + response);
             });
         }
     };
@@ -345,6 +352,15 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 document.querySelector('header').style.display = "block";
             }
         });
+        //store selectedMask object in localstorage
+        $scope.$watch('selectedMask', function(newVal, oldVal){
+            if(newVal){
+                document.querySelector('header').style.display = "none";
+            }else{
+                document.querySelector('header').style.display = "block";
+            }
+        });
+
 
         //listen to tracking events
         document.addEventListener("facetrackingEvent", function( event ) {
@@ -435,7 +451,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 //stop tracking
                 $scope.stopTracking();
 
-                $scope.currentPhoto     = {   
+                $scope.currentPhoto     = { 'id'        : 0,
                                             'type'      : 'png', 
                                             'tags'      : [],
                                             'masks'     : [], 
@@ -498,7 +514,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
             var blob        = b64toBlob(b64Image, 'image/gif');
             var animatedGIF = URL.createObjectURL(blob);  //TODO: here i should make a "webkitURL" alternative
 
-            $scope.currentPhoto     = {   
+            $scope.currentPhoto     = { 'id'        : 0,
                                         'type'      : 'gif', 
                                         'tags'      : [],
                                         'masks'     : $scope.allSelectedMasks, 
