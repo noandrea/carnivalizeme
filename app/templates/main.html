@@ -9,7 +9,7 @@
 
         <div class="bigPlay">
             <div>
-                <a class="playButton" ng-click="startFun('small');">{{'GOTO_CARNIVAL' | translate}}</a>
+                <a class="playButton" href="/carnival">{{'GOTO_CARNIVAL' | translate}}</a>
                 <br/>
                 <a class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
                 <br/>
@@ -58,9 +58,9 @@
             <div class="controls" ng-show="showControls">
                 <!-- <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div> -->
                 <div class="control mask" ng-click="searchMask = !searchMask" ng-show="!searchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''"></div>
-                <div class="control image" ng-click="canvasToImage();" ng-show="isRunning && showImage"></div>
+                <div class="control image" ng-click="canvasToImage();" ng-show="isRunning && showImage && (mode !== 'save')"></div>
                 <div class="control empty" ng-hide="isRunning && showImage"></div>
-                <div class="videoProgress">
+                <div class="videoProgress" ng-show="mode !== 'save' && isRunning">
                     <div class="progress" style="width: {{GIFprogress}}">
                         <div class="framesCounter" ng-if="pics>0">
                             <span ng-if="pics>=2" ng-click="resetVideo();">
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="control video" ng-class="{active: pics>0}" ng-click="canvasToGif();"    ng-show="isRunning"></div>
+                <div class="control video" ng-class="{active: pics>0}" ng-click="canvasToGif();"    ng-show="isRunning && (mode !== 'save')"></div>
                 <div class="control pause" ng-click="stopTracking();"   ng-show="isRunning"></div>
                 <div class="control play" ng-click="restartTracking();" ng-hide="isRunning"></div>
                 <!-- <div class="control loading"><span class="spinning"></span></div> -->
@@ -166,7 +166,7 @@
 
 
 <!-- create MASK button *************************** -->
-    <div class="aligner" ng-show="mode !== 'save'">
+    <div class="aligner" ng-show="mode !== 'save' && !showStart">
         <div class="formMask">
             <div class="el center">
                 <a class="btn" ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
@@ -177,10 +177,11 @@
 
 
 <!-- clear storage (DEBUG) button *************************** -->
+<!--
     <div class="aligner" ng-if="mode !== 'save'">
         <a ng-click="clearStorage();">clearStorage</a>
     </div>
-
+-->
 <!--
     <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
         {{selectedMask}}

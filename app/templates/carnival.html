@@ -1,8 +1,9 @@
 <div>
     <div class="aligner">
-        <div class="textBlock">
-            carnival page here<br/><br/>
-            <img src="/img/carnivalizeGIGA.jpg" width="400"/>
-        </div>
+        <ul>
+            <li ng-repeat="photo in photos" style="float:left;"> <!-- | orderBy:'ts':true -->
+                <gifff photo="photo"></gifff>
+            </li>
+        <ul>
     </div>
 </div>

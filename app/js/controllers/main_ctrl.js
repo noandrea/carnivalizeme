@@ -515,7 +515,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                                         'size'      : blob.size,
                                         'ts'        : moment().format("X"),
                                         'image_url' : animatedGIF,
-                                        'image'     : blob,
+                                        'image'     : 'data:image/gif;base64,' + b64Image,
                                         $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
                                     };
 

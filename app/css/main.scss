@@ -96,7 +96,7 @@ body{
 .site-content {
     @include flex(1);
     &.page-editor{
-        background-color: white;
+        background-color: none;//white;
     }
     max-width:100%;
     margin:0;
@@ -218,7 +218,7 @@ body{
                 font-size: 50px;
                 padding: 10px;
                 color: white;
-                background: none;
+                background: rgba(0,0,0,.5);
                 border: 1px solid white;
                 font-weight: 100;
                 text-transform: uppercase;
@@ -867,9 +867,10 @@ input[type="range"] {
     font-weight: 100;
     text-align: center;
     margin-left: 2px;
+    margin-top: 10px;
     a{
         &:last-child{
-            border-bottom: 1px solid #666;
+            border-bottom: 1px solid #ddd;
         }
         width: 100%;
         display: inline-block;
@@ -879,7 +880,7 @@ input[type="range"] {
         text-transform: uppercase;
         letter-spacing: 0.02em;
 
-        border-top: 1px solid #666;
+        border-top: 1px solid #ddd;
         //-webkit-transition-property:color, background; 
         @include transitionProperty((color, background));
         //-webkit-transition-duration: 0.3s, 0.3s; 
@@ -1030,7 +1031,7 @@ input[type="range"] {
 
     .el{
         margin: 10px 0;
-        background: rgba(255,255,255,.5);
+        background: none;//rgba(255,255,255,.5);
         padding: 10px;
 
         &.center{

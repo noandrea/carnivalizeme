@@ -6,8 +6,8 @@
         <div class="imgMenu" >
             <div class="formMask">
 
-                <div class="el center">
-                    <label ng-hide="img.audience" class="delete" ng-click="removeImage($index)">{{'DELETE_THIS_PHOTO' | translate}}</label>
+                <div class="el center" ng-hide="img.audience">
+                    <label class="delete" ng-click="removeImage($index)">{{'DELETE_THIS_PHOTO' | translate}}</label>
                 </div>
 
                 <div class="el center">
@@ -31,7 +31,7 @@
                         <input maxlength="80" type="email" ng-model="img.email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
                     </div>
                     <div class="el center">
-                        <a class="btn" ng-click="savePhotoOnDB(img);">{{'SAVE_PHOTO' | translate}}</a>
+                        <a class="btn" ng-click="savePhotoOnDB(img);">{{'SAVE_PHOTO' | translate}} savePHOTO</a>
                     </div>
                 </div>
             </div>
