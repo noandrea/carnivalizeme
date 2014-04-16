@@ -273,9 +273,9 @@ class MaskHandler(webapp2.RequestHandler):
             email = data.get('email', None)
             
             # flip image horizontally
-            image_object = images.Image(image)
-            image_object.horizontal_flip()
-            image = image_object.execute_transforms()
+            # image_object = images.Image(image)
+            # image_object.horizontal_flip()
+            # image = image_object.execute_transforms()
 
             # caclulate mask id
             mask_id = hashlib.sha1(image).hexdigest()
