@@ -5,7 +5,7 @@ angular.module("app").directive('gifff', function($document) {
         scope:  {
                     thePhoto: '=photo'
                 },
-        template: '<img id="{{thePhoto.id}}" src="{{thePhoto.stillimage}}" image="{{thePhoto.image}}" width="150px;">',
+        template: '<img id="{{thePhoto.id}}" src="http://localhost:8080{{thePhoto.stillimage}}" image="http://localhost:8080{{thePhoto.image}}" width="150px;">',
         link: function(scope, element, attr) {
 
             

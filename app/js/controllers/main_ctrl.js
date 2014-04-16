@@ -69,6 +69,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
 
     var stickImage      = new Image();
         stickImage.src  = "img/mask_basic.png"; //"img/mask_headglass.png";
+        stickImage.crossOrigin = '';
     var maskIndex       = 0;
 
     var filter = {};//{upcoming: true, workstation_id: $routeParams.workstation_id, order : 'check_in_date,check_in_time'};
@@ -86,11 +87,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                     maskIndex               = Math.floor((Math.random()*response.length));
 
                     //image to attach to the facetrackr
-                    if(ENVIRONMENT === 'dev'){
-                        stickImage.src          = "img/mask_basic.png";
-                    }else{
-                        stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
-                    }
+                    stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
+                    
                     //current (selected) mask
                     $scope.selectedMask    = $scope.masks[maskIndex];
                 }else{
@@ -192,12 +190,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
             console.log('MASK #'+maskIndex);
             
             //image to attach to the facetrackr
-            if(ENVIRONMENT === 'dev'){
-                stickImage.src          = "img/mask_basic.png";
-            }else{
-                stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
-            }
-
+            stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
 
             $scope.credits = $scope.masks[maskIndex].credits;
             //current (selected) mask
