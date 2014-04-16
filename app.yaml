@@ -25,6 +25,18 @@ handlers:
   static_files: app/index.html
   upload: app/index\.html
 
+- url: /about
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /terms
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /carnival
+  static_files: app/index.html
+  upload: app/index\.html
+
 - url: /css
   static_dir: app/css
 
