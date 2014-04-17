@@ -1,4 +1,4 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope, $location, trackingService, $translate) {
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "snap", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope, $location, trackingService, $translate, snapRemote) {
     
     /**
      * simply move to another path doing whatever is necessary
@@ -7,6 +7,8 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
      * @return route the app where it should be routed
      */
     $rootScope.goTo = function(path){
+        //close drawers
+        snapRemote.close();
         if(trackingService.isActive()){
             trackingService.stop();
         }
@@ -25,7 +27,7 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         $rootScope.lang = lang;
     };
 
-}).config(function($compileProvider, $translateProvider) {
+}).config(function($compileProvider, $translateProvider, snapRemoteProvider) {
 
     var oldWhiteList = $compileProvider.imgSrcSanitizationWhitelist();
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
@@ -35,9 +37,12 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         prefix: '/languages/locale-',
         suffix: '.json'
     });
-
+    //set preferred lang
     $translateProvider.preferredLanguage('en_EN');
 
+    //disable right drawer
+    //snapRemoteProvider.globalOptions.disable = 'right';
+    snapRemoteProvider.globalOptions.minPosition = -500;
 });
 
 /**

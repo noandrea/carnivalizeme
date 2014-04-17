@@ -28,47 +28,29 @@
 @import "animations.scss";
 
 
-header{
-    width: 100%;
-    height: $header-height;
+.carnivalimage{
+    height: 250px;
+    width: 250px;
+    overflow: hidden;
+    &.gif{
+        @include radius(125px);
+    }
+    margin: 20px;
+    img{
+        vertical-align: middle;
+        width: 350px;
+        margin-top: -10px;
+        margin-left: -45px;
+    }
 }
 
-footer{
-    width: 100%;
-    height: $footer-height;
-    background: white;
-    overflow: hidden;
-
-    .content{
-        width: 100%;
-
-        ul.internal{
-            border-right: 1px solid black;
-            margin-right: 15px;
-        }
-        ul.socials{
-            border-right: 1px solid black;
-        }
-        ul.socials, ul.internal{
-            margin-top: 14px;
-            float:right;
-
-            li {
-                width: auto;
-                float: left;
-                margin: 0 20px;
-                a{
-                    color: #333;
-                    font-size: 13px;
-                }
-            }
-        }
-    }
-    .headerAds{
-        float: right;
-        padding-top: 15px;
-        padding-right: 20px;
-    }
+.headerAds{
+    float: right;
+    padding-top: 15px;
+    padding-right: 20px;
+}
+.squaredAds{
+    background-color: red;
 }
 
 
@@ -93,6 +75,18 @@ body{
     }
 }
 
+
+.snap-content{
+    background: #f1f1f1;
+}
+.snap-drawers{
+    background: black;
+    color: white;
+}
+.snap-drawer-right {
+    padding-right: 235px;
+}
+
 .site-content {
     @include flex(1);
     &.page-editor{
@@ -101,7 +95,6 @@ body{
     max-width:100%;
     margin:0;
     -ms-flex-preferred-size:auto;
-    padding-bottom: $footer-height;
 }
 
 .aligner {

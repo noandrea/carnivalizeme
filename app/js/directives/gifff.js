@@ -1,4 +1,4 @@
-angular.module("app").directive('gifff', function($document,ENVIRONMENT) {
+angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRemote, $rootScope) {
     return {
         restrict: 'EA',
         replace: true,
@@ -7,9 +7,9 @@ angular.module("app").directive('gifff', function($document,ENVIRONMENT) {
                 },
         template: function(){
             if(ENVIRONMENT === 'dev'){
-                return '<img id="{{thePhoto.id}}" src="http://placehold.it/150x113" image="http://localhost:8080{{thePhoto.image}}" width="150px;">';    
+                return '<img id="{{thePhoto.id}}" src="http://placekitten.com/350/265" image="http://localhost:8080{{thePhoto.image}}">';
             }else{
-                return '<img id="{{thePhoto.id}}" src="http://placehold.it/150x113" image="{{thePhoto.image}}" width="150px;">';
+                return '<img id="{{thePhoto.id}}" src="http://placekitten.com/350/264" image="{{thePhoto.image}}">';
             }
             
         },
@@ -24,6 +24,14 @@ angular.module("app").directive('gifff', function($document,ENVIRONMENT) {
             element.bind('mouseout', function () {
                 attr.$set('image', attr.src);
                 attr.$set('src', old_src);
+            });
+
+            element.bind('click', function () {
+                if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
+                    scope.thePhoto.image = 'http://localhost:8080' + scope.thePhoto.image;
+                }
+                $rootScope.lastWatchedImage = scope.thePhoto;
+                snapRemote.open('right');
             });
 
         }

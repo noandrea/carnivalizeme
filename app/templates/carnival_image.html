@@ -1,0 +1,13 @@
+<div class="flip-container" ng-class="{hover: hover}" ng-mouseenter="hover = true" ng-mouseleave="hover = false">
+
+    <div class="flipper">
+        <div class="front">
+            <img ng-if="env==='dev'" id="{{thePhoto.id}}" src="http://placekitten.com/350/265" image="http://localhost:8080{{thePhoto.image}}">
+            <img ng-if="env!=='dev'" id="{{thePhoto.id}}" src="http://placekitten.com/350/265" image="{{thePhoto.image}}">
+        </div>
+        <div class="back">
+            <!-- back content -->
+        </div>
+    </div>
+
+</div>
