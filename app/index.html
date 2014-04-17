@@ -10,61 +10,57 @@
 </head>
 
 	<body class="site">
-		<header>
-			<a ng-click="changeLanguage('en_EN');">english</a> - <a ng-click="changeLanguage('it_IT');">italiano</a>
-		</header>
 
-		<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>
+		<snap-drawer>
+			<a ng-click="changeLanguage('en_EN');">english</a><br/>
+			<a ng-click="changeLanguage('it_IT');">italiano</a>
 
+			<ul class="internal">
+				<li>
+					<a ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
+				</li>
+				<li>
+					<a ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+				</li>
+				<li>
+					<a ng-click="goTo('/carnival');">{{'GOTO_CARNIVAL' | translate}}</a>
+				</li>
+				<li>
+					<a ng-click="goTo('/about');">{{'ABOUT' | translate}}</a>
+				</li>
+				<li>
+					<a ng-click="goTo('/terms');">{{'TERMS_AND_CONDITIONS_PRIVACY' | translate}}</a>
+				</li>
+			</ul>
+			
+			<br/><br/>
+					
+			<ul class="socials">
+				<li>
+					<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on <strong>Facebook</strong></a>
+				</li>
+				<li>
+					<a target="_blank" href="https://twitter.com/home?status=looking%20for%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator?%20check%20out%20@carnivalizeme%20at%20http://carnivalize.me/%20(also%20for%20%23animated%20%23GIFs)">Share on <strong>Twitter</strong></a>
+				</li>
+				<li>
+					<a target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=carnivalizeme%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)">Pin on <strong>Pinterest</strong></a>
+				</li>
+			</ul>
+		</snap-drawer>
 
-		<footer>
-			<div class="content">
-				<!-- <div data-goole-adsense class="headerAds">
-				  <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				  <ins class="adsbygoogle"
-				       style="display:inline-block;width:468px;height:15px"
-				       data-ad-client="ca-pub-2238924743498473"
-				       data-ad-slot="8584494004"></ins>
-				  <script>
-				  (adsbygoogle = window.adsbygoogle || []).push({});
-				  </script>
-				</div>
-				-->
+		<div snap-drawer="right">
+	    	<img src="{{lastWatchedImage.image}}" width="500"/>
+	    	{{lastWatchedImage}}
+	  	</div>
 
-				<ul class="internal">
-					<li>
-						<a ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
-					</li>
-					<li>
-						<a ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
-					</li>
-					<li>
-						<a ng-click="goTo('/carnival');">{{'GOTO_CARNIVAL' | translate}}</a>
-					</li>
-					<li>
-						<a ng-click="goTo('/about');">{{'ABOUT' | translate}}</a>
-					</li>
-					<li>
-						<a ng-click="goTo('/terms');">{{'TERMS_AND_CONDITIONS_PRIVACY' | translate}}</a>
-					</li>
-				</ul>
-				
-				<br/><br/>
-				
-				<ul class="socials">
-					<li>
-						<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on <strong>Facebook</strong></a>
-					</li>
-					<li>
-						<a target="_blank" href="https://twitter.com/home?status=looking%20for%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator?%20check%20out%20@carnivalizeme%20at%20http://carnivalize.me/%20(also%20for%20%23animated%20%23GIFs)">Share on <strong>Twitter</strong></a>
-					</li>
-					<li>
-						<a target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=carnivalizeme%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)">Pin on <strong>Pinterest</strong></a>
-					</li>
-				</ul>
-			</div>
+		<snap-content>
+			<header>
+				<button snap-toggle="left">Toggle Snap</button>
+			</header>
 
-		</footer>
+			<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>
+		</snap-content>
+
 		<script type="text/javascript" src="/js/app.js"></script>
 		<script type="text/javascript" src="/js/config.js"></script>
 
