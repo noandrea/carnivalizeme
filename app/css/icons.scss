@@ -50,3 +50,29 @@
     }
 
 }
+.pictogramsocial {
+    font-family: $entypo-social;
+
+    // Icon Sizes
+    &.picto-small {
+        font-size: 1em;
+    }
+    &.picto-large {
+        font-size: 1.5em;
+    }
+    &.picto-2x {
+        font-size: 2em;
+    }
+    &.picto-3x {
+        font-size: 3em;
+    }
+    &.picto-4x {
+        font-size: 4em;
+        line-height: .6;
+    }
+    &.picto-xlarge {
+        font-size: em-calc(240);
+        line-height: .5;
+    }
+
+}

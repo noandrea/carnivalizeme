@@ -28,6 +28,15 @@
 @import "animations.scss";
 
 
+::selection {
+    background: #666; /* Safari */
+    color:white;
+}
+::-moz-selection {
+    background: #666; /* Firefox */
+    color:white;
+}
+
 .carnivalimage{
     height: 250px;
     width: 250px;
@@ -41,6 +50,20 @@
         width: 350px;
         margin-top: -10px;
         margin-left: -45px;
+    }
+}
+header{
+    position:fixed;
+    i{
+        width: 55px!important;
+        height: 55px!important;
+        font-size: 6em!important;
+        padding-left: 12px;
+        cursor: pointer;
+        &:hover{
+            background: black;
+            color: white;
+        }
     }
 }
 
@@ -75,17 +98,6 @@ body{
     }
 }
 
-
-.snap-content{
-    background: #f1f1f1;
-}
-.snap-drawers{
-    background: black;
-    color: white;
-}
-.snap-drawer-right {
-    padding-right: 235px;
-}
 
 .site-content {
     @include flex(1);
@@ -1204,5 +1216,123 @@ input[type="range"] {
         line-height: 30px;
         color:#666;
         text-align: justify;
+    }
+}
+
+
+
+/* SNAP.JS DRAWERS */
+.snap-content{
+    background: #f1f1f1;
+}
+.snap-drawers{
+    background: black;
+    color: white;
+}
+.snap-drawer-right {
+    padding-right: 235px;
+}
+
+.snap-drawer{
+    width: 266px; //this is to delete the 1px GAP of the menu on the left
+}
+
+.snap-drawer-left{
+    img{
+        width: 75px;
+        margin-left: 90px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    ul{
+        li{
+            cursor: pointer;
+            ul{
+                li{
+                    a{
+                        padding: 10px 0;
+                        padding-left: 40px;
+                        font-size: 12px;
+                        &:hover{
+                            color:black;
+                            background: white;
+                        }
+                    }
+                }
+            }
+            word-wrap:break-word;
+            
+            i{
+                margin-right: 20px;
+            }
+            a{
+                max-width: 250px;
+                display: block;
+                padding: 20px 0 20px 20px;
+                border-bottom: 1px solid #222;
+                width: 100%;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                max-width: 250px;
+                text-decoration: none;
+                color: white;
+                
+                &:hover{
+                    color:black;
+                    background: $blue;
+                    &.facebook{
+                        background: #3b5998;
+                        color:white;
+                    }
+                    &.carnival{
+                        background: url(/img/confetti.gif) repeat;
+                        color:white;
+                    }
+                    &.carnivalize{
+                        background-image: url(/img/doge.png);
+                        background-repeat: no-repeat;
+                        background-position: -50px -110px;
+                        color:white;
+                    }
+                    &.create{
+                        background-image: url(/img/horseMask.png);
+                        background-repeat: no-repeat;
+                        color:white;
+                    }
+                    &.twitter{
+                        background: #55acee;
+                        color:white;
+                    }
+                    &.pinterest{
+                        background: #cb2027;
+                        color: white;
+                    }
+                    a{
+                        text-decoration: none;
+                        background: transparent;
+                    }
+                }
+                img{
+                    display: inline;
+                    margin-right: 20px;
+                }
+                &.selected{
+                    color:black;
+                    background: #f1f1f1;
+                }
+            }
+        }
+        &.secondary{
+            border-top: 2px solid #f1f1f1;
+            font-size: 12px;
+            li{
+                i{
+                    margin-right: 10px;
+                }
+                a{
+                    padding: 10px 0 10px 20px;
+                }
+            }
+        }
     }
 }

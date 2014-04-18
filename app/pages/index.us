@@ -12,38 +12,45 @@
 	<body class="site">
 
 		<snap-drawer>
-			<a ng-click="changeLanguage('en_EN');">english</a><br/>
-			<a ng-click="changeLanguage('it_IT');">italiano</a>
-
-			<ul class="internal">
+			<img src="img/carnivalizeOk.png" alt="Carnivalize.me"/>
+			<ul>
 				<li>
-					<a ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
+					<a class="carnival" ng-click="goTo('/carnival');"><i class="icon pictogram picto-2x">&#128640;</i>{{'GOTO_CARNIVAL' | translate}}</a>
 				</li>
 				<li>
-					<a ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+					<a class="carnivalize" ng-click="goTo('/now');"><i class="icon pictogram picto-2x">&#128247;</i>{{'CARNIVALIZE_YOURSELF' | translate}}</a>
 				</li>
 				<li>
-					<a ng-click="goTo('/carnival');">{{'GOTO_CARNIVAL' | translate}}</a>
+					<a class="create" ng-click="goTo('/editor');"><i class="icon pictogram picto-2x">&#9998;</i>{{'CREATE_MASK' | translate}}</a>
 				</li>
 				<li>
-					<a ng-click="goTo('/about');">{{'ABOUT' | translate}}</a>
-				</li>
-				<li>
-					<a ng-click="goTo('/terms');">{{'TERMS_AND_CONDITIONS_PRIVACY' | translate}}</a>
+					<a class="language" ng-click="showLang = !showLang"><i class="icon pictogram picto-2x">&#127758;</i>{{'LANGUAGE' | translate}}</a>
+					<ul ng-show="showLang">
+						<li>
+							<a ng-click="changeLanguage('en_EN');"><img src="http://www.geonames.org/flags/x/uk.gif" alt="EN" width="20"/>English</a>
+						</li>
+						<li>
+							<a ng-click="changeLanguage('it_IT');"><img src="http://www.geonames.org/flags/x/it.gif" alt="IT" width="20"/> Italiano</a>
+						</li>
+					</ul>
 				</li>
 			</ul>
-			
-			<br/><br/>
 					
-			<ul class="socials">
+			<ul class="secondary">
 				<li>
-					<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://photojournal.jpl.nasa.gov/jpeg/PIA17555.jpg">Share on <strong>Facebook</strong></a>
+					<a class="facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://carnivalize.me/"><i class="icon pictogramsocial picto-2x">&#62220;</i>Share on <strong>Facebook</strong></a>
 				</li>
 				<li>
-					<a target="_blank" href="https://twitter.com/home?status=looking%20for%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator?%20check%20out%20@carnivalizeme%20at%20http://carnivalize.me/%20(also%20for%20%23animated%20%23GIFs)">Share on <strong>Twitter</strong></a>
+					<a class="twitter" target="_blank" href="https://twitter.com/home?status=looking%20for%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator?%20check%20out%20@carnivalizeme%20at%20http://carnivalize.me/%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-2x">&#62217;</i>Share on <strong>Twitter</strong></a>
 				</li>
 				<li>
-					<a target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=carnivalizeme%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)">Pin on <strong>Pinterest</strong></a>
+					<a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=http:%2F%2Fcarnivalize.me%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-2x">&#62226;</i>Pin on <strong>Pinterest</strong></a>
+				</li>
+				<li>
+					<a ng-click="goTo('/about');"><i class="icon pictogram picto-2x">&#8505;</i>{{'ABOUT' | translate}}</a>
+				</li>
+				<li>
+					<a ng-click="goTo('/terms');"><i class="icon pictogram picto-2x">&#59392;</i>{{'TERMS_AND_CONDITIONS_PRIVACY' | translate}}</a>
 				</li>
 			</ul>
 		</snap-drawer>
@@ -55,7 +62,7 @@
 
 		<snap-content>
 			<header>
-				<button snap-toggle="left">Toggle Snap</button>
+				<i snap-toggle="left" class="icon pictogram picto-4x">&#9776;</i>
 			</header>
 
 			<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>
