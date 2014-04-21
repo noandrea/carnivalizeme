@@ -1,4 +1,4 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "snap", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope, $location, trackingService, $translate, snapRemote) {
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "snap", "colorpicker.module", "pascalprecht.translate", "config"]).run(function($rootScope, $location, trackingService, $translate, snapRemote) {
     
     /**
      * simply move to another path doing whatever is necessary

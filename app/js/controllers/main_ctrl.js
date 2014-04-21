@@ -1,5 +1,12 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, scroller, API_BASE_URL, $rootScope) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote) {
 
+
+    //close snappe and disable sliding
+    snapRemote.close();
+    snapRemote.getSnapper().then(function(snapper) {
+        snapper.disable();
+    });
+    
     $scope.showVideo        = false;
     $scope.showControls     = false;
     $scope.showStart        = true;
@@ -12,31 +19,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
     $scope.allSelectedMasks = [];
     $scope.images           = [];
 
-    $scope.selectedMask     = {
-                                'id'        : 0, 
-                                'type'      : 'png', 
-                                'tags'      : [], 
-                                'audience'  : 0, 
-                                'email'     : "",
-                                'credits'   : "",
-                                'lang'      : $rootScope.lang,
-                                'size'      : 0,
-                                'ts'        : moment().format("X"),
-                                'image'     : "img/mask_basic.png"
-                            };
+    $scope.selectedMask     = maskService.init($rootScope.lang);
+    $scope.currentPhoto     = photoService.init($rootScope.lang);
 
-    $scope.currentPhoto     = {
-                                'id'        : 0, 
-                                'type'      : 'png', 
-                                'tags'      : [],
-                                'masks'     : [], 
-                                'audience'  : 0, 
-                                'email'     : "",
-                                'lang'      : $rootScope.lang,
-                                'size'      : 0,
-                                'ts'        : moment().format("X"),
-                                'image'     : "",
-                            };
 
     $scope.mode = 'play';
     if($location.$$path === '/trymask'){
@@ -66,45 +51,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
 
     var videoWidth,videoHeight;
     var degrees = 0;
-
-    var stickImage      = new Image();
-        stickImage.src  = "img/mask_basic.png"; //"img/mask_headglass.png";
-        stickImage.crossOrigin = '';
     var maskIndex       = 0;
 
     var filter = {};//{upcoming: true, workstation_id: $routeParams.workstation_id, order : 'check_in_date,check_in_time'};
-
-    $scope.getMasks = function (tags){
-        if($scope.mode !== 'save'){
-            // get data for the "upcoming reservations" panel
-            Masks.query(filter).$promise.then(function(response){
-                if(response.length){
-                    console.log('THE MASKS:', response);
-                    $scope.masks = response;
-
-                    console.log($scope.masks);
-                    //pic random image
-                    maskIndex               = Math.floor((Math.random()*response.length));
-
-                    //image to attach to the facetrackr
-                    stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
-                    
-                    //current (selected) mask
-                    $scope.selectedMask    = $scope.masks[maskIndex];
-                }else{
-                    alert('NO masks!');
-                }
-            });
-        }else{
-            //current mask (user handmade one) ...... //TODO: error here in case there is no mask
-            $scope.selectedMask     = html5Storage.get('the_mask');
-            $scope.masks            = [];
-            $scope.masks.push($scope.selectedMask);
-
-            //image to attach to the facetrackr
-            stickImage.src          = $scope.masks[0].image;
-        }
-    };
 
 
     /**
@@ -112,72 +61,41 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      * and scroll to the top
      * 
      * @param  {number} imageIndex  [the index of the array]
-     * @return {null}               [pops out the image from the $scope.images array]
+     * @return {null}               [pops out the image from the photos collection]
      */
     $scope.removeImage = function(imageIndex){
-        $scope.images.splice(imageIndex, 1);
-        scroller.scrollTo(0, 0, 1000);
+        photoService.removePhotoFromCollection(imageIndex);
     };
 
     /**
      * Saves the mask on DB!
      * @return {object} [the mask object]
-     *
-     * Example MASK OBJECT:
-     *
-        {   'id'        : 0,
-            'type'      : 'png', 
-            'tags'      : ['sto', 'caz', 'ciccio', 'bastardo'], 
-            'audience'  : 0, 
-            'email'     : "ciccio@bastardo.com",
-            'credits'   : "ciccio bastardo http://www.cicciobastardo.com",
-            'lang'      : "en_EN",
-            'size'      : imgFileSize,
-            'ts'        : moment().format("X"),
-            'image'     : img
-        };
-     * 
      */
     $scope.saveMaskOnDB = function(maskObj){
-        console.log('about to save mask:', maskObj);
-        if(!maskObj.id){
-            Masks.save(maskObj).$promise.then(function(response){
-                maskObj.id = response.id;
-                $scope.selectedMask = maskObj;
-                html5Storage.set('the_mask', $scope.selectedMask);
-                alert('SAVED!');
-            },function(response){
-                alert('ERROR! NOT -SAVED-! Why??? ' + response);
-            });
-        }else{
-            Masks.update(maskObj).$promise.then(function(response){
-                $scope.selectedMask = maskObj;
-                html5Storage.set('the_mask', $scope.selectedMask);
-                alert('UPDATED!');
-            },function(response){
-                alert('ERROR! NOT -UPDATED-! Why??? ' + response);
-            });
-        }
-    };
-    $scope.savePhotoOnDB = function(photoObj, imageIndex){
-        console.log('about to save photo:', photoObj);
-        if(!photoObj.id){
-            Photos.save(photoObj).$promise.then(function(response){
-                alert('PHOTO SAVED!', photoObj);
-                photoObj.id = response.id;
-                $scope.images['imageIndex'] = photoObj;
-            },function(response){
-                alert('ERROR! NOT -SAVED-! Why??? ' + response);
-            });
-        }else{
-            Photos.update(photoObj).$promise.then(function(response){
-                alert('PHOTO UPDATED!', photoObj);
-            },function(response){
-                alert('ERROR! NOT -UPDATED-! Why??? ' + response);
-            });
-        }
+        maskObj.lang = $rootScope.lang;
+        console.log('save this', maskObj);
+        maskService.saveMaskOnDB(maskObj);
     };
 
+    /**
+     * updates the photo collections in the app
+     * NOTE: photoService.savePhotoOnDB emits "imagesListChaged"
+     * for this controller to update data when the request is done
+     * 
+     * @param  {object} photoObj             [the photoObject]
+     * @param  {number} photoCollectionIndex [the index of the ]
+     * @return {EMIT}                        [emits "photoService.savePhotoOnDB" on $rootScope]
+     */
+    $scope.savePhotoOnDB = function(photoObj, photoCollectionIndex){
+        photoObj.lang = $rootScope.lang;
+        console.log('save this', photoObj);
+        photoService.savePhotoOnDB(photoObj, photoCollectionIndex);
+    };
+
+    $scope.$on('imagesListChaged', function(newList) {
+        console.log('list changed, emit listened!');
+        $scope.images = newList;
+    });
 
     /**
      * activate the possibility to click on left-right arrow and change the mask
@@ -187,21 +105,19 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      */
     $scope.changeMask = function (step){
 
-        if($scope.masks.length){
+        if(maskService.masks.length){
             maskIndex += step;
-            if(maskIndex > ($scope.masks.length-1)){
+            if(maskIndex > (maskService.masks.length-1)){
                 maskIndex = 0;
             }else if(maskIndex < 0){
-                maskIndex = $scope.masks.length-1;
+                maskIndex = maskService.masks.length-1;
             }
             console.log('MASK #'+maskIndex);
             
-            //image to attach to the facetrackr
-            stickImage.src          = API_BASE_URL + $scope.masks[maskIndex].image;
+            maskService.setCurrent(maskService.masks[maskIndex]);
+            $scope.selectedMask = maskService.masks[maskIndex];
 
-            $scope.credits = $scope.masks[maskIndex].credits;
-            //current (selected) mask
-            $scope.selectedMask    = $scope.masks[maskIndex];
+            $scope.credits = maskService.masks[maskIndex].credits;
         }else{
             alert('There are NO masks!');
         }
@@ -388,7 +304,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                     
                     degrees = (Math.PI/2)-event.angle;
                     degrees = Math.round(degrees * 100) / 100;
-                    overlayContext.drawImage(stickImage,-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
+                    overlayContext.drawImage(maskService.getStickImage(),-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
                     overlayContext.rotate(degrees);
                     overlayContext.translate(-event.x, -event.y);
                 }
@@ -409,8 +325,31 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      * @return {null}           [starts the fun part of the app]
      */
     $scope.startFun = function(dimension){
-        //get MAsks
-        $scope.getMasks();
+
+        if($scope.mode !== 'save'){
+            //get masks promise from mask service
+            maskService.getMasks($scope.mode).then(function(response){
+                if(response.length){
+                    maskService.masks = $scope.masks = response;
+                    //set a random mask as "current"
+                    maskIndex = Math.floor((Math.random()* response.length));
+                    maskService.setCurrent(response[maskIndex]);
+                    $scope.selectedMask = response[maskIndex];
+                    console.log('THE MASKS:', $scope.masks);
+                }else{
+                    alert('NO masks!');
+                }
+            });
+        }else{
+            //current mask (user handmade one) ...... //TODO: error here in case there is no mask
+            var customMask = maskService.getMaskFromLocalStorage();
+            $scope.masks = [];
+            $scope.masks.push(maskService.getMaskFromLocalStorage());
+            console.log('THE MASKS IS ONLY THE CUSTOM ONE, this one: ', customMask);
+            maskService.setCurrent(customMask);
+            $scope.selectedMask = customMask;
+        }
+
         //remove "go! button"
         $scope.showStart = false;
         //resize video
@@ -468,9 +407,10 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 //add the ID of the used mask 
                 $scope.currentPhoto.masks.push($scope.selectedMask.id);
 
-                $scope.images.push($scope.currentPhoto);
+                photoService.addPhotoToCollection($scope.currentPhoto);
+                $scope.images = photoService.getCollection();
+
                 $scope.$apply();
-                scroller.scrollTo(0, 580, 1000);
             }
         });
     };
@@ -528,10 +468,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                                         $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
                                     };
 
-            $scope.images.push($scope.currentPhoto);
-            console.log($scope.images);
-            //scroll to new pic just taken
-            scroller.scrollTo(0, 580, 1000);
+            photoService.addPhotoToCollection($scope.currentPhoto);
+            $scope.images = photoService.getCollection();
 
             //reset number of pics
             $scope.pics = 0;

@@ -1,5 +1,10 @@
-angular.module("app").controller('EditorCtrl', function($scope, $location, $timeout, trackingService, $document) {
+angular.module("app").controller('EditorCtrl', function($scope, $location, $timeout, trackingService, $document, snapRemote) {
     
+    //close snappe and disable sliding
+    snapRemote.close();
+    snapRemote.getSnapper().then(function(snapper) {
+        snapper.disable();
+    });
     $scope.pageClass = 'page-editor';
 
     $scope.showModal = function(){

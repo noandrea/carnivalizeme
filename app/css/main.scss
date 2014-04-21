@@ -1212,10 +1212,44 @@ input[type="range"] {
 
 .textBlock{
     max-width: 640px;
+    margin-top: 100px;
+    .center{
+        text-align: center;
+    }
+    h1{
+        font-size: 60px;
+        font-weight: 600;
+        line-height: 100px;
+    }
+    h2{
+        font-size: 40px;
+        font-weight: 600;
+        line-height: 50px;
+    }
+    h3{
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 40px;
+    }
+    h4{
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 24px;
+    }
     p{
         line-height: 30px;
         color:#666;
         text-align: justify;
+        margin-bottom: 20px;
+        a{
+            color:#333;
+            font-weight: 600;
+            text-decoration: none;
+            &:hover{
+                text-decoration: underline;
+                color:black;
+            }
+        }
     }
 }
 
@@ -1229,16 +1263,13 @@ input[type="range"] {
     background: black;
     color: white;
 }
-.snap-drawer-right {
-    padding-right: 235px;
-}
 
 .snap-drawer{
-    width: 266px; //this is to delete the 1px GAP of the menu on the left
+    width: 500px; //this is to delete the 1px GAP of the menu on the left
 }
 
 .snap-drawer-left{
-    img{
+    img.logo{
         width: 75px;
         margin-left: 90px;
         margin-top: 20px;
@@ -1251,7 +1282,7 @@ input[type="range"] {
                 li{
                     a{
                         padding: 10px 0;
-                        padding-left: 40px;
+                        padding-left: 60px;
                         font-size: 12px;
                         &:hover{
                             color:black;

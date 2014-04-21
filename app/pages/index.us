@@ -12,7 +12,7 @@
 	<body class="site">
 
 		<snap-drawer>
-			<img src="img/carnivalizeOk.png" alt="Carnivalize.me"/>
+			<img class="logo" src="img/carnivalizeOk.png" alt="Carnivalize.me"/>
 			<ul>
 				<li>
 					<a class="carnival" ng-click="goTo('/carnival');"><i class="icon pictogram picto-2x">&#128640;</i>{{'GOTO_CARNIVAL' | translate}}</a>
@@ -27,10 +27,10 @@
 					<a class="language" ng-click="showLang = !showLang"><i class="icon pictogram picto-2x">&#127758;</i>{{'LANGUAGE' | translate}}</a>
 					<ul ng-show="showLang">
 						<li>
-							<a ng-click="changeLanguage('en_EN');"><img src="http://www.geonames.org/flags/x/uk.gif" alt="EN" width="20"/>English</a>
+							<a ng-click="changeLanguage('en_EN');">English</a>
 						</li>
 						<li>
-							<a ng-click="changeLanguage('it_IT');"><img src="http://www.geonames.org/flags/x/it.gif" alt="IT" width="20"/> Italiano</a>
+							<a ng-click="changeLanguage('it_IT');">Italiano</a>
 						</li>
 					</ul>
 				</li>
@@ -60,7 +60,7 @@
 	    	{{lastWatchedImage}}
 	  	</div>
 
-		<snap-content>
+		<snap-content snap-options="opts">
 			<header>
 				<i snap-toggle="left" class="icon pictogram picto-4x">&#9776;</i>
 			</header>
