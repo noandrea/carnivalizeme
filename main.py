@@ -23,6 +23,7 @@ import os
 import base64
 from google.appengine.api import app_identity
 from google.appengine.api import images
+from google.appengine.ext import blobstore
 from model.carnivalize import Tag
 from model.carnivalize import Mask
 from model.carnivalize import Photo
@@ -62,6 +63,7 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
 
+    # insert photo
     def post(self):
         try:
             # get all parameters
@@ -125,10 +127,15 @@ class PhotoHandler(webapp2.RequestHandler):
             bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
 
             filename = '%s.%s' % (photo_id, ext)
+            gs_filename = '/%s/%s/%s' % (bucket_name, FOLDER_PHOTOS, filename)
 
-            gcs_file = gcs.open('/%s/%s/%s' % (bucket_name, FOLDER_PHOTOS, filename), 'w', content_type='image/%s' % ext, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
+            gcs_file = gcs.open(gs_filename, 'w', content_type='image/%s' % ext, options={'x-goog-acl':'bucket-owner-full-control','x-goog-meta-foo': 'foo'})
             gcs_file.write(image)
             gcs_file.close()
+            # create a key for the stored file
+            gs_key = blobstore.create_gs_key('/gs/'+gs_filename)
+            # get the cache url for the image
+            serving_url = images.get_serving_url(gs_key)
 
             photo = Photo(id=photo_id)
             photo.populate(
@@ -137,12 +144,68 @@ class PhotoHandler(webapp2.RequestHandler):
                 audience = audience,
                 masks = masks,
                 tags = tags_list,
-                email= email)
+                email= email,
+                ext = ext,
+                thumb=serving_url)
             photo.put()
 
             response_data = {
                 "id" : photo_id,
                 "photo" : "/photos/%s" % photo_id,
+                "url" : "/p/%s" % filename,
+                "thumb" : photo.thumb
+
+            }
+
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write(json.dumps(response_data))
+        except Exception, e:
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
+            self.response.set_status('400')
+            self.response.write(e.message)
+
+    # udpate photo
+    def update(self, _id):
+        try:
+            # get all parameters
+            data = json.loads(self.request.body)
+            
+            # source ip
+            ip = self.request.remote_addr
+
+            email = data.get('email', '')
+            tags = data.get('tags', [])
+            lang = data.get('lang', 'en')
+            audience = int(data.get('audience', 0))
+            
+            tags_list = []
+
+            # if there are new tags create them
+            for tag in tags:
+                tag = Tag.get_or_create(tag, source='USER', lang=lang)
+                tags_list.append(tag.key.id())
+
+            # get the existing photo
+            photo = Photo.get_by_id(_id)
+            if photo is None:
+                self.response.headers['Access-Control-Allow-Origin'] = "*"
+                self.response.set_status('404')
+                self.response.write("Not Found")
+            
+            photo.audience = audience
+            photo.tags.extend(tags_list)
+            photo.email = email
+            photo.put()
+
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write(Photo.to_json_string(photo))
+
+
+            response_data = {
+                "id" : photo_id,
+                "photo" : "/photos/%s" % photo_id,
+                "thumb" : photo.thumb,
                 "url" : "/p/%s" % filename
             }
 
@@ -301,7 +364,8 @@ class MaskHandler(webapp2.RequestHandler):
             # save it on cloud storage
             bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
             filename = '%s.%s' % (mask_id, ext)
-            gcs_file = gcs.open('/%s/%s/%s' % (bucket_name,FOLDER_MASKS,filename), 'w', content_type='image/%s' % ext, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
+            gcs_filename = '/%s/%s/%s' % (bucket_name,FOLDER_MASKS,filename)
+            gcs_file = gcs.open(gs_filename, 'w', content_type='image/%s' % ext, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
             gcs_file.write(image)
             gcs_file.close()
 
@@ -393,11 +457,14 @@ app = webapp2.WSGIApplication([
     # webapp2.Route('/', handler=MainHandler),
     webapp2.Route(r'/photos', handler=PhotoHandler),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo', handler_method='photo', methods=['GET']),
+    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_update', handler_method='update', methods=['PUT']),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=PhotoHandler, handler_method='vote', methods=['PUT']),
+
     webapp2.Route(r'/photos/tags/<csv_tags>', handler=PhotoHandler, handler_method='search_tags', methods=['GET']),
 
     webapp2.Route(r'/masks', handler=MaskHandler),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='photo', handler_method='mask', methods=['GET']),
+    webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='photo', handler_method='update', methods=['PUT']),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=MaskHandler, handler_method='vote', methods=['PUT']),
     webapp2.Route(r'/masks/tags/<csv_tags>', handler=MaskHandler, handler_method='search_tags', methods=['GET']),
 
