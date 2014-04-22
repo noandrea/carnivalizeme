@@ -195,18 +195,18 @@ class PhotoHandler(webapp2.RequestHandler):
             
             photo.audience = audience
             photo.tags.extend(tags_list)
+            photo.tags = list(set(photo.tags))
             photo.email = email
             photo.put()
 
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.write(Photo.to_json_string(photo))
-
+            # self.response.headers['Content-Type'] = 'application/json'
+            # self.response.write(Photo.to_json_string(photo))
 
             response_data = {
-                "id" : photo_id,
-                "photo" : "/photos/%s" % photo_id,
+                "id" : _id,
+                "photo" : "/photos/%s" % _id,
                 "thumb" : photo.thumb,
-                "url" : "/p/%s" % filename
+                "url" : "/p/%s" % _id
             }
 
             self.response.headers['Access-Control-Allow-Origin'] = "*"
@@ -221,6 +221,9 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE"
         self.response.headers['Access-Control-Allow-Headers'] = 'Accept,Accept-Encoding,Accept-Language,Cache-Control,Connection,Content-Type,Host,Origin,Pragma,Referer,User-Agent'
+
+    def photo_options(self, _id):
+        self.options()
 
     def photo(self, _id):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
@@ -364,7 +367,7 @@ class MaskHandler(webapp2.RequestHandler):
             # save it on cloud storage
             bucket_name = os.environ.get('BUCKET_NAME', app_identity.get_default_gcs_bucket_name())
             filename = '%s.%s' % (mask_id, ext)
-            gcs_filename = '/%s/%s/%s' % (bucket_name,FOLDER_MASKS,filename)
+            gs_filename = '/%s/%s/%s' % (bucket_name,FOLDER_MASKS,filename)
             gcs_file = gcs.open(gs_filename, 'w', content_type='image/%s' % ext, options={'x-goog-meta-foo': 'foo', 'x-goog-meta-bar': 'bar'})
             gcs_file.write(image)
             gcs_file.close()
@@ -394,10 +397,66 @@ class MaskHandler(webapp2.RequestHandler):
             self.response.set_status('400')
             self.response.write(e.message)
 
+    def update(self, _id):
+        try:
+            # get all parameters
+            data = json.loads(self.request.body)
+            
+            # source ip
+            ip = self.request.remote_addr
+
+            credits = data.get('credits', '')
+            tags = data.get('tags', [])
+            lang = data.get('lang', 'en')
+            audience = int(data.get('audience', 0))
+            email = data.get('email', None)
+            
+            tags_list = []
+
+            # if there are new tags create them
+            for tag in tags:
+                tag = Tag.get_or_create(tag, source='MASK', lang=lang)
+                tags_list.append(tag.key.id())
+
+            # get the existing photo
+            mask = Mask.get_by_id(_id)
+            if mask is None:
+                self.response.headers['Access-Control-Allow-Origin'] = "*"
+                self.response.set_status('404')
+                self.response.write("Not Found")
+            
+            mask.audience = audience
+            mask.tags.extend(tags_list)
+            mask.tags = list(set(mask.tags))
+            mask.email = email
+            mask.lang = lang
+            mask.credits = credits
+            mask.put()
+
+            # self.response.headers['Content-Type'] = 'application/json'
+            # self.response.write(Photo.to_json_string(photo))
+
+            response_data = {
+                "id" : _id,
+                "mask" : "/mask/%s" % _id,
+                "url" : "/m/%s" % _id
+            }
+
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
+            self.response.headers['Content-Type'] = 'application/json'
+            self.response.write(json.dumps(response_data))
+        except Exception, e:
+            self.response.headers['Access-Control-Allow-Origin'] = "*"
+            self.response.set_status('400')
+            self.response.write(e.message)
+
     def options(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         self.response.headers['Access-Control-Allow-Methods'] = "GET,POST,PUT,OPTIONS,DELETE"
         self.response.headers['Access-Control-Allow-Headers'] = 'Accept,Accept-Encoding,Accept-Language,Cache-Control,Connection,Content-Type,Host,Origin,Pragma,Referer,User-Agent'
+
+    def mask_options(self, _id):
+        self.options()
 
     def search_tags(self, csv_tags):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
@@ -458,13 +517,15 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/photos', handler=PhotoHandler),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo', handler_method='photo', methods=['GET']),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_update', handler_method='update', methods=['PUT']),
+    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_options', handler_method='update', methods=['PUT']),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=PhotoHandler, handler_method='vote', methods=['PUT']),
 
     webapp2.Route(r'/photos/tags/<csv_tags>', handler=PhotoHandler, handler_method='search_tags', methods=['GET']),
 
     webapp2.Route(r'/masks', handler=MaskHandler),
-    webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='photo', handler_method='mask', methods=['GET']),
-    webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='photo', handler_method='update', methods=['PUT']),
+    webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask', handler_method='mask', methods=['GET']),
+    webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask_update', handler_method='update', methods=['PUT']),
+    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='mask_options', handler_method='mask_options', methods=['PUT']),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=MaskHandler, handler_method='vote', methods=['PUT']),
     webapp2.Route(r'/masks/tags/<csv_tags>', handler=MaskHandler, handler_method='search_tags', methods=['GET']),
 
