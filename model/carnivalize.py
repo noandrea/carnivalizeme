@@ -12,6 +12,8 @@ class Photo(ndb.Model):
     audience = ndb.IntegerProperty(default=0)
     tags = ndb.StringProperty(repeated=True)
     masks = ndb.StringProperty(repeated=True)
+    ext = ndb.StringProperty()
+    thumb = ndb.StringProperty()
 
     @staticmethod
     def to_json_string(photo):
@@ -27,7 +29,9 @@ class Photo(ndb.Model):
             'tags' : photo.tags,
             'up' : photo.up_vote,
             'dw' : photo.dwn_vote,
-            'audience' : photo.audience
+            'audience' : photo.audience,
+            'type' : photo.ext,
+            'thumb' : photo.thumb
         }
         return data
 
@@ -46,6 +50,7 @@ class Mask(ndb.Model):
     dwn_vote = ndb.IntegerProperty(default=0)
     audience = ndb.IntegerProperty(default=0)
     photo_count = ndb.IntegerProperty(default=0)
+    thumb = ndb.StringProperty()
 
     @staticmethod
     def to_json_string(mask):
@@ -62,7 +67,8 @@ class Mask(ndb.Model):
             'up' : mask.up_vote,
             'dw' : mask.dwn_vote,
             'audience' : mask.audience,
-            'photo_count' : mask.photo_count
+            'photo_count' : mask.photo_count,
+            'thumb' : mask.thumb
         }
         return data
 
