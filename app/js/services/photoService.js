@@ -1,4 +1,4 @@
-angular.module("app").factory('photoService', function(Photos) {
+angular.module("app").factory('photoService', function(Photos, $rootScope) {
 
     var photo   = {};
     var photos  = [];
@@ -51,7 +51,7 @@ angular.module("app").factory('photoService', function(Photos) {
                     alert('ERROR! NOT -SAVED-! Why??? ' + response);
                 });
             }else{
-                Photos.update(photoObj).$promise.then(function(response){
+                Photos.update({ id: photoObj.id }, photoObj).$promise.then(function(response){
                     alert('PHOTO UPDATED!', photoObj);
                     $rootScope.$emit("imagesListChaged", self.getCollection());
                 },function(response){

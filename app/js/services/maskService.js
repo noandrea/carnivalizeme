@@ -39,8 +39,13 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
         setCurrent: function (currentMask) {
             console.log('setting CURRENT: ', currentMask);
             mask = currentMask;
-            //image to attach to the facetrackr
-            stickImage.src         = API_BASE_URL + mask.image;
+
+            if(mask.image.indexOf("data:image") > -1){
+                //image to attach to the facetrackr
+                stickImage.src         = mask.image;
+            }else{
+                stickImage.src         = API_BASE_URL + mask.image;
+            }
 
             return true;
         },
@@ -75,7 +80,7 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
                     console.log(response);
                 });
             }else{
-                Masks.update(maskObj).$promise.then(function(response){
+                Masks.update({ id: maskObj.id }, maskObj).$promise.then(function(response){
                     //set latest as current
                     self.setCurrent(maskObj);
                     //save mask on localStorage too
