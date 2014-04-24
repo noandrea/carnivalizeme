@@ -129,11 +129,11 @@ class PhotoHandler(webapp2.RequestHandler):
             filename = '%s.%s' % (photo_id, ext)
             gs_filename = '/%s/%s/%s' % (bucket_name, FOLDER_PHOTOS, filename)
 
-            gcs_file = gcs.open(gs_filename, 'w', content_type='image/%s' % ext, options={'x-goog-acl':'bucket-owner-full-control','x-goog-meta-foo': 'foo'})
+            gcs_file = gcs.open(gs_filename, 'w', content_type='image/%s' % ext, options={'x-goog-acl':'public-read','x-goog-meta-foo': 'foo'})
             gcs_file.write(image)
             gcs_file.close()
             # create a key for the stored file
-            gs_key = blobstore.create_gs_key('/gs/'+gs_filename)
+            gs_key = blobstore.create_gs_key('/gs'+gs_filename)
             # get the cache url for the image
             serving_url = images.get_serving_url(gs_key)
 
@@ -152,7 +152,7 @@ class PhotoHandler(webapp2.RequestHandler):
             response_data = {
                 "id" : photo_id,
                 "photo" : "/photos/%s" % photo_id,
-                "url" : "/p/%s" % filename,
+                "url" : "/p/%s" % photo.filename,
                 "thumb" : photo.thumb
 
             }
@@ -161,9 +161,11 @@ class PhotoHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps(response_data))
         except Exception, e:
+            logging.info(e)
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.set_status('400')
             self.response.write(e.message)
+
 
     # udpate photo
     def update(self, _id):
@@ -173,7 +175,6 @@ class PhotoHandler(webapp2.RequestHandler):
             
             # source ip
             ip = self.request.remote_addr
-
             email = data.get('email', '')
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
@@ -517,7 +518,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/photos', handler=PhotoHandler),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo', handler_method='photo', methods=['GET']),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_update', handler_method='update', methods=['PUT']),
-    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_options', handler_method='photo_options', methods=['PUT']),
+    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_options', handler_method='photo_options', methods=['OPTIONS']),
     webapp2.Route(r'/photos/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=PhotoHandler, handler_method='vote', methods=['PUT']),
 
     webapp2.Route(r'/photos/tags/<csv_tags>', handler=PhotoHandler, handler_method='search_tags', methods=['GET']),
@@ -525,7 +526,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/masks', handler=MaskHandler),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask', handler_method='mask', methods=['GET']),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask_update', handler_method='update', methods=['PUT']),
-    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask_options', handler_method='mask_options', methods=['PUT']),
+    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask_options', handler_method='mask_options', methods=['OPTIONS']),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=MaskHandler, handler_method='vote', methods=['PUT']),
     webapp2.Route(r'/masks/tags/<csv_tags>', handler=MaskHandler, handler_method='search_tags', methods=['GET']),
 
