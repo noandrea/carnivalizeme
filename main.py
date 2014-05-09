@@ -89,7 +89,7 @@ class PhotoHandler(webapp2.RequestHandler):
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
             audience = int(data.get('audience', 0))
-            masks = data.get('masks', [])
+            masks = [str(x) for x in data.get('masks', [])]
 
 
             # mask must be present
@@ -116,6 +116,8 @@ class PhotoHandler(webapp2.RequestHandler):
 
             # find the other tags in the masks
             for mask_id in masks:
+                if mask_id == 0: # test mask
+                    continue
                 mask = Mask.get_by_id(mask_id)
                 if mask is not None:
                     tags_list.extend(mask.tags)
