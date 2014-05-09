@@ -31,7 +31,8 @@ class Photo(ndb.Model):
             'dw' : photo.dwn_vote,
             'audience' : photo.audience,
             'type' : photo.ext,
-            'thumb' : photo.thumb
+            'thumb' : photo.thumb,
+            'thumb_still' : photo.thumb
         }
         return data
 
