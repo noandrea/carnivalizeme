@@ -1,4 +1,4 @@
-angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRemote, $rootScope) {
+angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRemote, $rootScope, lastWatchedImage) {
     return {
         restrict: 'EA',
         replace: true,
@@ -7,11 +7,10 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRe
                 },
         template: function(){
             if(ENVIRONMENT === 'dev'){
-                return '<img id="{{thePhoto.id}}" src="http://placekitten.com/350/265" image="http://localhost:8080{{thePhoto.image}}">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s350" image="{{thePhoto.thumb}}=s350">';
             }else{
-                return '<img id="{{thePhoto.id}}" src="http://placekitten.com/350/264" image="{{thePhoto.image}}">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s350" image="{{thePhoto.thumb}}=s350">';
             }
-            
         },
         link: function(scope, element, attr) {
 
@@ -27,10 +26,13 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRe
             });
 
             element.bind('click', function () {
+                //load temporarily the loading image
+                lastWatchedImage.reset();
                 if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
-                    scope.thePhoto.image = 'http://localhost:8080' + scope.thePhoto.image;
+                    scope.thePhoto.image = scope.thePhoto.thumb + '=s500';
                 }
-                $rootScope.lastWatchedImage = scope.thePhoto;
+                //set the correct image
+                lastWatchedImage.set(scope.thePhoto);
                 snapRemote.open('right');
             });
 

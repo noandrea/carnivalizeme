@@ -1,23 +1,16 @@
-<div>
-    <div class="aligner">
-        <ul>
-            <li class="carnivalimage {{photo.type}}" ng-repeat="photo in photos" style="float:left;"> <!-- | orderBy:'ts':true -->
-
-                <div data-goole-adsense class="squaredAds" ng-if="photo.ad">
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <!-- carnivalizeme Squared Image (250x250) -->
-                    <ins class="adsbygoogle"
-                         style="display:inline-block;width:250px;height:250px"
-                         data-ad-client="ca-pub-2238924743498473"
-                         data-ad-slot="7574458806"></ins>
-                    <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-                
-                <gifff ng-if="!photo.ad" photo="photo"></gifff>
-                
-            </li>
-        <ul>
-    </div>
+<div class="aligner">
+    <ul class="carnivalList">
+        <li class="carnivalimage {{photo.type}}" ng-repeat="photo in photos" style="float:left;"> <!-- | orderBy:'ts':true -->
+            
+            <gifff ng-if="!photo.ad" photo="photo"></gifff>
+            
+            <div google-adsense class="squaredAds" ng-if="photo.ad">
+                <!-- carnivalizeme Squared Image (250x250) -->
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:250px;height:250px"
+                     data-ad-client="ca-pub-2238924743498473"
+                     data-ad-slot="7574458806"></ins>
+            </div>
+        </li>
+    <ul>
 </div>

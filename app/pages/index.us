@@ -6,7 +6,7 @@
 	<meta name="description" content="Carnivalize yourself, because life's a masquerade.">
 	<meta name="keywords" content="carnival, masquerade, masks, game, mask game, effects, webcam, fun, toy, carnivalize">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta property="og:image" content="http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg"/>
 </head>
 
 	<body class="site">
@@ -38,10 +38,10 @@
 					
 			<ul class="secondary">
 				<li>
-					<a class="facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://carnivalize.me/"><i class="icon pictogramsocial picto-2x">&#62220;</i>Share on <strong>Facebook</strong></a>
+					<a class="facebook" target="_blank" href="http://hrefshare.com/3270"><i class="icon pictogramsocial picto-2x">&#62220;</i>Share on <strong>Facebook</strong></a>
 				</li>
 				<li>
-					<a class="twitter" target="_blank" href="https://twitter.com/home?status=looking%20for%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator?%20check%20out%20@carnivalizeme%20at%20http://carnivalize.me/%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-2x">&#62217;</i>Share on <strong>Twitter</strong></a>
+					<a class="twitter" target="_blank" href="http://hrefshare.com/8da03"><i class="icon pictogramsocial picto-2x">&#62217;</i>Share on <strong>Twitter</strong></a>
 				</li>
 				<li>
 					<a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=http:%2F%2Fcarnivalize.me%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-2x">&#62226;</i>Pin on <strong>Pinterest</strong></a>
@@ -56,8 +56,17 @@
 		</snap-drawer>
 
 		<div snap-drawer="right">
-	    	<img src="{{lastWatchedImage.image}}" width="500"/>
-	    	{{lastWatchedImage}}
+	    	<img ng-src="{{lastWatchedImage.image ? lastWatchedImage.image : 'img/loading500.gif'}}" width="500"/>
+	    	
+	    	<div class="rightInfo" ng-if="lastWatchedImage.image === 'img/loading500.gif' " translate="SELECT_IMAGE_IN_CARNIVAL"></div>
+	    	
+	    	<div class="rightInfo" ng-if="lastWatchedImage.image !== 'img/loading500.gif' ">
+	    		<em>{{lastWatchedImage.up}}</em><i class="icon pictogram picto-2x green">&#128077;</i> <em>{{lastWatchedImage.dw}}</em><i class="icon pictogram picto-2x red">&#128078;</i>
+	    		<br/><br/>
+	    		CREATED: <em>{{lastWatchedImage.added | timeago}}</em>
+	    		<br/>
+    			TAGS: <em><span ng-repeat="tag in lastWatchedImage.tags">{{tag}}{{$last ? '' : ', '}}</span></em>
+	    	</div>
 	  	</div>
 
 		<snap-content snap-options="opts">
@@ -70,6 +79,7 @@
 
 		<script type="text/javascript" src="/js/app.js"></script>
 		<script type="text/javascript" src="/js/config.js"></script>
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
 
 	</body>
 </html>

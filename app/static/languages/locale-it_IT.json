@@ -57,5 +57,6 @@
     "SAVE_PHOTO"            : "salva nel carnevale",
 
     "TERMS_AND_CONDITIONS_PRIVACY" : "Termini, Condizioni e Privacy",
-    "ABOUT"                 : "Informazioni"
+    "ABOUT"                 : "Informazioni",
+    "SELECT_IMAGE_IN_CARNIVAL":"Seleziona un immagine dal <a href='/carnival'>carnevale</a>"
 }

@@ -1,4 +1,7 @@
-angular.module("app").controller('drawingBoardCtrl', function($scope, $document, $rootScope, html5Storage, Masks, $location, $filter) {
+angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope, $document, html5Storage, Masks, $location, $filter, lastWatchedImage) {
+
+    //put a placeholder in the right drawer
+    lastWatchedImage.reset();
 
     //init controls (from Storage if they exist)
     if(!html5Storage.get('controls')){

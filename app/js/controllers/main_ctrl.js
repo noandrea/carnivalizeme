@@ -1,6 +1,8 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote, lastWatchedImage) {
 
-
+    //put a placeholder in the right drawer
+    lastWatchedImage.reset();
+    
     //close snappe and disable sliding
     snapRemote.close();
     snapRemote.getSnapper().then(function(snapper) {

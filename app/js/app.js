@@ -1,5 +1,7 @@
 var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "snap", "colorpicker.module", "pascalprecht.translate", "config"]).run(function($rootScope, $location, trackingService, $translate, snapRemote) {
     
+
+    $rootScope.adsBlocked = 0;
     /**
      * simply move to another path doing whatever is necessary
      * 
@@ -26,6 +28,22 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         $translate.use(lang);
         $rootScope.lang = lang;
     };
+
+    /**
+     * Redirect to "sorry" after AdBlock is detected
+     * @return {null}
+     */
+    $rootScope.$on('adBlockDetected', function(){
+        $rootScope.adsBlocked++;
+
+        console.log('ADS BLOCKED! Total blocked:', $rootScope.adsBlocked);
+
+        if($rootScope.adsBlocked>2){
+            $rootScope.adsBlocked = 0;
+            $rootScope.goTo('/sorry');
+            console.log('ADS BLOCKED! Total blocked:', $rootScope.adsBlocked);
+        }
+    });
 
 }).config(function($compileProvider, $translateProvider, snapRemoteProvider) {
 

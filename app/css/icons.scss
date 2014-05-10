@@ -25,6 +25,12 @@
 
 // Standard Icons are pictogram
 .pictogram {
+    &.red{
+        color: #B90000;
+    }
+    &.green{
+        color: #008F11;
+    }
     font-family: $entypo;
 
     // Icon Sizes

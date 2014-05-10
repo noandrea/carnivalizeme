@@ -57,6 +57,7 @@
     "SAVE_PHOTO"            : "save to carnival",
 
     "TERMS_AND_CONDITIONS_PRIVACY" : "Terms, Conditions and Privacy",
-    "ABOUT"                 : "About"
+    "ABOUT"                 : "About",
+    "SELECT_IMAGE_IN_CARNIVAL":"Select an image from the <a href='/carnival'>carnival</a>"
     
 }

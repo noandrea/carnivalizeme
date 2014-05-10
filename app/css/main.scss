@@ -36,25 +36,9 @@
     background: #666; /* Firefox */
     color:white;
 }
-
-.carnivalimage{
-    height: 250px;
-    width: 250px;
-    overflow: hidden;
-    &.gif{
-        @include radius(125px);
-    }
-    margin: 20px;
-    img{
-        vertical-align: middle;
-        width: 350px;
-        margin-top: -10px;
-        margin-left: -45px;
-    }
-    background-color: whitesmoke;
-}
 header{
     position:fixed;
+    z-index: 999999999999999999999999999999999;
     i{
         width: 55px!important;
         height: 55px!important;
@@ -74,7 +58,7 @@ header{
     padding-right: 20px;
 }
 .squaredAds{
-    background-color: red;
+    background-color: white;
 }
 
 
@@ -1213,7 +1197,6 @@ input[type="range"] {
 
 .textBlock{
     max-width: 640px;
-    margin-top: 100px;
     .center{
         text-align: center;
     }
@@ -1356,15 +1339,43 @@ input[type="range"] {
         }
         &.secondary{
             border-top: 2px solid #f1f1f1;
-            font-size: 12px;
             li{
                 i{
                     margin-right: 10px;
                 }
                 a{
+                    font-size: 12px;
                     padding: 10px 0 10px 20px;
                 }
             }
         }
     }
+}
+
+
+.carnivalList{
+    max-width: 1040px;
+}
+.carnivalimage{
+    height: 250px;
+    width: 250px;
+    overflow: hidden;
+    &.gif{
+        @include radius(125px);
+    }
+    margin: 5px;
+    img{
+        vertical-align: middle;
+        width: 350px;
+        margin-top: -10px;
+        margin-left: -45px;
+    }
+    background-color: whitesmoke;
+}
+
+
+.rightInfo{
+    background-color: #030303;
+    padding: 20px;
+    font-weight: 100;
 }

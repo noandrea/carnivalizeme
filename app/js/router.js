@@ -32,6 +32,11 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
     controller: 'CarnivalCtrl'
   });
 
+  $routeProvider.when('/sorry', {
+    templateUrl: 'sorry.html',
+    controller: 'MainCtrl'
+  });
+
   $routeProvider.otherwise({redirectTo: '/now'});
 
 });

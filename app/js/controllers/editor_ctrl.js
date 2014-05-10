@@ -1,5 +1,8 @@
-angular.module("app").controller('EditorCtrl', function($scope, $location, $timeout, trackingService, $document, snapRemote) {
+angular.module("app").controller('EditorCtrl', function($rootScope, $scope, $location, $timeout, trackingService, $document, snapRemote, lastWatchedImage) {
     
+    //put a placeholder in the right drawer
+    lastWatchedImage.reset();
+
     //close snappe and disable sliding
     snapRemote.close();
     snapRemote.getSnapper().then(function(snapper) {
