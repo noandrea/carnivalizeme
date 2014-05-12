@@ -520,7 +520,7 @@ body{
     .maskWrap{
         #customMask{
             width: 720px;
-            height: 964px;
+            height: 960px;
             background: transparent;
             z-index: 999;
             position: relative;
@@ -533,13 +533,14 @@ body{
                 -ms-filter: "FlipH";
             }
         }
+        outline:1px #999 dashed;
         overflow: hidden;
+        margin-right: 1px;
     }
     .drawing_canvas{
         z-index: 998;
         width: 720px;
         height: 960px;
-        outline:1px #999 dashed;
         cursor: crosshair;
         margin-right:1px;
     }
@@ -674,34 +675,34 @@ input[type="file"] {
 
     &.switch{
         width: 130px;
-        height: 40px;
+        height: 30px;
         background: white;
-        border-radius: 50px;
+        border-radius: 40px;
         position: relative;
 
         &:before {
                 content: 'On';
                 position: absolute;
-                top: 12px;
+                top: 8px;
                 left: 13px;
                 height: 2px;
                 color: #ddd;
-                font-size: 16px;
+                font-size: 12px;
             }
             &:after {
                 content: 'Off';
                 position: absolute;
-                top: 12px;
+                top: 8px;
                 left: 84px;
                 height: 2px;
                 color: #AF4848;
-                font-size: 16px;
+                font-size: 12px;
             }
 
             label {
                 display: block;
                 width: 52px;
-                height: 22px;
+                height: 12px;
                 border-radius: 50px;
 
                 -webkit-transition: all .5s ease;
@@ -896,34 +897,11 @@ input[type="range"] {
 }
 
 
-.modalCover{
-    display: block;
-    margin: 0;
-    height: 100%;
-    width: 100%; /* needed for Firefox */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0,0,0,.8);
-    z-index:999999999999999;
-
-    &.ng-hide-remove{
-        -webkit-animation:fadeInHalf 0.3s both ease-in;
-        -moz-animation:fadeInHalf 0.3s both ease-in;
-        animation:fadeInHalf 0.3s both ease-in;
-    }
-    &.ng-hide-add, &.ng-hide-add-active{
-        display:block!important;
-        -webkit-animation:fadeOutHalf .3s both ease-in;
-        -moz-animation:fadeOutHalf .3s both ease-in;
-        animation:fadeOutHalf .3s both ease-in;
-    }
-}
 .modalWrapper {
     margin: 0;
     height: 100%;
     width: 100%; /* needed for Firefox */
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     @include flexbox;
@@ -931,10 +909,34 @@ input[type="range"] {
     @include justify-content(center);
     z-index:999999999999999;
 
+    .modalCover{
+        display: block;
+        margin: 0;
+        height: 1020px;
+        width: 100%; /* needed for Firefox */
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,.8);
+        z-index:999999999999999;
+
+        &.ng-hide-remove{
+            -webkit-animation:fadeInHalf 0.3s both ease-in;
+            -moz-animation:fadeInHalf 0.3s both ease-in;
+            animation:fadeInHalf 0.3s both ease-in;
+        }
+        &.ng-hide-add, &.ng-hide-add-active{
+            display:block!important;
+            -webkit-animation:fadeOutHalf .3s both ease-in;
+            -moz-animation:fadeOutHalf .3s both ease-in;
+            animation:fadeOutHalf .3s both ease-in;
+        }
+    }
+
     .modalContent {
         z-index:9999999999999999;
         background: white;
-        width: 35%;
+        width: 40%;
         max-height: 70%;
         padding: 40px;
         position: relative;

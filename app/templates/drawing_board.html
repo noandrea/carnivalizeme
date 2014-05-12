@@ -3,6 +3,7 @@
         <div class="maskWrap">
             <div id="customMask">
                 <img ng-if="controls.image.info.fileBase64" id="upped-image" drag-rotate-resize class="img-uploaded" ng-show="controls.image.info.fileBase64" src="{{controls.image.info.fileBase64}}" alt="image"/>
+                <div drag-rotate-resize style="position:absolute;font-size:40px;">{{controls.text.content}}</div>
                 <drawing-canvas></drawing-canvas>
             </div>
             <div class="canvasBg" ng-show="controls.showGrid"></div>

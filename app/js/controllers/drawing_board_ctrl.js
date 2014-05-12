@@ -7,7 +7,8 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
     if(!html5Storage.get('controls')){
         $scope.controls     =   {
                                     showGrid    : true,
-                                    brush       : { size : 4, blur : 0.9, fillStyle : "#9c9c9c" },
+                                    text        : { content : "test", positionX : 0, positionY : 0, rotation : 0, scale : 1 },
+                                    brush       : { size : 4, blur : 0.9, fillStyle : "#9c9c9c", maxsize : 80},
                                     image       : { info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1 }
                                 };
         html5Storage.set('controls', $scope.controls);

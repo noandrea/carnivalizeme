@@ -26,7 +26,7 @@
 
             <div class="el">
                 <div class="label">{{'SIZE_BRUSH_MASK' | translate}}</div>
-                <input type="range" ng-model="controls.brush.size" name="points" min="2" step="2" max="20">
+                <input type="range" ng-model="controls.brush.size" name="points" min="2" step="2" max="controls.brush.maxsize">
             </div>
 
             <div class="el">
@@ -40,7 +40,16 @@
                 <div ng-show="ctx.globalCompositeOperation === 'destination-out'" class="cpicker transparent"></div>
             </div>
         </div>
+    </fieldset>
 
+    <fieldset class="tool">
+        <legend>{{'TEXT' | translate}}</legend>
+        <div class="inner">
+            <div class="el">
+                <div class="">
+                    <input type="text" ng-model="controls.text.content"/>
+                </div>
+            </div>
     </fieldset>
 
     <fieldset class="tool upload-area">

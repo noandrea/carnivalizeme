@@ -22,6 +22,7 @@
 
     "GUIDES"                : "Guide",
     "BRUSH"                 : "Pennello",
+    "BRUSH"                 : "Testo",
     "ERASER_BRUSH_MASK"     : "Cancellino",
     "SIZE_BRUSH_MASK"       : "Dimensione",
     "BLUR_BRUSH_MASK"       : "Sfocatura",

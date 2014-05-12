@@ -22,6 +22,7 @@
 
     "GUIDES"                : "Guides",
     "BRUSH"                 : "Brush",
+    "BRUSH"                 : "Text",
     "ERASER_BRUSH_MASK"     : "Eraser",
     "SIZE_BRUSH_MASK"       : "Size",
     "BLUR_BRUSH_MASK"       : "Blur",

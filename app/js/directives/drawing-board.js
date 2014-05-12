@@ -10,6 +10,9 @@ angular.module("app").directive('drawingBoard', function(html5Storage) {
         scope.$watchCollection('controls.brush', function(newVals, oldVals) {
             html5Storage.set('controls', scope.controls);
         });
+        scope.$watchCollection('controls.text', function(newVals, oldVals) {
+            html5Storage.set('controls', scope.controls);
+        });
         scope.$watchCollection('controls.image', function(newVals, oldVals) {
             console.log('CHANGING CONTROLS');
             html5Storage.set('controls', scope.controls);

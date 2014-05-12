@@ -15,11 +15,12 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         currX = 0,
         prevY = 0,
         currY = 0,
-        dot_flag = false;
+        dot_flag = false,
+        yScrollOffset = 0,
+        xScrollOffset = 0;
         
         var previousCanvas = html5Storage.get('drawing_canvas', 'canvas') ? html5Storage.get('drawing_canvas', 'canvas') : null;
         console.log(previousCanvas);
-
 
         canvas          = scope.canvas = element[0];
         ctx             = scope.ctx = canvas.getContext("2d");
@@ -41,40 +42,22 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         var isDrawing, lastPoint;
 
         element.bind('mousemove', function (e) {
-            //var yScroll = (element.pageYOffset !== undefined) ? element.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-            console.log('Y SCROLL:', window.pageYOffset);
+            //offset if user scrolls
+            yScrollOffset = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+            xScrollOffset = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
 
-            if (!isDrawing) { return; }
-
-            var currentPoint = { x: e.clientX - element[0].offsetParent.offsetLeft, y: e.clientY - (element[0].offsetParent.offsetTop - window.pageYOffset) };
-            var dist = distanceBetween(lastPoint, currentPoint);
-            var angle = angleBetween(lastPoint, currentPoint);
-
-            for (var i = 0; i < dist; i+=3) {
-
-                x = lastPoint.x + (Math.sin(angle) * i);
-                y = lastPoint.y + (Math.cos(angle) * i);
-
-                var rgbaFillStyle = hexToRgb(scope.controls.brush.fillStyle);
-                var innerRadius = scope.controls.brush.size/20;
-                var outerRadius = scope.controls.brush.size;
-
-                var radgrad = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
-
-                radgrad.addColorStop(0, scope.controls.brush.fillStyle);
-                radgrad.addColorStop(0.2, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', ' + scope.controls.brush.blur + ')');
-                radgrad.addColorStop(1, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', 0)');
-
-                ctx.fillStyle = radgrad;
-                ctx.fillRect(x-20, y-20, 40, 40);
-            }
-
-            lastPoint = currentPoint;
+            drawLine(e, yScrollOffset, xScrollOffset);
         });
 
         element.bind('mousedown', function (e) {
+            //offset if user scrolls
+            yScrollOffset = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+            xScrollOffset = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+
             isDrawing = true;
-            lastPoint = { x: e.clientX - (element[0].offsetParent.offsetLeft - window.pageXOffset), y: e.clientY - (element[0].offsetParent.offsetTop - window.pageYOffset) };
+            lastPoint = { x: e.clientX - (element[0].offsetParent.offsetLeft) + 1, y: e.clientY - (element[0].offsetParent.offsetTop - yScrollOffset) + 1 };
+
+            drawLine(e, yScrollOffset, xScrollOffset);
         });
 
         element.bind('mouseup', function (e) {
@@ -87,17 +70,40 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         });
 
 
+        function drawLine(e, yScrollOffset, xScrollOffset){
+            if (!isDrawing) { return; }
+            
+            var currentPoint = { x: e.clientX - element[0].offsetParent.offsetLeft, y: e.clientY - (element[0].offsetParent.offsetTop - yScrollOffset) };
+            var dist = distanceBetween(lastPoint, currentPoint);
+            var angle = angleBetween(lastPoint, currentPoint);
 
+            for (var i = 0; i < dist; i+=3) {
+
+                x = lastPoint.x + (Math.sin(angle) * i);
+                y = lastPoint.y + (Math.cos(angle) * i);
+
+                var rgbaFillStyle = hexToRgb(scope.controls.brush.fillStyle);
+                var innerRadius = scope.controls.brush.size/scope.controls.brush.maxsize;
+                var outerRadius = scope.controls.brush.size-25;
+
+                var radgrad = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+
+                radgrad.addColorStop(0, scope.controls.brush.fillStyle);
+                radgrad.addColorStop(0.2, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', ' + scope.controls.brush.blur + ')');
+                radgrad.addColorStop(1, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', 0)');
+
+                ctx.fillStyle = radgrad;
+                ctx.fillRect(x-scope.controls.brush.maxsize, y-scope.controls.brush.maxsize, scope.controls.brush.maxsize*2, scope.controls.brush.maxsize*2);
+            }
+
+            lastPoint = currentPoint;
+        }
         function distanceBetween(point1, point2) {
             return Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
         }
         function angleBetween(point1, point2) {
             return Math.atan2( point2.x - point1.x, point2.y - point1.y );
         }
-
-
-
-
         /**
          * Helper function to get RGB values from HEX
          * @param  {[type]} hex [description]
