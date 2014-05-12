@@ -41,6 +41,9 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         var isDrawing, lastPoint;
 
         element.bind('mousemove', function (e) {
+            //var yScroll = (element.pageYOffset !== undefined) ? element.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+            console.log('Y SCROLL:', window.pageYOffset);
+
             if (!isDrawing) { return; }
 
             var currentPoint = { x: e.clientX - element[0].offsetParent.offsetLeft, y: e.clientY - (element[0].offsetParent.offsetTop - window.pageYOffset) };

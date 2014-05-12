@@ -87,7 +87,8 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
                 $scope.$apply();
 
             },
-            background: undefined
+            background: undefined,
+            height: 960
         });
 
     };

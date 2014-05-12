@@ -88,6 +88,8 @@ body{
     @include flex(1);
     &.page-editor{
         background-color: none;//white;
+        min-height: 1000px;
+        margin-top: 20px;
     }
     max-width:100%;
     margin:0;
@@ -517,6 +519,8 @@ body{
 .canvasContainer{
     .maskWrap{
         #customMask{
+            width: 720px;
+            height: 964px;
             background: transparent;
             z-index: 999;
             position: relative;
