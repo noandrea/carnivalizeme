@@ -569,6 +569,12 @@ body{
         &:last-child{
             border-bottom: none;
         }
+
+        input[type="text"], textarea{
+            border: 1px solid #999;
+            width: 92%;
+            padding: 5px;
+        }
             
         .inner{
             padding: 15px 15px 5px 15px;
