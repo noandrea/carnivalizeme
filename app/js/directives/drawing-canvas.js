@@ -1,11 +1,11 @@
-angular.module("app").directive('drawingCanvas', function(html5Storage) {
+angular.module("app").directive('drawingCanvas', function(html5Storage, controlsService) {
   return {
     restrict: "E",
-    controller: 'drawingBoardCtrl',
     replace: true,
     templateUrl: 'drawing_canvas.html',
     link: function(scope, element, attrs){
 
+        
 
         /**
          * The concept behind this is an inspiration from http://perfectionkills.com/exploring-canvas-drawing-techniques/
@@ -17,10 +17,10 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         currY = 0,
         dot_flag = false,
         yScrollOffset = 0,
-        xScrollOffset = 0;
+        xScrollOffset = 0,
+        isDrawing, lastPoint, the_controls;
         
         var previousCanvas = html5Storage.get('drawing_canvas', 'canvas') ? html5Storage.get('drawing_canvas', 'canvas') : null;
-        console.log(previousCanvas);
 
         canvas          = scope.canvas = element[0];
         ctx             = scope.ctx = canvas.getContext("2d");
@@ -39,8 +39,6 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         w       = canvas.width;
         h       = canvas.height;
 
-        var isDrawing, lastPoint;
-
         element.bind('mousemove', function (e) {
             //offset if user scrolls
             yScrollOffset = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
@@ -50,6 +48,7 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
         });
 
         element.bind('mousedown', function (e) {
+            the_controls = controlsService.get();
             //offset if user scrolls
             yScrollOffset = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
             xScrollOffset = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
@@ -82,18 +81,18 @@ angular.module("app").directive('drawingCanvas', function(html5Storage) {
                 x = lastPoint.x + (Math.sin(angle) * i);
                 y = lastPoint.y + (Math.cos(angle) * i);
 
-                var rgbaFillStyle = hexToRgb(scope.controls.brush.fillStyle);
-                var innerRadius = scope.controls.brush.size/scope.controls.brush.maxsize;
-                var outerRadius = scope.controls.brush.size-25;
+                var rgbaFillStyle = hexToRgb(the_controls.brush.fillStyle);
+                var innerRadius = the_controls.brush.size/the_controls.brush.maxsize;
+                var outerRadius = the_controls.brush.size > 25 ? the_controls.brush.size-25 : the_controls.brush.size;
 
                 var radgrad = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
 
-                radgrad.addColorStop(0, scope.controls.brush.fillStyle);
-                radgrad.addColorStop(0.2, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', ' + scope.controls.brush.blur + ')');
+                radgrad.addColorStop(0, the_controls.brush.fillStyle);
+                radgrad.addColorStop(0.2, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', ' + the_controls.brush.blur + ')');
                 radgrad.addColorStop(1, 'rgba(' + rgbaFillStyle.r + ',' + rgbaFillStyle.g + ',' + rgbaFillStyle.b + ', 0)');
 
                 ctx.fillStyle = radgrad;
-                ctx.fillRect(x-scope.controls.brush.maxsize, y-scope.controls.brush.maxsize, scope.controls.brush.maxsize*2, scope.controls.brush.maxsize*2);
+                ctx.fillRect(x-the_controls.brush.maxsize, y-the_controls.brush.maxsize, the_controls.brush.maxsize*2, the_controls.brush.maxsize*2);
             }
 
             lastPoint = currentPoint;

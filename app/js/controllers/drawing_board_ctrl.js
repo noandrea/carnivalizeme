@@ -1,20 +1,12 @@
-angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope, $document, html5Storage, Masks, $location, $filter, lastWatchedImage) {
+angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope, $document, controlsService, html5Storage, Masks, $location, $filter, lastWatchedImage) {
 
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
 
-    //init controls (from Storage if they exist)
-    if(!html5Storage.get('controls')){
-        $scope.controls     =   {
-                                    showGrid    : true,
-                                    text        : { content : "test", positionX : 0, positionY : 0, rotation : 0, scale : 1 },
-                                    brush       : { size : 4, blur : 0.9, fillStyle : "#9c9c9c", maxsize : 80},
-                                    image       : { info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1 }
-                                };
-        html5Storage.set('controls', $scope.controls);
-    }else{
-        $scope.controls     = html5Storage.get('controls');
-    }
+    //get controls
+    controlsService.init();
+    $scope.controls = controlsService.get();
+    console.log("SCOPE CONTROLS", $scope.controls);
 
     /**
      * delete everything from the board and leaves the board empty
@@ -27,11 +19,12 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
             $scope.eraseImage();
             html5Storage.set('drawing_canvas', '');
             $scope.ctx.clearRect(0, 0, w, h);
+            $scope.controls = controlsService.reset();
         }
     };
     $scope.eraseImage = function() {
         $scope.controls.image = {info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1};
-        html5Storage.set('controls', $scope.controls);
+        controlsService.set($scope.controls);
     };
 
 
@@ -127,9 +120,10 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
     $scope.$on("fileUploaded", function (event, args) {
         $scope.$apply(function () {
             console.log('uploaded');
-            //here i could already send the image to the server
-            //
+            //set image
             $scope.controls.image.info      = args;
+            //set new controls with image
+            controlsService.set($scope.controls);
         });
     });
 

@@ -1,24 +1,22 @@
-angular.module("app").directive('drawingBoard', function(html5Storage) {
+angular.module("app").directive('drawingBoard', function(html5Storage, controlsService) {
   return {
     restrict: "E",
-    controller: 'drawingBoardCtrl',
     replace: true,
     templateUrl: 'drawing_board.html',
     link: function(scope, el, attrs){
         //nothing here?
         //
         scope.$watchCollection('controls.brush', function(newVals, oldVals) {
-            html5Storage.set('controls', scope.controls);
+            controlsService.set(scope.controls);
         });
         scope.$watchCollection('controls.text', function(newVals, oldVals) {
-            html5Storage.set('controls', scope.controls);
+            controlsService.set(scope.controls);
         });
         scope.$watchCollection('controls.image', function(newVals, oldVals) {
-            console.log('CHANGING CONTROLS');
-            html5Storage.set('controls', scope.controls);
+            controlsService.set(scope.controls);
         });
         scope.$watchCollection('controls.showGrid', function(newVals, oldVals) {
-            html5Storage.set('controls', scope.controls);
+            controlsService.set(scope.controls);
         });
 
 

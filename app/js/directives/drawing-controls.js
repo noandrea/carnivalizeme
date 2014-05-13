@@ -1,7 +1,6 @@
 angular.module("app").directive('drawingControls', function($document, $location, html5Storage) {
   return {
     restrict: "E",
-    controller: 'drawingBoardCtrl',
     replace: true,
     templateUrl: 'drawing_controls.html',
     link: function(scope, element, attrs){

@@ -1,4 +1,4 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote, lastWatchedImage) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote, lastWatchedImage, controlsService) {
 
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
@@ -533,7 +533,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         html5Storage.set('the_mask', '');
 
         //clear canvas and controls (which include image, image position, brush size, brush blur, etc.)
-        html5Storage.set('controls', '');
+        controlsService.reset();
         html5Storage.set('drawing_canvas', '');
         alert('html5 storage cleared!');
         return true;

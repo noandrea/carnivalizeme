@@ -3,7 +3,6 @@ angular.module("app").directive('personalImage', function() {
     return {
         restrict: 'E',
         replace: true,
-        controller: 'drawingBoardCtrl',
         templateUrl: "personal_image.html",
         link: function(scope, element, attrs) {
 
