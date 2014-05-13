@@ -1,4 +1,4 @@
-function stoca(fileReader, scope){
+function emitter(fileReader, scope){
     fileReader.onload = function (onLoadEvent) {
       scope.$emit("fileUploaded", { fileBase64: onLoadEvent.target.result, size: onLoadEvent.total });
     };
@@ -20,7 +20,7 @@ angular.module("app").directive('fileUpload', function () {
                         var fileReader  = new FileReader();
                         fileReader.readAsDataURL(files[i]);
 
-                        stoca(fileReader, scope);
+                        emitter(fileReader, scope);
                     }
                 }
             });

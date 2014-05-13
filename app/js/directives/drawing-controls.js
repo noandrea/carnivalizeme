@@ -11,7 +11,6 @@ angular.module("app").directive('drawingControls', function($document, $location
 
             if($location.path() === '/editor'){
 
-                console.log(e.which);
                 if(e.ctrlKey && e.which){
                     switch(e.which){
                         case 69: //letter "E" of Eraser

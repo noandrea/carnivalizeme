@@ -270,14 +270,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 document.querySelector('header').style.display = "block";
             }
         });
-        //store selectedMask object in localstorage
-        $scope.$watch('selectedMask', function(newVal, oldVal){
-            if(newVal){
-                document.querySelector('header').style.display = "none";
-            }else{
-                document.querySelector('header').style.display = "block";
-            }
-        });
 
 
         //listen to tracking events

@@ -1,53 +1,60 @@
-angular.module("app").directive('dragRotateResize', function($document) {
+angular.module("app").directive('dragRotateResize', function($document, controlsService) {
     return {
         restrict: 'EA',
         replace: true,
         link: function(scope, element, attr) {
 
-            var rotationDeg = scope.controls.image.rotation;
-            var scaleAmount = scope.controls.image.scale;
-            var positionX   = scope.controls.image.positionX;
-            var positionY   = scope.controls.image.positionY;
+            var controls = controlsService.get();
 
-            var startX = 0, startY = 0, action, startManipulating = 0, style, position;
+            var startX = 0, startY = 0, action, startManipulating = 0, style, the_position;
+
+            var rotationDeg = attr.type === 'image' ? controls.image.rotation     : controls.text.rotation;
+            var scaleAmount = attr.type === 'image' ? controls.image.scale        : controls.text.scale;
+            the_position    = attr.type === 'image' ? controls.image.position     : controls.text.position;
  
-            //make sure the image is positioned right when it shows up in the DOM
+
+            //set basic CSS properties
             element.css({
                 position: 'absolute',
-                cursor: 'move',
-                zindex: 9999999999999999999999999999,
-                top: positionY+'px',
-                left: positionX+'px'
+                cursor: 'move'
             });
 
+            if(attr.type === 'image'){
+                scope.$watchCollection('controls.image', function(newVals) {
+                    newPosition = { top: newVals.position.Y + 'px',left:  newVals.position.X + 'px' };
+                    scaleAmount = newVals.scale;
+                    rotationDeg = newVals.rotation;
+                    assignStyle(rotationDeg, scaleAmount);
+                    element.css(newPosition);
+                });
+            }else{
+                //watch rotation property for change and assign the new value to the image
+                scope.$watchCollection('controls.text', function(newVals) {
+                    newPosition = { top: newVals.position.Y + 'px',left:  newVals.position.X + 'px' };
+                    scaleAmount = newVals.scale;
+                    rotationDeg = newVals.rotation;
+                    assignStyle(rotationDeg, scaleAmount);
+                    element.css(newPosition);
+                });
+            }
 
-            //watch scale property for change and assign the new value to the image
-            scope.$watch('controls.image.scale', function(newScaleVal, oldScaleVal) {
-                //assign styles!
-                scaleAmount = newScaleVal;
-                assignStyle(rotationDeg, newScaleVal);
-            });
-            //watch rotation property for change and assign the new value to the image
-            scope.$watch('controls.image.rotation', function(newRotationVal, oldRotationVal) {
-                rotationDeg = newRotationVal;
-                assignStyle(newRotationVal, scaleAmount);
-            });
 
 
             element.on('mousedown', function(event) {
                 // Prevent default dragging of selected content
                 event.preventDefault();
 
-
                 //init. (only the first time)
-                if(positionX===0 && positionY===0){
-                    positionX = element[0].x;
-                    positionY = element[0].y;
+                if((the_position.X === 0 && the_position.Y === 0) || (isNaN(the_position.X) && isNaN(the_position.Y))){
+                    the_position.X = element[0].x;
+                    the_position.Y = element[0].y;
+                    console.log(the_position);
                     startX = event.pageX;
                     startY = event.pageY;
                 }else{
-                    startX = event.pageX - positionX;
-                    startY = event.pageY - positionY;
+                    console.log('CRISTO BASTARDO');
+                    startX = event.pageX - the_position.X;
+                    startY = event.pageY - the_position.Y;
                 }
 
                 $document.on('mousemove', mousemove);
@@ -55,8 +62,6 @@ angular.module("app").directive('dragRotateResize', function($document) {
             });
 
             $document.on('keydown', function(e){
-                //console.log(e.which);
-
                 if(e.which === 82){
                     action = 'rotate';
                 }else if(e.which === 83){
@@ -88,7 +93,6 @@ angular.module("app").directive('dragRotateResize', function($document) {
                         if(rotationDeg>360){
                             rotationDeg = 360;
                         }
-                        console.log('ROTATTION: ' , rotationDeg);
                         //assign the new values
                         assignStyle(rotationDeg, scaleAmount);
 
@@ -109,18 +113,29 @@ angular.module("app").directive('dragRotateResize', function($document) {
 
                     break;
                     default:
-                        //console.log("MOVING", event.pageX - startX, event.pageX, startX);
+                    console.log('dragging');
                         startManipulating = 0;
-                        scope.controls.image.positionY = positionY = event.pageY - startY;
-                        scope.controls.image.positionX = positionX = event.pageX - startX;
+                        if(attr.type === 'image'){
+                            controls.image.position.Y = the_position.Y = event.pageY - startY;
+                            controls.image.position.X = the_position.X = event.pageX - startX;
+                        }else{
+                            controls.text.position.Y = the_position.Y = event.pageY - startY;
+                            controls.text.position.X = the_position.X = event.pageX - startX;
+                        }
 
-                        position = { top: positionY + 'px',left:  positionX + 'px' };
-                        element.css(position);
+                        positionToSet = { top: the_position.Y + 'px',left:  the_position.X + 'px' };
+                        element.css(positionToSet);
                     break;
                 }
-                scope.controls.image.scale      = scaleAmount;
-                scope.controls.image.rotation   = rotationDeg;
-                //scope.controls.image.positionX and  scope.controls.image.positionY
+
+                if(attr.type === 'image'){
+                    controls.image.scale      = scaleAmount;
+                    controls.image.rotation   = rotationDeg;
+                }else{
+                    controls.text.scale       = scaleAmount;
+                    controls.text.rotation    = rotationDeg;
+                }
+
                 //are also set, but it's done in the "default:" case onmousemove
 
 
@@ -142,7 +157,7 @@ angular.module("app").directive('dragRotateResize', function($document) {
             }
 
             function mouseup() {
-                //console.log(scope.controls.image.scale, scope.controls.image.positionX, scope.controls.image.positionY);
+                controlsService.set(controls);
                 $document.unbind('mousemove', mousemove);
                 $document.unbind('mouseup', mouseup);
             }

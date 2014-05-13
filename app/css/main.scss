@@ -505,6 +505,7 @@ body{
     border:1px solid #999;
     padding-top: 9px;
     text-align: center;
+    width: 30px;
 
     &.transparent{
         background-color: #eee;
@@ -538,6 +539,17 @@ body{
                 filter: FlipH;
                 -ms-filter: "FlipH";
             }
+            .text-loaded{
+                position:absolute;
+                font-size:40px;
+                cursor: move;
+                z-index: 20001;
+                padding: 0 5px;
+            }
+            .img-uploaded{
+                cursor: move;
+                z-index: 20000;
+            }
         }
         outline:1px #999 dashed;
         overflow: hidden;
@@ -562,9 +574,11 @@ body{
 }
 
 /* ********************* TOOLBOX! ********************* */
-
+[ng-click]{
+    cursor: pointer;
+}
 .toolbox{
-    background: #F1F1F1;
+    background: #dddddd;
     max-width: 250px;
     @include radius( 0 3px 3px 0);
     
@@ -580,6 +594,7 @@ body{
             border: 1px solid #999;
             width: 92%;
             padding: 5px;
+            font-size: 12px;
         }
             
         .inner{
@@ -608,7 +623,7 @@ body{
             font-size: 12px;
             letter-spacing: 0.05em;
             background: none;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
     }
 }

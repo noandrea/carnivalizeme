@@ -23,9 +23,20 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
         }
     };
     $scope.eraseImage = function() {
-        $scope.controls.image = {info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1};
+        $scope.controls.image = {info : {}, position : { X : 0 , Y : 0}, rotation : 0, scale : 1};
         controlsService.set($scope.controls);
     };
+    $scope.resetImage = function() {
+        $scope.controls.image = {info : $scope.controls.image.info, position : { X : 0 , Y : 0}, rotation : 0, scale : 1};
+        $scope.controls = controlsService.set($scope.controls);
+        console.log('DONE', $scope.controls);
+    };
+    $scope.resetText = function() {
+        $scope.controls.text = { content: "TEXT_HERE", position: {X : 320, Y : 480}, rotation : 0, scale : 1, color: "#24ab93"};
+        $scope.controls = controlsService.set($scope.controls);
+        console.log('DONE', $scope.controls);
+    };
+    
 
 
     /**
@@ -113,7 +124,7 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
         //$scope.$apply(function () {            
             //add the file object to the scope's files collection
             //$scope.files.push(args.file);
-            alert('Sorry, you can upload PNG images only.');
+            alert($filter('translate')('IMAGES_ONLY'));
         //});
     });
     //listen for the file selected event

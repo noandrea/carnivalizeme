@@ -1,5 +1,4 @@
 <div class="toolbox">
-   
     <fieldset class="tool">
         <legend>{{'GUIDES' | translate}}</legend>
         <div class="inner">
@@ -47,6 +46,21 @@
         <div class="inner">
             <div class="el">
                 <textarea ng-model="controls.text.content"></textarea>
+                <div ng-click="resetText();" class="label">{{'RESET_TEXT' | translate}}</div>
+            </div>
+
+            <div class="el">
+                <div class="label">{{'IMAGE_RESIZE' | translate}}</div>
+                <input type="range" ng-model="controls.text.scale" name="points" min="0" step="0.1" max="4">
+            </div>
+
+            <div class="el">
+                <div class="label">{{'IMAGE_ROTATE' | translate}}</div>
+                <input class="range" type="range" ng-model="controls.text.rotation" name="points" min="0" step="1" max="360">
+            </div>
+            <div class="el">
+                <div class="label">{{'COLOR_BRUSH_MASK' | translate}}</div>
+                <div colorpicker="rgba" ng-model="controls.text.color" class="cpicker" style="background-color:{{controls.text.color}}"></div>
             </div>
     </fieldset>
 
@@ -75,8 +89,8 @@
                     </label>
                 </div>
                 <div class="suggestion" ng-if="controls.image.info.size">{{controls.image.info.size | bytes}}</div>
-                <br/>
                 <div class="el">
+                    <div ng-click="resetImage();" class="label">{{'RESET_IMAGE' | translate}}</div><br/>
                     <div class="label">{{'IMAGE_RESIZE' | translate}}</div>
                     <input type="range" ng-model="controls.image.scale" name="points" min="0" step="0.1" max="4">
                 </div>

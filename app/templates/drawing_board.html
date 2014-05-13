@@ -2,8 +2,8 @@
     <div class="canvasContainer">
         <div class="maskWrap">
             <div id="customMask">
-                <div drag-rotate-resize style="position:absolute;font-size:40px;" ng-bind-html="controls.text.content | nl2br"></div>
-                <img ng-if="controls.image.info.fileBase64" id="upped-image" drag-rotate-resize class="img-uploaded" ng-show="controls.image.info.fileBase64" src="{{controls.image.info.fileBase64}}" alt="image"/>
+                <div drag-rotate-resize type="text" class="text-loaded"style="color:{{controls.text.color}}" ng-bind-html="controls.text.content | nl2br"></div>
+                <img ng-if="controls.image.info.fileBase64" id="upped-image" drag-rotate-resize type="image" class="img-uploaded" ng-show="controls.image.info.fileBase64" src="{{controls.image.info.fileBase64}}" alt="image"/>
                 <drawing-canvas></drawing-canvas>
             </div>
             <div class="canvasBg" ng-show="controls.showGrid"></div>

@@ -9,9 +9,9 @@ angular.module("app").factory('controlsService', function(html5Storage) {
             if(!html5Storage.get('controls')){
                 controls =  {
                                 showGrid    : true,
-                                text        : { content : "", positionX : 0, positionY : 0, rotation : 0, scale : 1 },
+                                text        : { content : "", position : {X : 320, Y : 480}, rotation : 0, scale : 1, color: "#24ab93"},
                                 brush       : { size : 4, blur : 0.9, fillStyle : "#9c9c9c", maxsize : 80},
-                                image       : { info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1 }
+                                image       : { info : {}, position: {X : 0, Y : 0}, rotation : 0, scale : 1 }
                             };
             }else{
                 //...else get them from localStorage
@@ -31,6 +31,7 @@ angular.module("app").factory('controlsService', function(html5Storage) {
         set: function (newControls) {
             controls = newControls;
             self.save();
+            return newControls;
         },
 
         get: function () {
@@ -40,9 +41,9 @@ angular.module("app").factory('controlsService', function(html5Storage) {
         reset: function () {
             controls =  {
                 showGrid    : true,
-                text        : { content : "", positionX : 0, positionY : 0, rotation : 0, scale : 1 },
+                text        : { content : "", position: {X : 320, Y : 480}, rotation : 0, scale : 1, color: "#24ab93"},
                 brush       : { size : 4, blur : 0.9, fillStyle : "#9c9c9c", maxsize : 80},
-                image       : { info : {}, positionX : 0, positionY : 0, rotation : 0, scale : 1 }
+                image       : { info : {}, position: {X : 0, Y : 0}, rotation : 0, scale : 1 }
             };
             return controls;
         }
