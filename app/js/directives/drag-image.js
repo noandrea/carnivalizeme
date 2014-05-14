@@ -10,7 +10,6 @@ angular.module("app").directive('dragRotateResize', function($document, controls
 
             var rotationDeg = attr.type === 'image' ? controls.image.rotation     : controls.text.rotation;
             var scaleAmount = attr.type === 'image' ? controls.image.scale        : controls.text.scale;
-            the_position    = attr.type === 'image' ? controls.image.position     : controls.text.position;
  
 
             //set basic CSS properties
@@ -41,6 +40,7 @@ angular.module("app").directive('dragRotateResize', function($document, controls
 
 
             element.on('mousedown', function(event) {
+                the_position    = attr.type === 'image' ? controls.image.position     : controls.text.position;
                 // Prevent default dragging of selected content
                 event.preventDefault();
 

@@ -32,7 +32,7 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
         console.log('DONE', $scope.controls);
     };
     $scope.resetText = function() {
-        $scope.controls.text = { content: "TEXT_HERE", position: {X : 320, Y : 480}, rotation : 0, scale : 1, color: "#24ab93"};
+        $scope.controls.text = { content: "TEXT_HERE", position: {X : 260, Y : 380}, rotation : 0, scale : 1, color: "#24ab93"};
         $scope.controls = controlsService.set($scope.controls);
         console.log('DONE', $scope.controls);
     };
