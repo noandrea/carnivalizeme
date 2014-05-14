@@ -32,7 +32,7 @@ class Photo(ndb.Model):
             'audience' : photo.audience,
             'type' : photo.ext,
             'thumb' : photo.thumb,
-            'thumb_still' : photo.thumb
+            'thumb_still' : photo.thumb,
             'blowout' : '/blowout/%s' % photo.key.id() 
         }
         return data
