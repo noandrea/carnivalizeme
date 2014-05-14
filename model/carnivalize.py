@@ -33,6 +33,7 @@ class Photo(ndb.Model):
             'type' : photo.ext,
             'thumb' : photo.thumb,
             'thumb_still' : photo.thumb
+            'blowout' : '/blowout/%s' % photo.key.id() 
         }
         return data
 
