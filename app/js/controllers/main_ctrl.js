@@ -190,7 +190,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         //set canvas with overlay(s)
         canvasOverlay.width = videoWidth;
         canvasOverlay.height= videoHeight;
-        canvasOverlay.style.marginTop = "-" + (videoHeight+2) + "px";
+        canvasOverlay.style.marginTop = "-" + videoHeight + "px";
 
         //init and start tracking
         if($scope.isRunning){ $scope.stopTracking(); }
@@ -272,6 +272,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         });
 
 
+        var ratioActual, ratioIdeal = 0.7431, the_width, the_height;
         //listen to tracking events
         document.addEventListener("facetrackingEvent", function( event ) {
 
@@ -282,10 +283,21 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 
                 // once we have stable tracking, draw rectangle
                 if (event.detection === "CS") {
+                    
+                    //faccia = 243x327 | ratioIdeal = 0.7431;
+                    ratioActual     = (event.width / event.height);
+
+                    if(ratioActual < ratioIdeal){
+                        the_height  = event.height;
+                        the_width   = Math.round(ratioIdeal * event.height);
+                    }else{
+                        the_height  = Math.round(event.width / ratioIdeal);
+                        the_width   = event.width;
+                    }
 
                     //enlarge! For the overlay to be 3x bigger for more fun!
-                    enlargetWidth     = event.width  * 3;
-                    enlargetHeight    = event.height * 3 ;
+                    enlargetWidth     = the_width * 3;         //event.width
+                    enlargetHeight    = the_height * 3;        //event.height
 
                     degrees = event.angle-(Math.PI/2);
                     degrees = Math.round(degrees * 100) / 100;
@@ -294,7 +306,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                     
                     //Draw a rectangle where the face is:
                     //overlayContext.strokeStyle = "red";
-                    //overlayContext.strokeRect((-(event.width/2)) >> 0, (-(event.height/2)) >> 0, event.width, event.height);
+                    //overlayContext.strokeRect((-(the_width/2)) >> 0, (-(the_height/2)) >> 0, the_width, the_height);
                     
                     degrees = (Math.PI/2)-event.angle;
                     degrees = Math.round(degrees * 100) / 100;

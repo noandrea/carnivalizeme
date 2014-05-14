@@ -85,6 +85,9 @@ body{
 
 
 .site-content {
+    &.page-main {
+        margin-top: 60px;
+    }
     @include flex(1);
     &.page-editor{
         -webkit-touch-callout: none;
@@ -95,7 +98,6 @@ body{
         user-select: none;
         background-color: none;//white;
         min-height: 1000px;
-        margin-top: 20px;
     }
     max-width:100%;
     margin:0;
@@ -1144,6 +1146,7 @@ input[type="range"] {
 .noCamBar {
    background: #B10000;
    overflow: hidden;
+   margin-top: -60px;
 
     &.stripe > span{
         text-transform: uppercase;
