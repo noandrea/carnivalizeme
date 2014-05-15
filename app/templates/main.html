@@ -122,9 +122,9 @@
 
 <!-- fullPic (video canvas + overlay) *************************** -->
             <div id="fullPic" width="{{videoWidth}}" height="{{videoHeight}}">
-                <video-canvas></video-canvas>
-                <overlay-face ng-if="showMask"></overlay-face>
-                <video-html5></video-html5>
+                <canvas id="compare"></canvas>
+                <canvas ng-if="showMask" id="overlay"></canvas>
+                <video id="vid" autoplay loop></video>
             </div>
 
         </div>
