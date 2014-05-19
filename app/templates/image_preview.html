@@ -1,0 +1,22 @@
+<div class="imagePreview">
+    <img ng-src="{{lastWatchedImage.image ? lastWatchedImage.image : 'img/loading500.gif'}}" width="500"/>
+
+    <div class="rightInfo" ng-if="lastWatchedImage.image === 'img/loading500.gif' " translate="SELECT_IMAGE_IN_CARNIVAL"></div>
+
+    <div class="rightInfo" ng-if="lastWatchedImage.image !== 'img/loading500.gif' ">
+        <div class="votes">
+            <div class="updown-vote" ng-click="doit('ciao');">
+                <em>{{lastWatchedImage.up}}</em> <i class="icon pictogram picto-2x green">&#128077;</i>
+            </div> 
+
+            <div class="updown-vote" ng-click="doit('ciao');">
+                <em>{{lastWatchedImage.dw}}</em> <i class="icon pictogram picto-2x red">&#128078;</i>
+            </div>
+        </div>
+
+        <br/><br/>
+        CREATED: <em>{{lastWatchedImage.added | timeago}}</em>
+        <br/>
+        TAGS: <em><span ng-repeat="tag in lastWatchedImage.tags">{{tag}}{{$last ? '' : ', '}}</span></em>
+    </div>
+</div>
