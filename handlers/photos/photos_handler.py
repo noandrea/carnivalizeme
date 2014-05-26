@@ -227,14 +227,14 @@ class PhotoHandler(webapp2.RequestHandler):
             photo.up_vote +=1 
             photo.put()
             self.response.headers['Content-Type'] = 'application/json'
-            self.response.write({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote })
+            self.response.write(json.dumps({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote }))
             return
 
         if action == 'dw':
             photo.dwn_vote +=1
             photo.put()
             self.response.headers['Content-Type'] = 'application/json'
-            self.response.write({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote })
+            self.response.write(json.dumps({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote }))
             return 
 
         self.response.set_status('400')

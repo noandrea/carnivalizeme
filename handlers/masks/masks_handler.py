@@ -54,14 +54,14 @@ class MaskHandler(webapp2.RequestHandler):
             mask.up_vote +=1 
             mask.put()
             self.response.headers['Content-Type'] = 'application/json'
-            self.response.write({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote })
+            self.response.write(json.dumps({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote }))
             return
 
         if action == 'dw':
             mask.dwn_vote +=1
             mask.put()
             self.response.headers['Content-Type'] = 'application/json'
-            self.response.write({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote })
+            self.response.write(json.dumps({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote }))
             return 
 
         self.response.set_status('400')
