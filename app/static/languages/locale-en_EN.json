@@ -10,6 +10,10 @@
     "FIND_MASKS"            : "FIND MASKS",
     "DELETE_THIS_PHOTO"     : "delete this image!",
 
+    "MASKS"                 : "masks",
+    "MASK"                  : "mask",
+    "SEARCHING_FOR"         : "searching for",
+
     "CAMERA_SUPPORT"        : "camera is not supported",
     "GET_USER_MEDIA"        : "camera is not supported by your browser",
     "NO_CAMERA"             : "camera not found or streaming not allowed",

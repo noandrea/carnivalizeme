@@ -31,6 +31,10 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRe
                 if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
                     scope.thePhoto.image = scope.thePhoto.thumb + '=s500';
                 }
+                //Scroll to the exact position
+                $document.scrollTop(0, 1500).then(function() {
+                    //console.log('You just scrolled to the top!');
+                });
                 //set the correct image
                 lastWatchedImage.set(scope.thePhoto);
                 snapRemote.open('right');

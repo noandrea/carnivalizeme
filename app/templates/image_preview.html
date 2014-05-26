@@ -5,11 +5,11 @@
 
     <div class="rightInfo" ng-if="lastWatchedImage.image !== 'img/loading500.gif' ">
         <div class="votes">
-            <div class="updown-vote" ng-click="doit('ciao');">
+            <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'up');">
                 <em>{{lastWatchedImage.up}}</em> <i class="icon pictogram picto-2x green">&#128077;</i>
             </div> 
 
-            <div class="updown-vote" ng-click="doit('ciao');">
+            <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'dw');">
                 <em>{{lastWatchedImage.dw}}</em> <i class="icon pictogram picto-2x red">&#128078;</i>
             </div>
         </div>

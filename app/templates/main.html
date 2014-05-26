@@ -4,7 +4,6 @@
         <span class="animateCamBar">{{'ALLOW_CAMERA' | translate}}</span>
     </div>
 
-
     <div class="aligner" ng-show="showStart" ng-if="mode !== 'save'">
 
         <div class="bigPlay">
@@ -75,14 +74,7 @@
             
 
 <!-- SEARCH MASK *************************** -->
-            <div class="findMasks" ng-show="searchMask">
-                <div class="cover"></div>
-                <div class="input">
-                    <input placeholder="{{'SEARCH_MASK_BY_TAG' | translate}}" ng-model="searchTags" type="text"/>
-                    <br/>
-                    <a ng-click="searchMask = !searchMask">{{'OK_DONE' | translate}}</a>
-                </div>
-            </div>
+        <div ng-show="showSearchMask" tags-input="searchInput" search-masks></div>
 
 
 
@@ -98,7 +90,7 @@
 <!-- CONTROLS (buttons) *************************** -->
             <div class="controls" ng-show="showControls">
                 <!-- <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div> -->
-                <div class="control mask" ng-click="searchMask = !searchMask" ng-show="!searchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''"></div>
+                <div class="control mask" ng-click="showSearchMask = !showSearchMask" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''"></div>
                 <div class="control image" ng-click="canvasToImage();" ng-show="isRunning && showImage && (mode !== 'save')"></div>
                 <div class="control empty" ng-hide="isRunning && showImage"></div>
                 <div class="videoProgress" ng-show="mode !== 'save' && isRunning">
@@ -137,9 +129,9 @@
 <!-- find mask and re-calibrate buttons *************************** -->
     <div class="aligner" ng-show="(!isCameraInactive && showVideo)">
         <div class="credits minimenu"> 
-            <a ng-click="searchMask = !searchMask" ng-show="isRunning && (mode !== 'save') && cameraMsg.msg === ''"> {{'FIND_MASKS' | translate}} </a>
+            <a ng-click="showSearchMask = !showSearchMask" ng-show="isRunning && (mode !== 'save') && cameraMsg.msg === ''"> {{'FIND_MASKS' | translate}} </a>
             <div class="right">
-                <a ng-click="refreshTracking();">{{'RECALIBRATE_FACE_DETECT' | translate}}</a>
+                <strong><a ng-click="refreshTracking();">{{'RECALIBRATE_FACE_DETECT' | translate}}</a></strong>
             </div>
         </div>
     </div>
@@ -193,5 +185,4 @@
             </li>
         <ul>
     </div>
-
 </div>

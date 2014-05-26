@@ -1283,6 +1283,13 @@ input[type="range"] {
     background: black;
     color: white;
 }
+/* dirty fix to make the right drawer black until bottom of the page */
+.snapjs-right .snap-drawers{
+  height: 1600px;
+}
+.snapjs-right .snap-content{
+  height: 1600px;
+}
 
 .snap-drawer{
     width: 500px; //this is to delete the 1px GAP of the menu on the left

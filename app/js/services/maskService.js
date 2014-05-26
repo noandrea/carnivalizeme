@@ -36,6 +36,10 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
             return stickImage;
         },
 
+        getFromTags: function (tags) {
+            return Masks.tags({ tags: tags }).$promise;
+        },
+
         setCurrent: function (currentMask) {
             console.log('setting CURRENT: ', currentMask);
             mask = currentMask;

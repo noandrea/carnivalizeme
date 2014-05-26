@@ -1,4 +1,4 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote, lastWatchedImage, controlsService) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote, lastWatchedImage, controlsService, $document) {
 
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
@@ -413,6 +413,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 //add the ID of the used mask 
                 $scope.currentPhoto.masks.push($scope.selectedMask.id);
 
+                //Scroll to the exact position
+                $document.scrollTop(650, 1500).then(function() {
+                    //console.log('You just scrolled to the top!');
+                });
+
                 photoService.addPhotoToCollection($scope.currentPhoto);
                 $scope.images = photoService.getCollection();
 
@@ -473,6 +478,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                                         'image'     : 'data:image/gif;base64,' + b64Image,
                                         $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
                                     };
+
+            //Scroll to the exact position
+            $document.scrollTop(650, 1500).then(function() {
+                //console.log('You just scrolled to the top!');
+            });
 
             photoService.addPhotoToCollection($scope.currentPhoto);
             $scope.images = photoService.getCollection();

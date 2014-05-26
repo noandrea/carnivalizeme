@@ -10,6 +10,10 @@
     "FIND_MASKS"            : "CERCA ALTRE MACHERE",
     "DELETE_THIS_PHOTO"     : "cancella questa immagine!",
 
+    "MASKS"                 : "maschere",
+    "MASK"                  : "maschera",
+    "SEARCHING_FOR"         : "cercando",
+
     "CAMERA_SUPPORT"        : "la tua webcam non è supportata",
     "GET_USER_MEDIA"        : "il tuo browser non supporta la webcam",
     "NO_CAMERA"             : "webcam non trovata o streaming non consentito",
