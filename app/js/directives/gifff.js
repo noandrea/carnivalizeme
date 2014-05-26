@@ -7,9 +7,9 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRe
                 },
         template: function(){
             if(ENVIRONMENT === 'dev'){
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s350" image="{{thePhoto.thumb}}=s350">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s250" image="{{thePhoto.thumb}}=s250">';
             }else{
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s350" image="{{thePhoto.thumb}}=s350">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s250" image="{{thePhoto.thumb}}=s250">';
             }
         },
         link: function(scope, element, attr) {
@@ -28,9 +28,9 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRe
             element.bind('click', function () {
                 //load temporarily the loading image
                 lastWatchedImage.reset();
-                if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
-                    scope.thePhoto.image = scope.thePhoto.thumb + '=s500';
-                }
+                //if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
+                scope.thePhoto.image = scope.thePhoto.thumb + '=s500';
+                //}
                 //Scroll to the exact position
                 $document.scrollTop(0, 1500).then(function() {
                     //console.log('You just scrolled to the top!');
