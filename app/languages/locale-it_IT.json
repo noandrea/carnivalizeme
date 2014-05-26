@@ -10,6 +10,10 @@
     "FIND_MASKS"            : "CERCA ALTRE MACHERE",
     "DELETE_THIS_PHOTO"     : "cancella questa immagine!",
 
+    "MASKS"                 : "maschere",
+    "MASK"                  : "maschera",
+    "SEARCHING_FOR"         : "cercando",
+
     "CAMERA_SUPPORT"        : "la tua webcam non è supportata",
     "GET_USER_MEDIA"        : "il tuo browser non supporta la webcam",
     "NO_CAMERA"             : "webcam non trovata o streaming non consentito",
@@ -22,12 +26,15 @@
 
     "GUIDES"                : "Guide",
     "BRUSH"                 : "Pennello",
+    "TEXT"                  : "Testo/HTML",
     "ERASER_BRUSH_MASK"     : "Cancellino",
     "SIZE_BRUSH_MASK"       : "Dimensione",
     "BLUR_BRUSH_MASK"       : "Sfocatura",
     "COLOR_BRUSH_MASK"      : "Colore",
     "ADD_IMAGE_MASK"        : "carica immagine",
     "FROM_PC_MASK"          : "da Computer",
+    "RESET_TEXT"            : "Reset Testo",
+    "RESET_IMAGE"           : "Reset Immagine",
     "DELETE_IMAGE"          : "Rimuovi Immagine",
     "UPLOADED_IMAGE_MASK"   : "immagine",
     "IMAGE_ROTATE"          : "Ruota",
@@ -35,6 +42,7 @@
     "TRY_MASK"              : "prova maschera",
     "RESTART_MASK"          : "ricomincia",
     "CLEAR_MASTERPIECE"     : "Stai per cancellare tutto quello disegnato fin'ora!",
+    "IMAGES_ONLY"           : "Spiacenti, ma possono essere caricate solamente immagini PNG o SVG",
 
     "HELP_MASK"             : "aiuto",
     "HELP_BRUSH_SIZE"       : "<span>DIMENSIONE</span> pennello",
@@ -57,5 +65,6 @@
     "SAVE_PHOTO"            : "salva nel carnevale",
 
     "TERMS_AND_CONDITIONS_PRIVACY" : "Termini, Condizioni e Privacy",
-    "ABOUT"                 : "Informazioni"
+    "ABOUT"                 : "Informazioni",
+    "SELECT_IMAGE_IN_CARNIVAL":"Seleziona un immagine dal <a href='/carnival'>carnevale</a>"
 }

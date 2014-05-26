@@ -10,6 +10,10 @@
     "FIND_MASKS"            : "FIND MASKS",
     "DELETE_THIS_PHOTO"     : "delete this image!",
 
+    "MASKS"                 : "masks",
+    "MASK"                  : "mask",
+    "SEARCHING_FOR"         : "searching for",
+
     "CAMERA_SUPPORT"        : "camera is not supported",
     "GET_USER_MEDIA"        : "camera is not supported by your browser",
     "NO_CAMERA"             : "camera not found or streaming not allowed",
@@ -22,6 +26,7 @@
 
     "GUIDES"                : "Guides",
     "BRUSH"                 : "Brush",
+    "TEXT"                  : "Text/HTML",
     "ERASER_BRUSH_MASK"     : "Eraser",
     "SIZE_BRUSH_MASK"       : "Size",
     "BLUR_BRUSH_MASK"       : "Blur",
@@ -29,12 +34,15 @@
     "ADD_IMAGE_MASK"        : "add image",
     "FROM_PC_MASK"          : "from Computer",
     "DELETE_IMAGE"          : "Remove Image",
+    "RESET_IMAGE"           : "Reset Image",
+    "RESET_TEXT"            : "Reset text",
     "UPLOADED_IMAGE_MASK"   : "image",
     "IMAGE_ROTATE"          : "Rotate",
     "IMAGE_RESIZE"          : "Resize",
     "TRY_MASK"              : "try mask",
     "RESTART_MASK"          : "restart",
     "CLEAR_MASTERPIECE"     : "You're about to destroy yout masterpiece!",
+    "IMAGES_ONLY"           : "Sorry, but you can only upload PNG or SVG images",
     
     "HELP_MASK"             : "help",
     "HELP_BRUSH_SIZE"       : "Brush <span>SIZE</span>",
@@ -57,6 +65,7 @@
     "SAVE_PHOTO"            : "save to carnival",
 
     "TERMS_AND_CONDITIONS_PRIVACY" : "Terms, Conditions and Privacy",
-    "ABOUT"                 : "About"
+    "ABOUT"                 : "About",
+    "SELECT_IMAGE_IN_CARNIVAL":"Select an image from the <a href='/carnival'>carnival</a>"
     
 }
