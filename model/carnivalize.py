@@ -25,7 +25,7 @@ class Photo(ndb.Model):
         data = {
             'id': photo.key.id(),
             'image' : '/p/%s' % photo.filename,
-            'added' : photo.added.isoformat(),
+            'added' : photo.added.strftime('%s'),
             'tags' : photo.tags,
             'up' : photo.up_vote,
             'dw' : photo.dwn_vote,
@@ -64,7 +64,7 @@ class Mask(ndb.Model):
         data = {
             'id': mask.key.id(),
             'image' : '/m/%s' % mask.filename,
-            'added' : mask.added.isoformat(),
+            'added' : mask.added.strftime('%s'),
             'tags' : mask.tags,
             'up' : mask.up_vote,
             'dw' : mask.dwn_vote,

@@ -39,6 +39,11 @@ class MaskHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(reply))   
 
     def vote(self, _id ,action):
+
+        if self.request.method == 'OPTIONS':
+            self.options()
+            return
+
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         mask = Mask.get_by_id(_id)
         if mask is None:

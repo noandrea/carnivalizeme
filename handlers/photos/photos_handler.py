@@ -212,6 +212,11 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.write(Photo.to_json_string(photo))
 
     def vote(self, _id ,action):
+
+        if self.request.method == 'OPTIONS':
+            self.options()
+            return
+
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         photo = Photo.get_by_id(_id)
         if photo is None:
