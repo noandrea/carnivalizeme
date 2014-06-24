@@ -4,7 +4,8 @@ angular.module("app").directive('searchMasks', function(maskService) {
         replace: true,
         transclude: true, //inherit parent scope (mainly for ng-show="showSearchMask")
         scope:  {
-            tagsInput       : '='
+            tagsInput       : '=',
+            updateTags      : '&'
         },
         templateUrl: 'search_tags.html',
         link: function(scope, element, attr) {
@@ -13,6 +14,7 @@ angular.module("app").directive('searchMasks', function(maskService) {
 
             element.bind('keyup', function(ev){
                 if(scope.searchInput.length > 2){
+                    
                     var promiseRes = maskService.getFromTags(scope.searchInput);
 
                     promiseRes.then(function(response){
@@ -29,8 +31,15 @@ angular.module("app").directive('searchMasks', function(maskService) {
                             scope.$parent.masks = [];
                             //nothing
                         }
+                        maskService.masktags        = scope.searchInput;
+                        maskService.masktagsAmount  = response.length;
+                        scope.updateTags();
                     });
                     
+                }else{
+                    maskService.masktags        = "";
+                    maskService.masktagsAmount  = 0;
+                    scope.updateTags();
                 }
             });
 

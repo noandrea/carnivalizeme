@@ -1,13 +1,7 @@
-angular.module("app").controller('EditorCtrl', function($scope, $document, snapRemote, lastWatchedImage) {
+angular.module("app").controller('EditorCtrl', function($scope, $document, lastWatchedImage) {
     
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
-
-    //close snappe and disable sliding
-    snapRemote.close();
-    snapRemote.getSnapper().then(function(snapper) {
-        snapper.disable();
-    });
     $scope.pageClass = 'page-editor';
 
     $scope.showModal = function(){

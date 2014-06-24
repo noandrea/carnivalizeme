@@ -29,7 +29,18 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
 
   $routeProvider.when('/carnival', {
     templateUrl: 'carnival.html',
-    controller: 'CarnivalCtrl'
+    controller: 'CarnivalCtrl',
+    resolve: {
+      isFiltered: function() { return true; }
+    }
+  });
+  $routeProvider.when('/carnival/:id', {
+    templateUrl: 'carnival.html',
+    reloadOnSearch: false,
+    controller: 'CarnivalCtrl',
+    resolve: {
+      isFiltered: function() { return true; }
+    }
   });
 
   $routeProvider.when('/sorry', {

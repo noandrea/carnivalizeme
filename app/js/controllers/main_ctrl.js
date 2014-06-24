@@ -1,14 +1,8 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, snapRemote, lastWatchedImage, controlsService, $document) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, lastWatchedImage, controlsService, $document) {
 
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
-    
-    //close snappe and disable sliding
-    snapRemote.close();
-    snapRemote.getSnapper().then(function(snapper) {
-        snapper.disable();
-    });
-    
+
     $scope.showVideo        = false;
     $scope.showControls     = false;
     $scope.showStart        = true;
@@ -19,7 +13,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
     $scope.isCameraInactive   = true;
 
     $scope.allSelectedMasks = [];
-    $scope.images           = [];
+    $scope.images           = photoService.getCollection();
 
     $scope.selectedMask     = maskService.init($rootScope.lang);
     $scope.currentPhoto     = photoService.init($rootScope.lang);
@@ -75,8 +69,25 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      */
     $scope.saveMaskOnDB = function(maskObj){
         maskObj.lang = $rootScope.lang;
-        console.log('save this', maskObj);
         maskService.saveMaskOnDB(maskObj);
+    };
+
+    /**
+     * refresh masktags list and amount in View (called from search tags directive)
+     * @return {null}
+     */
+    $scope.updateMasksAmountAndTags = function(){
+        $scope.masktags         = maskService.masktags;
+        $scope.masktagsAmount   = maskService.masktagsAmount;
+    };
+    /**
+     * reset masktags list and amount in View (called from search tags directive)
+     * @return {null}
+     */
+    $scope.resetMasksAmountAndTags = function(){
+        maskService.masktags        = "";
+        maskService.masktagsAmount  = 0;
+        $scope.getRandomMask();
     };
 
     /**
@@ -96,6 +107,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
 
     $scope.$on('imagesListChaged', function(newList) {
         console.log('list changed, emit listened!');
+        $scope.images = [];
         $scope.images = newList;
     });
 
@@ -123,6 +135,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         }else{
             alert('There are NO masks!');
         }
+        $scope.updateMasksAmountAndTags();
     };
 
 
@@ -190,7 +203,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         //set canvas with overlay(s)
         canvasOverlay.width = videoWidth;
         canvasOverlay.height= videoHeight;
-        canvasOverlay.style.marginTop = "-" + videoHeight + "px";
+        canvasOverlay.style.marginTop = "-" + (videoHeight+4) + "px";
 
         //init and start tracking
         if($scope.isRunning){ $scope.stopTracking(); }
@@ -334,18 +347,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
 
         if($scope.mode !== 'save'){
             //get masks promise from mask service
-            maskService.getMasks($scope.mode).then(function(response){
-                if(response.length){
-                    maskService.masks = $scope.masks = response;
-                    //set a random mask as "current"
-                    maskIndex = Math.floor((Math.random()* response.length));
-                    maskService.setCurrent(response[maskIndex]);
-                    $scope.selectedMask = response[maskIndex];
-                    console.log('THE MASKS:', $scope.masks);
-                }else{
-                    alert('NO masks!');
-                }
-            });
+            $scope.getRandomMask();
         }else{
             //current mask (user handmade one) ...... //TODO: error here in case there is no mask
             var customMask = maskService.getMaskFromLocalStorage();
@@ -363,6 +365,23 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         $scope.startWebCam();
     };
 
+
+
+    $scope.getRandomMask = function(){
+        maskService.getMasks($scope.mode).then(function(response){
+            maskService.masktagsAmount = response.length;
+            if(response.length){
+                maskService.masks = $scope.masks = response;
+                //set a random mask as "current"
+                maskIndex = Math.floor((Math.random()* response.length));
+                maskService.setCurrent(response[maskIndex]);
+                $scope.selectedMask = response[maskIndex];
+            }else{
+                alert('NO masks!');
+            }
+            $scope.updateMasksAmountAndTags();
+        });
+    };
 
     $scope.stopTracking = function(){
         trackingService.stop();
@@ -536,21 +555,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         //show the button to take images again
         $scope.showImage = true;
 
-    };
-
-    /**
-     * Helper function to clear the stuff saved on localStorage
-     * 
-     * @return {bool:true} [empty previously set objs]
-     */
-    $scope.clearStorage = function(){
-        html5Storage.set('the_mask', '');
-
-        //clear canvas and controls (which include image, image position, brush size, brush blur, etc.)
-        controlsService.reset();
-        html5Storage.set('drawing_canvas', '');
-        alert('html5 storage cleared!');
-        return true;
     };
 
 

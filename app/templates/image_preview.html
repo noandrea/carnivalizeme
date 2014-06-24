@@ -1,22 +1,51 @@
-<div class="imagePreview">
-    <img ng-src="{{lastWatchedImage.image ? lastWatchedImage.image : 'img/loading500.gif'}}" width="500"/>
-
-    <div class="rightInfo" ng-if="lastWatchedImage.image === 'img/loading500.gif' " translate="SELECT_IMAGE_IN_CARNIVAL"></div>
-
-    <div class="rightInfo" ng-if="lastWatchedImage.image !== 'img/loading500.gif' ">
-        <div class="votes">
-            <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'up');">
-                <em>{{lastWatchedImage.up}}</em> <i class="icon pictogram picto-2x green">&#128077;</i>
-            </div> 
-
-            <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'dw');">
-                <em>{{lastWatchedImage.dw}}</em> <i class="icon pictogram picto-2x red">&#128078;</i>
+<div>
+    <div class="aligner imagePreview">
+        <img ng-src="{{lastWatchedImage.image ? lastWatchedImage.image : 'img/loading500.gif'}}" width="450"/>
+        
+        <div class="rightInfo" ng-if="lastWatchedImage.image === 'img/loading500.gif' ">
+            <div class="info">
+                <ul>
+                    <li class="textonly">
+                        <a>{{'SELECT_IMAGE_IN_CARNIVAL' | translate}}</a>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <br/><br/>
-        CREATED: <em>{{lastWatchedImage.added | timeago}}</em>
-        <br/>
-        TAGS: <em><span ng-repeat="tag in lastWatchedImage.tags">{{tag}}{{$last ? '' : ', '}}</span></em>
+        <div class="rightInfo" ng-if="lastWatchedImage.image !== 'img/loading500.gif' ">
+
+            <small>Created <em>{{lastWatchedImage.added | timeago}}</em></small>
+
+            <div class="votes">
+                <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'up');">
+                    <em>{{lastWatchedImage.up}}</em> <i class="icon pictogram picto-2x green">&#128077;</i>
+                </div> 
+
+                <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'dw');">
+                    <em>{{lastWatchedImage.dw}}</em> <i class="icon pictogram picto-2x red">&#128078;</i>
+                </div>
+            </div>
+            <div class="info">
+                <div class="el">
+                    <ul>
+                        <li>
+                            <a class="facebook" target="_blank" href="http://hrefshare.com/3270"><i class="icon pictogramsocial picto-3x">&#62220;</i></a>
+                        </li>
+                        <li>
+                            <a class="twitter" target="_blank" href="http://hrefshare.com/8da03"><i class="icon pictogramsocial picto-3x">&#62217;</i></a>
+                        </li>
+                        <li>
+                            <a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=http:%2F%2Fcarnivalize.me%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-3x">&#62226;</i></a>
+                        </li>
+                        <li class="textonly">
+                            <a href="{{lastWatchedImage.blowout}}" target="_blank">LINK</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="el">
+                    <small><em><span ng-repeat="tag in lastWatchedImage.tags">{{tag}}{{$last ? '' : ', '}}</span></em></small>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

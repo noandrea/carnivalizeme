@@ -8,11 +8,7 @@
 
         <div class="bigPlay">
             <div>
-                <a class="playButton" href="/carnival">{{'GOTO_CARNIVAL' | translate}}</a>
-                <br/>
                 <a class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
-                <br/>
-                <a class="playButton" href="/editor">{{'CREATE_MASK' | translate}}</a>
             </div>
         </div>
 
@@ -32,6 +28,10 @@
             <div class="imgCover" ></div>
             <div class="imgMenu" >
                  <div class="formMask">
+
+                    <div class="el center">
+                        <label>{{'SAVE_MASK' | translate}}</label>
+                    </div>
 
                     <div class="el center">
                         <div class="radio">
@@ -62,7 +62,7 @@
                             <a class="btn" ng-click="saveMaskOnDB(selectedMask);">{{'SAVE_MASK' | translate}}</a>
                         </div>
                         <div class="el center">
-                            <span ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</span>
+                            <a class="btn small important" ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</a>
                         </div>
                     </div>
 
@@ -74,7 +74,7 @@
             
 
 <!-- SEARCH MASK *************************** -->
-        <div ng-show="showSearchMask" tags-input="searchInput" search-masks></div>
+        <div ng-show="showSearchMask" tags-input="searchInput" update-tags="updateMasksAmountAndTags()" search-masks></div>
 
 
 
@@ -90,6 +90,14 @@
 <!-- CONTROLS (buttons) *************************** -->
             <div class="controls" ng-show="showControls">
                 <!-- <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div> -->
+                <div ng-if="masktags" class="control masktags" ng-click="alert('Catch All!');" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
+                    {{masktags ? masktags : '...'}}  <br/> <em>{{masktagsAmount}} {{'MASKS_FOUND' | translate}}</em> &mdash; <a ng-click="resetMasksAmountAndTags();">{{'REMOVE_TAGS' | translate}}</a>
+                </div>
+                
+                <div class="control masktags" ng-click="showSearchMask = !showSearchMask" ng-show="!masktags && !showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
+                    <em>{{'TOTAL_MASKS' | translate}}: {{masktagsAmount}}</em> &mdash; <a>{{'SEARCH_BY_TAGS' | translate}}</a>
+                </div>
+
                 <div class="control mask" ng-click="showSearchMask = !showSearchMask" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''"></div>
                 <div class="control image" ng-click="canvasToImage();" ng-show="isRunning && showImage && (mode !== 'save')"></div>
                 <div class="control empty" ng-hide="isRunning && showImage"></div>
@@ -116,6 +124,7 @@
             <div id="fullPic" width="{{videoWidth}}" height="{{videoHeight}}">
                 <canvas id="compare"></canvas>
                 <canvas ng-if="showMask" id="overlay"></canvas>
+                <div id="watermark">http://carnivalize.me</div>
                 <video id="vid" autoplay loop></video>
             </div>
 
@@ -131,7 +140,7 @@
         <div class="credits minimenu"> 
             <a ng-click="showSearchMask = !showSearchMask" ng-show="isRunning && (mode !== 'save') && cameraMsg.msg === ''"> {{'FIND_MASKS' | translate}} </a>
             <div class="right">
-                <strong><a ng-click="refreshTracking();">{{'RECALIBRATE_FACE_DETECT' | translate}}</a></strong>
+                {{'MASK_NO_FIT' | translate}} <strong><a ng-click="refreshTracking();">{{'RECALIBRATE_FACE_DETECT' | translate}}</a></strong>
             </div>
         </div>
     </div>
@@ -151,6 +160,7 @@
 
 
 <!-- create MASK button *************************** -->
+    <!-- 
     <div class="aligner" ng-show="mode !== 'save' && !showStart">
         <div class="formMask">
             <div class="el center">
@@ -158,6 +168,7 @@
             </div>
         </div>
     </div>
+    -->
     
 
 
@@ -178,8 +189,18 @@
 
 
 <!-- previously taken PHOTOS *************************** -->
-    <div class="aligner" ng-if="images.length > 0">
-        <ul class="userImages">
+    <div class="aligner gray" ng-if="images.length > 0">
+        <div class="textBlock">
+            <h2 class="white">Your Temporary Images</h2>
+            <p class="white">
+                These images are only available until your next refresh.<br/>
+                To preserve these images you can anonimously save them to the carnival<br/>
+                or <em>Right Click</em> on the ones you like, to store them on your computer.
+            </p>
+        </div>
+    </div>
+    <div class="userImages aligner" ng-if="images.length > 0">
+        <ul>
             <li ng-repeat="img in images | orderBy:'ts':true"> <!-- | orderBy:'ts':true -->
                 <personal-image></personal-image>
             </li>
