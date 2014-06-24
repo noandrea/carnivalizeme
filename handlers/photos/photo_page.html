@@ -41,38 +41,33 @@
 	
 	<!-- Use Iconifyer to generate all the favicons and touch icons you need: http://iconifier.net -->
 	<link rel="shortcut icon" href="favicon.ico" />
-	
-	<!-- concatenate and minify for production -->
-	<link rel="stylesheet" href="assets/css/reset.css" />
-	<link rel="stylesheet" href="assets/css/style.css" />
-	
-	<!-- Lea Verou's Prefix Free, lets you use un-prefixed properties in your CSS files -->
-	<script src="assets/js/libs/prefixfree.min.js"></script>
-	
+
 	<!-- This is an un-minified, complete version of Modernizr. 
 		 Before you move to production, you should generate a custom build that only has the detects you need. -->
 	<script src="assets/js/libs/modernizr-2.7.1.dev.js"></script>
 	
-	<!-- Application-specific meta tags -->
-	<!-- Windows 8: see http://msdn.microsoft.com/en-us/library/ie/dn255024%28v=vs.85%29.aspx for details -->
-	<meta name="application-name" content="" /> 
-	<meta name="msapplication-TileColor" content="" /> 
-	<meta name="msapplication-TileImage" content="" />
-	<meta name="msapplication-square150x150logo" content="" />
-	<meta name="msapplication-square310x310logo" content="" />
-	<meta name="msapplication-square70x70logo" content="" />
-	<meta name="msapplication-wide310x150logo" content="" />
-	<!-- Twitter: see https://dev.twitter.com/docs/cards/types/summary-card for details -->
-	<meta name="twitter:card" content="">
-	<meta name="twitter:site" content="">
-	<meta name="twitter:title" content="">
-	<meta name="twitter:description" content="">
-	<meta name="twitter:url" content="">
-	<!-- Facebook (and some others) use the Open Graph protocol: see http://ogp.me/ for details -->
-	<meta property="og:title" content="" />
-	<meta property="og:description" content="" />
-	<meta property="og:url" content="" />
-	<meta property="og:image" content="" />
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53a97897173f0c2d"></script>
+
+	<!-- for Google -->
+	<meta name="description" content="#maskedselfie and animated #GIF generator? http://carnivalize.me/ !" />
+	<meta name="keywords" content="maskedselfie, mask, selfie, gif, avatar" />
+	<meta name="author" content="http://www.carnivalize.me" />
+	<meta name="copyright" content="carnivalize.me" />
+	<meta name="application-name" content="carnivalize.me" />
+
+	<!-- for Facebook -->
+	<meta property="og:title" content="Check out my #maskedselfie on http://carnivalize.me/" />
+	<meta property="og:type" content="article" />
+	<meta property="og:image" content="{{photo.thumb}}" />
+	<meta property="og:url" content="http://carnivalize.me/{{photo.key.id()}}" />
+	<meta property="og:description" content="Make your own funny #maskedselfie and animated #GIF on http://carnivalize.me/" />
+
+	<!-- for Twitter -->          
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="Check out this #maskedselfie on http://carnivalize.me/" />
+	<meta name="twitter:description" content="Create your own funny #maskedselfie and animated #GIF on http://carnivalize.me/" />
+	<meta name="twitter:image" content="{{photo.thumb}}" />
 
 </head>
 
@@ -82,7 +77,9 @@
 
 	<header>
 		
-		<h1><a href="/">Page Title</a></h1>
+		<h1>Page Title Photo</h1>
+
+		<pre>{{photo}}</pre>
 		
 		<nav>
 		
@@ -99,7 +96,7 @@
 	<article>
 		
 		<p>{{ photo.audience }}</p>
-		<p><img src="{{ photo.thumb }}"></img></p>
+		<p><img src="{{photo.thumb}}"></img></p>
 		<p>
 			{% for tag in photo.tags %}
 			<div>{{ tag }}</div>
@@ -122,31 +119,18 @@
 
 </div>
 
-<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script>window.jQuery || document.write("<script src='assets/js/libs/jquery-1.11.0.min.js'>\x3C/script>")</script>
-
-<!-- this is where we put our custom functions -->
-<!-- don't forget to concatenate and minify if needed -->
-<script src="assets/js/functions.js"></script>
-
-<!-- Asynchronous google analytics; this is the official snippet.
-	 Replace UA-XXXXXX-XX with your site's ID and uncomment to enable.
+<!-- Asynchronous google analytics; this is the official snippet. -->
 	 
 <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-XXXXXX-XX']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+  ga('create', 'UA-2305595-16', 'carnivalize.me');
+  ga('send', 'pageview');
 
 </script>
--->
   
 </body>
 </html>
