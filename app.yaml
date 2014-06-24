@@ -9,6 +9,10 @@ handlers:
   static_files: app/favicon.ico
   upload: app/favicon\.ico
 
+- url: /crossdomain\.xml
+  static_files: app/crossdomain.xml
+  upload: app/crossdomain\.xml
+
 - url: /
   static_files: app/index.html
   upload: app/index\.html
