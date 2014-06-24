@@ -16,17 +16,11 @@ angular.module("app").controller('TermsCtrl', function($scope, lastWatchedImage)
     
 });
 
-angular.module("app").controller('CarnivalCtrl', function($scope, Photos, snapRemote, lastWatchedImage) {
+angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWatchedImage) {
 
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
 
-    //close snappe and disable sliding
-    snapRemote.close();
-    snapRemote.getSnapper().then(function(snapper) {
-        snapper.enable();
-    });
-    
     $scope.pageClass = 'page-carnival';
     $scope.photos = [];
 
@@ -36,7 +30,6 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, snapRe
         // get data for the ...CARNIVAL!
         Photos.query(filter).$promise.then(function(response){
             if(response.length){
-                console.log('THE PHOTOS:', response);
                 $scope.photos = response;
                 //add 3 ads on random positions
                 $scope.photos.splice(Math.floor(Math.random()*4), 0, {ad:true});

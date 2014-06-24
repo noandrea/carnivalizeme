@@ -2,6 +2,8 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
 
     var mask        = {};
     var masks       = {};
+    var masktags            = "";
+    var masktagsAmount      = "";
 
     var stickImage              = new Image();          //used in the overlayCanvas
         stickImage.src          = "img/mask_basic.png"; //"img/mask_headglass.png";
@@ -36,8 +38,12 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
             return stickImage;
         },
 
+        getFromTags: function (tags) {
+            return Masks.tags({ tags: tags }).$promise;
+        },
+
         setCurrent: function (currentMask) {
-            console.log('setting CURRENT: ', currentMask);
+            //console.log('setting CURRENT: ', currentMask);
             mask = currentMask;
 
             if(mask.image.indexOf("data:image") > -1){

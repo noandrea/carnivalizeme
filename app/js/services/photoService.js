@@ -40,6 +40,14 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
             return photos;  
         },
 
+        getFromTags: function (tags) {
+            Photos.tags({ tags: tags }, photoObj).$promise.then(function(response){
+                return true;
+            },function(response){
+                return false;
+            });
+        },
+
         savePhotoOnDB: function(photoObj, photoCollectionIndex){
             if(!photoObj.id){
                 Photos.save(photoObj).$promise.then(function(response){
@@ -53,11 +61,28 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
             }else{
                 Photos.update({ id: photoObj.id }, photoObj).$promise.then(function(response){
                     alert('PHOTO UPDATED!', photoObj);
+                    self.updateCurrent(photoObj, photoCollectionIndex);
                     $rootScope.$emit("imagesListChaged", self.getCollection());
                 },function(response){
                     alert('ERROR! NOT -UPDATED-! Why??? ' + response);
                 });
             }
+        },
+
+        voteup: function(photoObj){
+            Photos.voteup({ id: photoObj.id }, photoObj).$promise.then(function(response){
+                return true;
+            },function(response){
+                return false;
+            });
+        },
+
+        votedown: function(photoObj){
+            Photos.votedown({ id: photoObj.id }, photoObj).$promise.then(function(response){
+                return true;
+            },function(response){
+                return false;
+            });
         },
 
         addPhotoToCollection: function (photo) {

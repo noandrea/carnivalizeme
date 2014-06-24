@@ -147,10 +147,10 @@ angular.module("app").directive('dragRotateResize', function($document, controls
             function assignStyle(rotation, scale){
 
                 style = {
-                    webkitTransform : 'scale('+scale+','+scale+') rotate('+rotation+'deg)',
-                    MozTransform    : 'scale('+scale+','+scale+') rotate('+rotation+'deg)',
-                    msTransform     : 'scale('+scale+','+scale+') rotate('+rotation+'deg)',
-                    OTransform      : 'scale('+scale+','+scale+') rotate('+rotation+'deg)'
+                    webkitTransform : 'scale('+scale+','+scale+') rotate('+rotation+'deg) translate3d(0,0,0)',
+                    MozTransform    : 'scale('+scale+','+scale+') rotate('+rotation+'deg) translate3d(0,0,0)',
+                    msTransform     : 'scale('+scale+','+scale+') rotate('+rotation+'deg) translate3d(0,0,0)',
+                    OTransform      : 'scale('+scale+','+scale+') rotate('+rotation+'deg) translate3d(0,0,0)'
                 };
                 element.css(style);
 

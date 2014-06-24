@@ -46,7 +46,7 @@
         <div class="inner">
             <div class="el">
                 <textarea ng-model="controls.text.content"></textarea>
-                <div ng-click="resetText();" class="label">{{'RESET_TEXT' | translate}}</div>
+                <div ng-click="resetText();" class="label important">{{'RESET_TEXT' | translate}}</div>
             </div>
 
             <div class="el">
@@ -90,7 +90,7 @@
                 </div>
                 <div class="suggestion" ng-if="controls.image.info.size">{{controls.image.info.size | bytes}}</div>
                 <div class="el">
-                    <div ng-click="resetImage();" class="label">{{'RESET_IMAGE' | translate}}</div><br/>
+                    <div ng-click="resetImage();" class="label important">{{'RESET_IMAGE' | translate}}</div><br/>
                     <div class="label">{{'IMAGE_RESIZE' | translate}}</div>
                     <input type="range" ng-model="controls.image.scale" name="points" min="0" step="0.1" max="4">
                 </div>
@@ -107,14 +107,8 @@
     <fieldset class="tool upload-area">
         <div class="inner">
             <a class="btn" ng-click="save();">{{'TRY_MASK' | translate}}</a>
-            <div class="help">
-                <br/>
-                <a href="#" ng-click="erase();">{{'RESTART_MASK' | translate}}</a>
-                <br/>
-                <a href="#" ng-click="showModal();">{{'HELP_MASK' | translate}}</a>
-                <br/>
-                <a href="/now">home</a>
-            </div>
+            <a class="btn important" ng-click="erase();">{{'RESTART_MASK' | translate}}</a>
+            <a class="btn cta"       ng-click="showModal();">{{'HELP_MASK' | translate}}</a>
         </div>
     </fieldset>
 </div>

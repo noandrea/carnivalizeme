@@ -1,4 +1,4 @@
-angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRemote, $rootScope, lastWatchedImage) {
+angular.module("app").directive('gifff', function($document, ENVIRONMENT,  $rootScope, lastWatchedImage, $location) {
     return {
         restrict: 'EA',
         replace: true,
@@ -7,9 +7,9 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRe
                 },
         template: function(){
             if(ENVIRONMENT === 'dev'){
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s350" image="{{thePhoto.thumb}}=s350">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s150" width="250" image="{{thePhoto.thumb}}=s150">';
             }else{
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s350" image="{{thePhoto.thumb}}=s350">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s150" width="250" image="{{thePhoto.thumb}}=s150">';
             }
         },
         link: function(scope, element, attr) {
@@ -28,12 +28,15 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, snapRe
             element.bind('click', function () {
                 //load temporarily the loading image
                 lastWatchedImage.reset();
-                if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
-                    scope.thePhoto.image = scope.thePhoto.thumb + '=s500';
-                }
+                //if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
+                scope.thePhoto.image = scope.thePhoto.thumb + '=s450';
+                //}
+                //Scroll to the exact position
+                $document.scrollTop(0, 1500).then(function() {
+                    //console.log('You just scrolled to the top!');
+                });
                 //set the correct image
                 lastWatchedImage.set(scope.thePhoto);
-                snapRemote.open('right');
             });
 
         }

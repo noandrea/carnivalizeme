@@ -4,11 +4,20 @@
     "GOTO_CARNIVAL"         : "check out the carnival",
     "CREATE_MASK"           : "create a mask",
     "ALLOW_CAMERA"          : "I need you to allow me to use your WebCam",
-    "OK_DONE"               : "ok, done.",
+    "OK_DONE"               : "OK, DONE.",
     "SEARCH_MASK_BY_TAG"    : "search mask",
+    "MASK_NO_FIT"           : "Mask doesn't fit?",
     "RECALIBRATE_FACE_DETECT": "re-calibrate face detection",
     "FIND_MASKS"            : "FIND MASKS",
     "DELETE_THIS_PHOTO"     : "delete this image!",
+
+    "MASKS"                 : "masks",
+    "MASK"                  : "mask",
+    "SEARCHING_FOR"         : "searching for",
+    "TOTAL_MASKS"           : "Total Masks",
+    "REMOVE_TAGS"           : "REMOVE TAGS",
+    "SEARCH_BY_TAGS"        : "FILTER BY TAG(S)",
+    "MASKS_FOUND"           : "Masks Found",
 
     "CAMERA_SUPPORT"        : "camera is not supported",
     "GET_USER_MEDIA"        : "camera is not supported by your browser",
@@ -62,6 +71,6 @@
 
     "TERMS_AND_CONDITIONS_PRIVACY" : "Terms, Conditions and Privacy",
     "ABOUT"                 : "About",
-    "SELECT_IMAGE_IN_CARNIVAL":"Select an image from the <a href='/carnival'>carnival</a>"
+    "SELECT_IMAGE_IN_CARNIVAL":"Select an image from the carnival to see its tags, votes and link"
     
 }
