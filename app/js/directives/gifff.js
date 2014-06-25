@@ -19,21 +19,25 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, lastWa
                 lastWatchedImage.reset();
                 //if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
                  
+                scope.thePhoto.image = 'img/loading500.gif';
 
+                
                 $http({method: 'GET', url: scope.thePhoto.thumb + '=s450'}).
                 success(function(data, status, headers, config) {
+
+                    //set the correct image
+                    scope.thePhoto.image = data;
+                    lastWatchedImage.set(scope.thePhoto);
 
                     //Scroll to the exact position
                     $document.scrollTop(0, 1500).then(function() {
                         //scrolled to top!
                     });
-                    scope.thePhoto.image = data;
-                    //set the correct image
-                    lastWatchedImage.set(scope.thePhoto);
                 }).
                 error(function(data, status, headers, config) {
                     alert('A problem occurred, please try again');
                 });
+
 
             });
 

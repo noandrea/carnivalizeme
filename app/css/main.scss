@@ -157,7 +157,7 @@ header{
 /* *************************************************************** end HEADER */
 
 /* *************************************************************** FOOTER */
-footer{
+footer, .pager{
     overflow: hidden;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -207,6 +207,14 @@ footer{
         }
         margin: 0;
         margin-right: 10px;
+    }
+}
+.pager{
+    background: none;
+    ul{
+        li{
+            margin: 0 10px;
+        }
     }
 }
 /* *************************************************************** end FOOTER */
