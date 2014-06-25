@@ -157,37 +157,6 @@
 
 
 
-
-
-<!-- create MASK button *************************** -->
-    <!-- 
-    <div class="aligner" ng-show="mode !== 'save' && !showStart">
-        <div class="formMask">
-            <div class="el center">
-                <a class="btn" ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
-            </div>
-        </div>
-    </div>
-    -->
-    
-
-
-<!-- clear storage (DEBUG) button *************************** -->
-<!--
-    <div class="aligner" ng-if="mode !== 'save'">
-        <a ng-click="clearStorage();">clearStorage</a>
-    </div>
--->
-<!--
-    <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
-        {{selectedMask}}
-    </pre>
--->
-
-
-
-
-
 <!-- previously taken PHOTOS *************************** -->
     <div class="aligner gray" ng-if="images.length > 0">
         <div class="textBlock">
@@ -202,7 +171,7 @@
     <div class="userImages aligner" ng-if="images.length > 0">
         <ul>
             <li ng-repeat="img in images | orderBy:'ts':true"> <!-- | orderBy:'ts':true -->
-                <personal-image></personal-image>
+                <personal-image all-images="images" img="img"></personal-image>
             </li>
         <ul>
     </div>

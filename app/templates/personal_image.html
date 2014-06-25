@@ -6,41 +6,45 @@
         <div class="imgMenu" >
             <div class="formMask">
 
-                <div class="el center" ng-hide="img.audience">
-                    <label class="delete" ng-click="removeImage($index)">{{'DELETE_THIS_PHOTO' | translate}}</label>
+                <div class="el center" ng-hide="allImages[$parent.$index].audience">
+                    <label class="delete" ng-click="removeImage(allImages[$parent.$index])">{{'DELETE_THIS_PHOTO' | translate}}</label>
                     <label>&mdash;</label>
-                    <label>{{'SAVE_PHOTO' | translate}}</label>
+                    <label>{{'SAVE_PHOTO' | translate}} - {{allImages[$parent.$index].temp_id}}</label>
                 </div>
 
                 <div class="el center">
+
                     <div class="radio">
-                        <input id="safe" type="radio" ng-model="img.audience" ng-click="savePhotoOnDB(img,$index);" name="gender" value="1">
-                        <label class="xxxA" for="safe">{{'SAFE' | translate}}</label>
-                        <input id="rude" type="radio"  ng-model="img.audience" ng-click="savePhotoOnDB(img,$index);" name="gender" value="2">
-                        <label class="xxxB" for="rude">{{'RUDE' | translate}}</label>
-                        <input id="nokids" type="radio"  ng-model="img.audience" ng-click="savePhotoOnDB(img,$index);" name="gender" value="3">
-                        <label class="xxxC" for="nokids">{{'ADULT' | translate}}</label>
-                        <input id="hardcore" type="radio" ng-model="img.audience" ng-click="savePhotoOnDB(img,$index);" name="gender" value="4">
-                        <label class="xxxD" for="hardcore">{{'XXX' | translate}}</label>     
+                        <input id="safe_{{$parent.$index}}" type="radio" ng-model="allImages[$parent.$index].audience" ng-click="savePhoto(allImages[$parent.$index]);" name="gender_{{$parent.$index}}" value="1">
+                        <label class="xxxA" for="safe_{{$parent.$index}}">{{'SAFE' | translate}}</label>
+                        
+                        <input id="rude_{{$parent.$index}}" type="radio"  ng-model="allImages[$parent.$index].audience" ng-click="savePhoto(allImages[$parent.$index]);" name="gender_{{$parent.$index}}" value="2">
+                        <label class="xxxB" for="rude_{{$parent.$index}}">{{'RUDE' | translate}}</label>
+                        
+                        <input id="nokids_{{$parent.$index}}" type="radio"  ng-model="allImages[$parent.$index].audience" ng-click="savePhoto(allImages[$parent.$index]);" name="gender_{{$parent.$index}}" value="3">
+                        <label class="xxxC" for="nokids_{{$parent.$index}}">{{'ADULT' | translate}}</label>
+
+                        <input id="hardcore_{{$parent.$index}}" type="radio" ng-model="allImages[$parent.$index].audience" ng-click="savePhoto(allImages[$parent.$index]);" name="gender_{{$parent.$index}}" value="4">
+                        <label class="xxxD" for="hardcore_{{$parent.$index}}">{{'XXX' | translate}}</label>     
                     </div>
                 </div>
 
-                <div ng-show="img.audience">
+                <div ng-show="allImages[$parent.$index].audience">
                     <div class="el center">
-                        <input maxlength="100"  type="text" ng-model="img.tags" ng-list placeholder="{{'PLACEHOLDER_TAGS' | translate}}">
+                        <input maxlength="100"  type="text" ng-model="allImages[$parent.$index].tags" ng-list placeholder="{{'PLACEHOLDER_TAGS' | translate}}">
                     </div>
                     <div class="el center">
-                        <input maxlength="80" type="email" ng-model="img.email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
+                        <input maxlength="80" type="email" ng-model="allImages[$parent.$index].email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
                     </div>
                     <div class="el center">
-                        <a class="btn" ng-click="savePhotoOnDB(img,$index);">{{'SAVE_PHOTO' | translate}}</a>
+                        <a class="btn" ng-click="savePhoto(allImages[$parent.$index]);">{{'SAVE_PHOTO' | translate}} {{allImages[$parent.$index].temp_id}}</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <img ng-src="{{img.image_url ? img.image_url : img.image}}"></img>
+    <img ng-src="{{allImages[$parent.$index].image_url ? allImages[$parent.$index].image_url : allImages[$parent.$index].image}}"></img>
 
 <!--    
     <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
@@ -48,9 +52,9 @@
     </pre>
 -->
 
-    <div ng-if="img" class="credits"> 
-        <span ng-model="img.tags"></span><br/>
-        {{img.type == 'png' ? 'Still Image' : 'Animated GIF' }} &mdash; <span>{{img.ts | timeago}} </span>
+    <div ng-if="allImages[$parent.$index]" class="credits"> 
+        <span ng-model="allImages[$parent.$index].tags"></span><br/>
+        {{allImages[$parent.$index].type == 'png' ? 'Still Image' : 'Animated GIF' }} &mdash; <span>{{allImages[$parent.$index].ts | timeago}} </span>
     </div>
 
 </div>

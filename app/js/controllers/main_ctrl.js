@@ -51,18 +51,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
 
     var filter = {};//{upcoming: true, workstation_id: $routeParams.workstation_id, order : 'check_in_date,check_in_time'};
 
-
-    /**
-     * remove an image from the images array
-     * and scroll to the top
-     * 
-     * @param  {number} imageIndex  [the index of the array]
-     * @return {null}               [pops out the image from the photos collection]
-     */
-    $scope.removeImage = function(imageIndex){
-        photoService.removePhotoFromCollection(imageIndex);
-    };
-
     /**
      * Saves the mask on DB!
      * @return {object} [the mask object]
@@ -88,21 +76,6 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         maskService.masktags        = "";
         maskService.masktagsAmount  = 0;
         $scope.getRandomMask();
-    };
-
-    /**
-     * updates the photo collections in the app
-     * NOTE: photoService.savePhotoOnDB emits "imagesListChaged"
-     * for this controller to update data when the request is done
-     * 
-     * @param  {object} photoObj             [the photoObject]
-     * @param  {number} photoCollectionIndex [the index of the ]
-     * @return {EMIT}                        [emits "photoService.savePhotoOnDB" on $rootScope]
-     */
-    $scope.savePhotoOnDB = function(photoObj, photoCollectionIndex){
-        photoObj.lang = $rootScope.lang;
-        console.log('save this', photoObj);
-        photoService.savePhotoOnDB(photoObj, photoCollectionIndex);
     };
 
     $scope.$on('imagesListChaged', function(newList) {
@@ -415,7 +388,17 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 //stop tracking
                 $scope.stopTracking();
 
-                $scope.currentPhoto     = { 'id'        : 0,
+                //init photo obj
+                $scope.currentPhoto             = photoService.init();
+
+                //set photo obj
+                $scope.currentPhoto.size        = imgFileSize;
+                $scope.currentPhoto.type        = 'png';
+                $scope.currentPhoto.image       = img;
+                $scope.currentPhoto.image_url   = img;
+                $scope.currentPhoto.lang        = $rootScope.lang;
+
+                /*$scope.currentPhoto     = { 'id'        : 0,
                                             'type'      : 'png', 
                                             'tags'      : [],
                                             'masks'     : [], 
@@ -427,7 +410,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                                             'image_url' : img,
                                             'image'     : img,
                                             $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
-                                          };
+                                          };*/
 
                 //add the ID of the used mask 
                 $scope.currentPhoto.masks.push($scope.selectedMask.id);

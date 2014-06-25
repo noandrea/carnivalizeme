@@ -1,4 +1,4 @@
-angular.module("app").directive('gifff', function($document, ENVIRONMENT,  $rootScope, lastWatchedImage, $location) {
+angular.module("app").directive('gifff', function($document, ENVIRONMENT, lastWatchedImage, $http) {
     return {
         restrict: 'EA',
         replace: true,
@@ -7,36 +7,34 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT,  $root
                 },
         template: function(){
             if(ENVIRONMENT === 'dev'){
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s150" width="250" image="{{thePhoto.thumb}}=s150">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb}}=s250"/>';
             }else{
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb_still}}=s150" width="250" image="{{thePhoto.thumb}}=s150">';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb}}=s250"/>';
             }
         },
         link: function(scope, element, attr) {
-
-            
-            var old_src;
-            element.bind('mouseenter', function () {
-                old_src         = attr.src;
-                attr.$set('src', attr.image);
-            });
-            element.bind('mouseout', function () {
-                attr.$set('image', attr.src);
-                attr.$set('src', old_src);
-            });
 
             element.bind('click', function () {
                 //load temporarily the loading image
                 lastWatchedImage.reset();
                 //if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
-                scope.thePhoto.image = scope.thePhoto.thumb + '=s450';
-                //}
-                //Scroll to the exact position
-                $document.scrollTop(0, 1500).then(function() {
-                    //console.log('You just scrolled to the top!');
+                 
+
+                $http({method: 'GET', url: scope.thePhoto.thumb + '=s450'}).
+                success(function(data, status, headers, config) {
+
+                    //Scroll to the exact position
+                    $document.scrollTop(0, 1500).then(function() {
+                        //scrolled to top!
+                    });
+                    scope.thePhoto.image = data;
+                    //set the correct image
+                    lastWatchedImage.set(scope.thePhoto);
+                }).
+                error(function(data, status, headers, config) {
+                    alert('A problem occurred, please try again');
                 });
-                //set the correct image
-                lastWatchedImage.set(scope.thePhoto);
+
             });
 
         }

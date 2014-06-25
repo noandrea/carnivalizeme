@@ -95,3 +95,7 @@ angular.module("app").filter('nl2br', function($sce){
         return $sce.trustAsHtml(msg);
     };
 });
+
+angular.module("app").filter('escape', function() {
+  return window.escape;
+});

@@ -1576,8 +1576,8 @@ input[type="range"] {
     margin: 0 auto;
 }
 .carnivalimage{
-    height: 150px;
-    width: 150px;
+    height: 250px;
+    width: 250px;
     overflow: hidden;
     &.gif{
         @include radius(125px);
@@ -1585,10 +1585,11 @@ input[type="range"] {
     margin: 5px;
     img{
         vertical-align: middle;
-        width: 200px;
-        margin-left: -20px;
+        width:350px;
+        margin-left: -50px;
     }
     background-color: whitesmoke;
+    float: left;
 }
 
 
@@ -1605,6 +1606,7 @@ input[type="range"] {
 .imagePreview{
 
     img{
+        width: 40%;
             -moz-box-shadow: 1px 0px 100px 1px #0083A7;
      -webkit-box-shadow: 1px 0px 100px 1px #0083A7;
              box-shadow: 1px 0px 100px 1px #0083A7;

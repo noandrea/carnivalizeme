@@ -8,6 +8,7 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
         init: function (lang) {
 
             photo    =   {
+                            'temp_id'   : Math.floor((Math.random() * 9999) + 1), 
                             'id'        : 0, 
                             'type'      : 'png', 
                             'tags'      : [],
@@ -24,11 +25,20 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
             
         },
 
-        updateCurrent: function (newPhoto, photoCollectionIndex) {
+        updateCurrent: function (newPhoto) {
             //update current
-            photo = newPhoto;
+            
+            console.log('photos BEFORE: ', photos);
+
+            angular.forEach(photos, function(photo, key) {
+                if(photo.temp_id === newPhoto.temp_id){
+                    photos[key] = newPhoto;
+                }
+            });
+
+            console.log('photos AFTER: ', photos);
             //update collection
-            photos[photoCollectionIndex] = newPhoto;
+            //photos[photoCollectionIndex] = newPhoto;
             return photo;
         },
 
@@ -48,12 +58,13 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
             });
         },
 
-        savePhotoOnDB: function(photoObj, photoCollectionIndex){
+        savePhotoOnDB: function(photoObj){
+            //console.log('INDEX: ' + photoCollectionIndex);
             if(!photoObj.id){
                 Photos.save(photoObj).$promise.then(function(response){
                     alert('PHOTO SAVED!', photoObj);
                     photoObj.id = response.id;
-                    self.updateCurrent(photoObj, photoCollectionIndex);
+                    self.updateCurrent(photoObj);
                     $rootScope.$emit("imagesListChaged", self.getCollection());
                 },function(response){
                     alert('ERROR! NOT -SAVED-! Why??? ' + response);
@@ -61,7 +72,7 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
             }else{
                 Photos.update({ id: photoObj.id }, photoObj).$promise.then(function(response){
                     alert('PHOTO UPDATED!', photoObj);
-                    self.updateCurrent(photoObj, photoCollectionIndex);
+                    self.updateCurrent(photoObj);
                     $rootScope.$emit("imagesListChaged", self.getCollection());
                 },function(response){
                     alert('ERROR! NOT -UPDATED-! Why??? ' + response);
@@ -89,8 +100,13 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
             return photos.push(photo);
         },
 
-        removePhotoFromCollection: function (index){
-            return photos.splice(index, 1);
+        removePhotoFromCollection: function (thePhoto){
+
+            angular.forEach(photos, function(photo, key) {
+                if(photo.temp_id === thePhoto.temp_id){
+                    photos.splice(key, 1);
+                }
+            });
         }
 
     };

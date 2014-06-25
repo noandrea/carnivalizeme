@@ -34,14 +34,6 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
       isFiltered: function() { return true; }
     }
   });
-  $routeProvider.when('/carnival/:id', {
-    templateUrl: 'carnival.html',
-    reloadOnSearch: false,
-    controller: 'CarnivalCtrl',
-    resolve: {
-      isFiltered: function() { return true; }
-    }
-  });
 
   $routeProvider.when('/sorry', {
     templateUrl: 'sorry.html',
