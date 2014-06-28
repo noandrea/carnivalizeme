@@ -9,6 +9,7 @@ import base64
 from google.appengine.api import app_identity
 from google.appengine.api import images
 from google.appengine.ext import blobstore
+from google.appengine.ext import ndb
 from model.carnivalize import Tag
 from model.carnivalize import Mask
 from model.carnivalize import Photo
@@ -27,11 +28,20 @@ class PhotoHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
-        photos = Photo.query().order(-Photo.up_vote, -Photo.added).fetch(20)
+        photo_query = Photo.query().order(-Photo.up_vote, -Photo.added)
 
-        reply = []
+        cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
+        photos, next_curs, more = photo_query.fetch_page(30, start_cursor=cursor)
+
+        reply = {'photos':[]}
         for photo in photos:
-            reply.append(Photo.to_json_object(photo))
+            reply['photos'].append(Photo.to_json_object(photo))
+
+        if more:
+            reply['cr'] = next_curs.urlsafe()
+        else:
+            reply['cr'] = None
+
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
