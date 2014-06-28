@@ -70,7 +70,8 @@ class Mask(ndb.Model):
             'dw' : mask.dwn_vote,
             'audience' : mask.audience,
             'photo_count' : mask.photo_count,
-            'thumb' : mask.thumb
+            'thumb' : mask.thumb,
+            'credits' : mask.credits,
         }
         return data
 
