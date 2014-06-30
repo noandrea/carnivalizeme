@@ -31,17 +31,21 @@ class PhotoHandler(webapp2.RequestHandler):
         photo_query = Photo.query().order(-Photo.up_vote, -Photo.added)
 
         cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
-        photos, next_curs, more = photo_query.fetch_page(30, start_cursor=cursor)
+        photos, next_curs, more = photo_query.fetch_page(32, start_cursor=cursor)
 
         reply = {'photos':[]}
         for photo in photos:
             reply['photos'].append(Photo.to_json_object(photo))
 
+        # next cursor
         if more:
-            reply['cr'] = next_curs.urlsafe()
+            reply['nc'] = next_curs.urlsafe()
         else:
-            reply['cr'] = None
+            reply['nc'] = None 
 
+        reply['pc'] = cursor # previous cursor
+        reply['fc'] = None # first cursor
+        reply['lc'] = None # last cursor
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
