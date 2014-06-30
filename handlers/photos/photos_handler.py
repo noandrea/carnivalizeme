@@ -43,7 +43,7 @@ class PhotoHandler(webapp2.RequestHandler):
         else:
             reply['nc'] = None 
 
-        reply['pc'] = cursor # previous cursor
+        reply['pc'] = cursor.urlsafe() # previous cursor
         reply['fc'] = None # first cursor
         reply['lc'] = None # last cursor
 
