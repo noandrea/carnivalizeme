@@ -69,7 +69,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/masks', handler=MaskHandler),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask', handler_method='mask', methods=['GET']),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask_update', handler_method='update', methods=['PUT']),
-    webapp2.Route(r'/photos/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask_options', handler_method='mask_options', methods=['OPTIONS']),
+    webapp2.Route(r'/masks/<_id:[a-z0-9]+>', handler=MaskHandler, name='mask_options', handler_method='mask_options', methods=['OPTIONS']),
     webapp2.Route(r'/masks/<_id:[a-z0-9]+>/<action:(up|dw)>', handler=MaskHandler, handler_method='vote', methods=['PUT','OPTIONS']),
     webapp2.Route(r'/masks/tags/<csv_tags>', handler=MaskHandler, handler_method='search_tags', methods=['GET']),
 
