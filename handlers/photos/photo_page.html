@@ -1,20 +1,10 @@
-<!doctype html>
 
-
-<!--
-	HTML5 Reset: https://github.com/murtaugh/HTML5-Reset
-	Free to use
--->
-
-<!--[if lt IE 7 ]> <html class="ie ie6 ie-lt10 ie-lt9 ie-lt8 ie-lt7 no-js" lang="en"> <![endif]-->
-<!--[if IE 7 ]>    <html class="ie ie7 ie-lt10 ie-lt9 ie-lt8 no-js" lang="en"> <![endif]-->
-<!--[if IE 8 ]>    <html class="ie ie8 ie-lt10 ie-lt9 no-js" lang="en"> <![endif]-->
-<!--[if IE 9 ]>    <html class="ie ie9 ie-lt10 no-js" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<!-- the "no-js" class is for Modernizr. --> 
-
+<!DOCTYPE html>
+<html ng-app="app">
 <head>
-
+	<title>Carnivalize.me - Carnival Online</title>
+	<link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+	
 	<meta charset="utf-8">
 	
 	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
@@ -28,6 +18,9 @@
 	<!-- Don't forget to set your site up: http://google.com/webmasters -->
 	<meta name="google-site-verification" content="YJrjsBaJ15lzD9uGFL0sd3ZoCUlFCTEMEvfML13xZN8" />
 	
+    <!-- alexa -->
+    <meta name="alexaVerifyID" content="gWSvemLbucSxbcXk1gCEBT7cES4"/>
+
 	<!-- Who owns the content of this site? -->
 	<meta name="Copyright" content="carnivalize.me" />
 	
@@ -61,45 +54,146 @@
 	<meta name="twitter:description" content="Create your own funny #maskedselfie and animated #GIF on http://carnivalize.me/" />
 	<meta name="twitter:image" content="{{photo.thumb}}" />
 
-
+	
+	<meta name="description" content="Life is a masquerade. Carnivalize Yourself.">
+	<meta name="keywords" content="carnivalizer, carnivalizeme, carnival, masquerade, masks, game, mask game, effects, webcam, fun, toy, carnivalize">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:image" content="{{photo.thumb}}"/>
 </head>
 
-<body>
+	<body class="site">
+
+		<header>
+			<a href="/now"><img class="logo" width="50" src="/img/carnivalizeOk.png" alt="Carnivalize.me"/></a>
+		</header>
+
+		<main id="view" ng-view class="site-content page page-blowout" class="site-content container">
+			
+			<div image-preview="" image="lastWatchedImage" class="ng-isolate-scope">
+			    <div class="aligner imagePreview">
+		    		<img src="{{photo.thumb}}"></img>
+			    </div>
+
+                <div class="aligner imagePreview">
+                    <div class="rightInfo ng-scope" ng-if="lastWatchedImage.image !== 'img/loading500.gif' ">
+
+                        <small>Created <em class="ng-binding">some time ago</em></small>
+
+                        <div class="votes">
+                            <div class="updown-vote" onclick="get('/photos/{{photo.key.id()}}/up','response');">
+                                <em class="ng-binding">{{photo.up_vote}}</em> <i class="icon pictogram picto-2x green">👍</i>
+                            </div> 
+
+                            <div class="updown-vote" onclick="get('/photos/{{photo.key.id()}}/dw','response');">
+                                <em class="ng-binding">{{photo.dwn_vote}}</em> <i class="icon pictogram picto-2x red">👎</i>
+                            </div>
+                        </div>
+                        <div class="info">
+                            <div class="el">
+                                <ul>
+                                    <li>
+                                        <a class="facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://carnivalize.me/blowout/{{photo.key.id()}}"><i class="icon pictogramsocial picto-3x"></i></a>
+                                    </li>
+                                    <li>
+                                        <a class="twitter" target="_blank" href="https://twitter.com/home?status=Check%20out%20this%20%23maskedselfie%20on%20http://carnivalize.me/blowout/{{photo.key.id()}}"><i class="icon pictogramsocial picto-3x"></i></a>
+                                    </li>
+                                    <li>
+                                        <a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://carnivalize.me/blowout/{{photo.key.id()}}&media={{photo.thumb}}&description=Check%20out%20this%20%23maskedselfie%20on%20http%3A//carnivalize.me"><i class="icon pictogramsocial picto-3x"></i></a>
+                                    </li>
+                                    <li class="textonly">
+                                        <a href="http://carnivalize.me/blowout/{{photo.key.id()}}" target="_blank"><i class="icon pictogram picto-3x">&#128279;</i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="el">
+                                <small>
+                                    <em>
+                                    {% for tag in photo.tags %}
+                                        <span>{{ tag }},</span>
+                                    {% endfor %}
+                                    </em>
+                                </small>
+                            </div>
+                        </div>
+                    </div><!-- end ngIf: lastWatchedImage.image !== 'img/loading500.gif' -->
+                </div>
+
+
+                <div class="aligner imagePreview">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- carnivalize Blowout -->
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:336px;height:280px"
+                         data-ad-client="ca-pub-2238924743498473"
+                         data-ad-slot="5901063600"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+			</div>
+
+		</main>
+
+		<!-- <h1 id="response"></h1> -->
+
+		<footer class="aligner blow-out">
+			<ul>
+				<li class="textonly">
+					<a href="/about">ABOUT</a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Facebook Share" analytics-category="footer clicks" class="facebook" target="_blank" href="http://hrefshare.com/3270"><i class="icon pictogramsocial picto-3x">&#62220;</i></a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Twitter Share" analytics-category="footer clicks" class="twitter" target="_blank" href="http://hrefshare.com/8da03"><i class="icon pictogramsocial picto-3x">&#62217;</i></a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Pinterest Share" analytics-category="footer clicks" class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=http:%2F%2Fcarnivalize.me%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-3x">&#62226;</i></a>
+				</li>
+			</ul>
+		</footer>
+
+
+        <script>
+            var requestObj = false;
+ 
+            if (window.XMLHttpRequest) {
+                requestObj = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                requestObj = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+ 
+            function get(source, id)
+            {
+                if (requestObj) {
+                    var obj = document.querySelector('#'+id);
+                    requestObj.open("PUT", source);
+                    requestObj.onreadystatechange = function ()
+                    {
+                        if (requestObj.readyState == 4 && requestObj.status == 200) {
+                            //obj.innerHTML = requestObj.responseText;
+                            location.reload();
+                        }
+                    }
+                    requestObj.send(null);
+                }
+            }
+        </script>
 
 		<!-- Go to www.addthis.com/dashboard to customize your tools -->
 		<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53a97897173f0c2d"></script>
 
-		<h1>Page Title Photo</h1>
-
-		<pre>{{photo}}</pre>
-		
-	
-	
-		
-		<p>{{ photo.audience }}</p>
-		<p><img src="{{photo.thumb}}"></img></p>
-		<p>
-			{% for tag in photo.tags %}
-			<div>{{ tag }}</div>
-			{% endfor %}
-
-		</p>
-		<p>{{ photo.up_vote }}</p>
-		<p>{{ photo.dwn_vote }}</p>
-		
-
-<!-- Asynchronous google analytics; this is the official snippet. -->
+		<!-- Asynchronous google analytics; this is the official snippet. -->
 	 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-2305595-16', 'carnivalize.me');
-  ga('send', 'pageview');
+		  ga('create', 'UA-2305595-16', 'carnivalize.me');
+		  ga('send', 'pageview');
 
-</script>
-  
-</body>
+		</script>
+	</body>
 </html>
