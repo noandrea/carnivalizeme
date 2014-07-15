@@ -52,7 +52,6 @@ angular.module("app").directive('dragRotateResize', function($document, controls
                     startX = event.pageX;
                     startY = event.pageY;
                 }else{
-                    console.log('CRISTO BASTARDO');
                     startX = event.pageX - the_position.X;
                     startY = event.pageY - the_position.Y;
                 }

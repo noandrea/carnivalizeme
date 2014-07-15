@@ -1,4 +1,4 @@
-angular.module("app").factory('photoService', function(Photos, $rootScope) {
+angular.module("app").factory('photoService', function(Photos, $rootScope, $analytics) {
 
     var photo   = {};
     var photos  = [];
@@ -28,15 +28,15 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
         updateCurrent: function (newPhoto) {
             //update current
             
-            console.log('photos BEFORE: ', photos);
+            //console.log('photos BEFORE: ', photos);
 
             angular.forEach(photos, function(photo, key) {
                 if(photo.temp_id === newPhoto.temp_id){
                     photos[key] = newPhoto;
                 }
             });
+            //console.log('photos AFTER: ', photos);
 
-            console.log('photos AFTER: ', photos);
             //update collection
             //photos[photoCollectionIndex] = newPhoto;
             return photo;
@@ -61,21 +61,32 @@ angular.module("app").factory('photoService', function(Photos, $rootScope) {
         savePhotoOnDB: function(photoObj){
             //console.log('INDEX: ' + photoCollectionIndex);
             if(!photoObj.id){
+                $analytics.eventTrack('Saving new Image', {  category: 'Carnivalizement' });
                 Photos.save(photoObj).$promise.then(function(response){
-                    alert('PHOTO SAVED!', photoObj);
+                    //alert('PHOTO SAVED!', photoObj);
                     photoObj.id = response.id;
                     self.updateCurrent(photoObj);
                     $rootScope.$emit("imagesListChaged", self.getCollection());
+                    $analytics.eventTrack('Image Saved', {  category: 'Carnivalizement' });
+
+                    $rootScope.$emit("savedPhoto", {update:0, error:0});
                 },function(response){
-                    alert('ERROR! NOT -SAVED-! Why??? ' + response);
+                    $analytics.eventTrack('Image NOT Saved', {  category: 'Carnivalizement', label: response });
+                    $rootScope.$emit("savedPhoto", {update:0, error:1});
                 });
             }else{
+                $analytics.eventTrack('Updating Image Data', {  category: 'Carnivalizement' });
                 Photos.update({ id: photoObj.id }, photoObj).$promise.then(function(response){
-                    alert('PHOTO UPDATED!', photoObj);
+                    //alert('PHOTO UPDATED!', photoObj);
                     self.updateCurrent(photoObj);
                     $rootScope.$emit("imagesListChaged", self.getCollection());
+                    $analytics.eventTrack('Image Saved', {  category: 'Carnivalizement' });
+
+                    $rootScope.$emit("savedPhoto", {update:1, error:0});
                 },function(response){
-                    alert('ERROR! NOT -UPDATED-! Why??? ' + response);
+                    $analytics.eventTrack('Image NOT Saved', {  category: 'Carnivalizement', label: response });
+
+                    $rootScope.$emit("savedPhoto", {update:1, error:1});
                 });
             }
         },

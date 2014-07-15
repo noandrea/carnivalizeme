@@ -11,7 +11,6 @@ angular.module("app").directive('drawingBoard', function(html5Storage, controlsS
         });
         scope.$watchCollection('controls.text', function(newVals, oldVals) {
             controlsService.set(scope.controls);
-            console.log("s>>>>>>>>>>>>>>>", scope.controls);
         });
         scope.$watchCollection('controls.image', function(newVals, oldVals) {
             controlsService.set(scope.controls);

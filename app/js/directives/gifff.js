@@ -1,4 +1,4 @@
-angular.module("app").directive('gifff', function($document, ENVIRONMENT, lastWatchedImage, $http) {
+angular.module("app").directive('gifff', function($document, ENVIRONMENT, lastWatchedImage, $http, $analytics) {
     return {
         restrict: 'EA',
         replace: true,
@@ -7,9 +7,9 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, lastWa
                 },
         template: function(){
             if(ENVIRONMENT === 'dev'){
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb}}=s250"/>';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb}}=s250" width="250" height="250" />';
             }else{
-                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb}}=s250"/>';
+                return '<img id="{{thePhoto.id}}" ng-src="{{thePhoto.thumb}}=s250" width="250" height="250" />';
             }
         },
         link: function(scope, element, attr) {
@@ -18,15 +18,13 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, lastWa
                 //load temporarily the loading image
                 lastWatchedImage.reset();
                 //if(ENVIRONMENT==='dev' && (scope.thePhoto.image.toLowerCase().indexOf('localhost') <= 0 ) ){
-                 
                 scope.thePhoto.image = 'img/loading500.gif';
-
                 
-                $http({method: 'GET', url: scope.thePhoto.thumb + '=s450'}).
+                $http({cache : true, method: 'GET', url: scope.thePhoto.thumb + '=s450'}).
                 success(function(data, status, headers, config) {
 
                     //set the correct image
-                    scope.thePhoto.image = data;
+                    scope.thePhoto.image = scope.thePhoto.thumb + '=s450';
                     lastWatchedImage.set(scope.thePhoto);
 
                     //Scroll to the exact position
@@ -35,6 +33,7 @@ angular.module("app").directive('gifff', function($document, ENVIRONMENT, lastWa
                     });
                 }).
                 error(function(data, status, headers, config) {
+                    $analytics.eventTrack('Carnivali Image not correctly loaded', { category: 'Errors' });
                     alert('A problem occurred, please try again');
                 });
 

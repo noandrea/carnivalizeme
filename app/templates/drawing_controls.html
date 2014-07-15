@@ -4,7 +4,7 @@
         <div class="inner">
             <div class="el">
                 <div class="checkbox switch">
-                    <input id="grid" type="checkbox" ng-model="controls.showGrid" ng-checked="1" ng-false-value="false" ng-true-value="true">
+                    <input analytics-on="click" analytics-event="Hide/Show Mask Guides" analytics-category="drawing mask" id="grid" type="checkbox" ng-model="controls.showGrid" ng-checked="1" ng-false-value="false" ng-true-value="true">
                     <label for="grid"></label>
                 </div>
             </div>
@@ -16,7 +16,7 @@
         <div class="inner">
             <div class="el">
                 <div class="checkbox regular">
-                    <input id="eraser" type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
+                    <input analytics-on="click" analytics-event="Select Eraser/Brush" analytics-category="drawing mask" id="eraser" type="checkbox" ng-model="ctx.globalCompositeOperation" ng-false-value="source-over" ng-true-value="destination-out">
                     <label for="eraser"></label>
                     {{'ERASER_BRUSH_MASK' | translate}}
                 </div>
@@ -25,17 +25,17 @@
 
             <div class="el">
                 <div class="label">{{'SIZE_BRUSH_MASK' | translate}}</div>
-                <input type="range" ng-model="controls.brush.size" name="points" min="2" step="2" max="controls.brush.maxsize">
+                <input analytics-on="click" analytics-event="Resize Brush" analytics-category="drawing mask" type="range" ng-model="controls.brush.size" name="points" min="2" step="2" max="controls.brush.maxsize">
             </div>
 
             <div class="el">
                 <div class="label">{{'BLUR_BRUSH_MASK' | translate}}</div>
-                <input class="range-blur" type="range" ng-model="controls.brush.blur" name="points" min="0.1" step="0.1" max="1">
+                <input analytics-on="click" analytics-event="Blur Brush" analytics-category="drawing mask" class="range-blur" type="range" ng-model="controls.brush.blur" name="points" min="0.1" step="0.1" max="1">
             </div>
 
             <div class="el">
                 <div class="label">{{'COLOR_BRUSH_MASK' | translate}}</div>
-                <div ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="controls.brush.fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{controls.brush.fillStyle}}"></div>
+                <div analytics-on="click" analytics-event="Brush Color" analytics-category="drawing mask" ng-show="ctx.globalCompositeOperation !== 'destination-out'" colorpicker="hex" ng-model="controls.brush.fillStyle" ng-click="setBrush();" class="cpicker" style="background-color:{{controls.brush.fillStyle}}"></div>
                 <div ng-show="ctx.globalCompositeOperation === 'destination-out'" class="cpicker transparent"></div>
             </div>
         </div>
@@ -46,21 +46,21 @@
         <div class="inner">
             <div class="el">
                 <textarea ng-model="controls.text.content"></textarea>
-                <div ng-click="resetText();" class="label important">{{'RESET_TEXT' | translate}}</div>
+                <div analytics-on="click" analytics-event="Reset Text" analytics-category="drawing mask"  ng-click="resetText();" class="label important">{{'RESET_TEXT' | translate}}</div>
             </div>
 
             <div class="el">
                 <div class="label">{{'IMAGE_RESIZE' | translate}}</div>
-                <input type="range" ng-model="controls.text.scale" name="points" min="0" step="0.1" max="4">
+                <input analytics-on="click" analytics-event="Resize Text" analytics-category="drawing mask" type="range" ng-model="controls.text.scale" name="points" min="0" step="0.1" max="4">
             </div>
 
             <div class="el">
                 <div class="label">{{'IMAGE_ROTATE' | translate}}</div>
-                <input class="range" type="range" ng-model="controls.text.rotation" name="points" min="0" step="1" max="360">
+                <input analytics-on="click" analytics-event="Rotate Text" analytics-category="drawing mask"  class="range" type="range" ng-model="controls.text.rotation" name="points" min="0" step="1" max="360">
             </div>
             <div class="el">
                 <div class="label">{{'COLOR_BRUSH_MASK' | translate}}</div>
-                <div colorpicker="rgba" ng-model="controls.text.color" class="cpicker" style="background-color:{{controls.text.color}}"></div>
+                <div analytics-on="click" analytics-event="Pick Text Color" analytics-category="drawing mask" colorpicker="rgba" ng-model="controls.text.color" class="cpicker" style="background-color:{{controls.text.color}}"></div>
             </div>
     </fieldset>
 
@@ -76,28 +76,28 @@
                     <label for="uploaded_image">
                         {{'FROM_PC_MASK' | translate}}
                     </label>
-                    <input type="file" file-upload name="uploaded_image" />
+                    <input analytics-on="click" analytics-event="Upload Mask Image" analytics-category="drawing mask" type="file" file-upload name="uploaded_image" />
                 </div>
 
                 <div class="suggestion">SVG or PNG</div>
             </div>
 
             <div ng-if="controls.image.info.size">
-                <div class="file-container delete" ng-click="eraseImage();">
+                <div analytics-on="click" analytics-event="Delete Mask Image" analytics-category="drawing mask" class="file-container delete" ng-click="eraseImage();">
                     <label>
                         {{'DELETE_IMAGE' | translate}}
                     </label>
                 </div>
                 <div class="suggestion" ng-if="controls.image.info.size">{{controls.image.info.size | bytes}}</div>
                 <div class="el">
-                    <div ng-click="resetImage();" class="label important">{{'RESET_IMAGE' | translate}}</div><br/>
+                    <div analytics-on="click" analytics-event="Reset Mask Image" analytics-category="drawing mask" ng-click="resetImage();" class="label important">{{'RESET_IMAGE' | translate}}</div><br/>
                     <div class="label">{{'IMAGE_RESIZE' | translate}}</div>
-                    <input type="range" ng-model="controls.image.scale" name="points" min="0" step="0.1" max="4">
+                    <input analytics-on="click" analytics-event="Resize Image" analytics-category="drawing mask" type="range" ng-model="controls.image.scale" name="points" min="0" step="0.1" max="4">
                 </div>
 
                 <div class="el">
                     <div class="label">{{'IMAGE_ROTATE' | translate}}</div>
-                    <input class="range" type="range" ng-model="controls.image.rotation" name="points" min="0" step="1" max="360">
+                    <input  analytics-on="click" analytics-event="Rotate Mask Image" analytics-category="drawing mask" class="range" type="range" ng-model="controls.image.rotation" name="points" min="0" step="1" max="360">
                 </div>
             </div>
         </div>
@@ -106,9 +106,9 @@
 
     <fieldset class="tool upload-area">
         <div class="inner">
-            <a class="btn" ng-click="save();">{{'TRY_MASK' | translate}}</a>
-            <a class="btn important" ng-click="erase();">{{'RESTART_MASK' | translate}}</a>
-            <a class="btn cta"       ng-click="showModal();">{{'HELP_MASK' | translate}}</a>
+            <a analytics-on="click" analytics-event="Testing Mask" analytics-category="drawing mask" class="btn" ng-click="save();">{{'TRY_MASK' | translate}}</a>
+            <a analytics-on="click" analytics-event="Restart Mask" analytics-category="drawing mask" class="btn important" ng-click="erase();">{{'RESTART_MASK' | translate}}</a>
+            <a analytics-on="click" analytics-event="Help Mask Creation" analytics-category="drawing mask" class="btn cta" ng-click="showModal();">{{'HELP_MASK' | translate}}</a>
         </div>
     </fieldset>
 </div>

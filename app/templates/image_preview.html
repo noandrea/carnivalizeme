@@ -1,6 +1,6 @@
 <div>
-    <div class="aligner imagePreview">
-        <img ng-src="{{lastWatchedImage.image ? lastWatchedImage.image : 'img/loading500.gif'}}" width="450"/>
+    <div class="aligner imagePreview animated fadeInDown">
+        <img alt="carnivalize.me lastWatchedImage.id" ng-src="{{lastWatchedImage.image ? lastWatchedImage.image : 'img/loading500.gif'}}" width="450"/>
         
         <div class="rightInfo" ng-if="lastWatchedImage.image === 'img/loading500.gif' ">
             <div class="info">
@@ -38,7 +38,7 @@
                             <a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url={{lastWatchedImage.thumb | escape}}&media={{lastWatchedImage.thumb | escape}}&description={{'Check out this #maskedselfie on http://carnivalize.me' | escape}}"><i class="icon pictogramsocial picto-3x">&#62226;</i></a>
                         </li>
                         <li class="textonly">
-                            <a href="{{SITE_URL}}{{lastWatchedImage.blowout}}" target="_blank">LINK</a>
+                            <a href="{{SITE_URL}}{{lastWatchedImage.blowout}}" target="_blank"><i class="icon pictogram picto-3x">&#128279;</i></a>
                         </li>
                     </ul>
                 </div>

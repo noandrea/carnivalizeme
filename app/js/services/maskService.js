@@ -1,4 +1,4 @@
-angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5Storage) {
+angular.module("app").factory('maskService', function($rootScope, Masks, API_BASE_URL, html5Storage, $analytics) {
 
     var mask        = {};
     var masks       = {};
@@ -73,6 +73,7 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
 
         saveMaskOnDB: function(maskObj){
             if(!maskObj.id){
+                $analytics.eventTrack('Saving new Mask', {  category: 'drawing mask' });
                 Masks.save(maskObj).$promise.then(function(response){
                     maskObj.id      = response.id;
                     maskObj.image   = response.url;
@@ -80,20 +81,26 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
                     self.setCurrent(maskObj);
                     //save mask on localStorage too
                     self.storeMaskOnLocalStorage(maskObj);
-                    alert('SAVED!');
+                    $analytics.eventTrack('Mask Saved', {  category: 'drawing mask', label: response });
+                    //alert('SAVED!');
+                    $rootScope.$emit("savedMask", {update:0, error:0});
                 },function(response){
-                    alert('ERROR! NOT -SAVED-! Why??? ' + response);
-                    console.log(response);
+                    $analytics.eventTrack('Mask NOT Saved', {  category: 'drawing mask', label: response });
+                    //alert('ERROR! NOT -SAVED-! Why??? ' + response);
+                    $rootScope.$emit("savedMask", {update:0, error:1});
                 });
             }else{
+                $analytics.eventTrack('Updating Mask', {  category: 'drawing mask' });
                 Masks.update({ id: maskObj.id }, maskObj).$promise.then(function(response){
                     //set latest as current
                     self.setCurrent(maskObj);
                     //save mask on localStorage too
                     self.storeMaskOnLocalStorage(maskObj);
-                    alert('UPDATED!');
+                    //alert('UPDATED!');
+                    $rootScope.$emit("savedMask", {update:1, error:0});
                 },function(response){
-                    alert('ERROR! NOT -UPDATED-! Why??? ' + response);
+                    $analytics.eventTrack('Mask NOT Saved', {  category: 'drawing mask', label: response });
+                    $rootScope.$emit("savedMask", {update:1, error:1});
                 });
             }
         },
@@ -104,7 +111,12 @@ angular.module("app").factory('maskService', function(Masks, API_BASE_URL, html5
 
         getMaskFromLocalStorage: function(mask){
             return html5Storage.get('the_mask');
+        },
+
+        unsetMaskFromLocalStorage: function(mask){
+            return html5Storage.set('the_mask', '');
         }
+
 
 
     };

@@ -1,4 +1,4 @@
-angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope, $document, controlsService, html5Storage, Masks, $location, $filter, lastWatchedImage) {
+angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope, $document, controlsService, html5Storage, Masks, $location, $filter, lastWatchedImage, maskService, $analytics) {
 
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
@@ -6,7 +6,6 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
     //get controls
     controlsService.init();
     $scope.controls = controlsService.get();
-    console.log("SCOPE CONTROLS", $scope.controls);
 
     /**
      * delete everything from the board and leaves the board empty
@@ -14,6 +13,7 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
      * @return {null}   [simply empty the board]
      */
     $scope.erase = function() {
+        $analytics.eventTrack('Masterpiece Cleared', {  category: 'drawing mask'});
         var m = confirm($filter('translate')('CLEAR_MASTERPIECE'));
         if (m) {
             $scope.eraseImage();
@@ -23,18 +23,21 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
         }
     };
     $scope.eraseImage = function() {
+        $analytics.eventTrack('Image Delete', {  category: 'drawing mask'});
         $scope.controls.image = {info : {}, position : { X : 0 , Y : 0}, rotation : 0, scale : 1};
         controlsService.set($scope.controls);
     };
     $scope.resetImage = function() {
+        $analytics.eventTrack('Uploaded Image Reset', {  category: 'drawing mask'});
         $scope.controls.image = {info : $scope.controls.image.info, position : { X : 0 , Y : 0}, rotation : 0, scale : 1};
         $scope.controls = controlsService.set($scope.controls);
-        console.log('DONE', $scope.controls);
+        //console.log('DONE', $scope.controls);
     };
     $scope.resetText = function() {
+        $analytics.eventTrack('Text Reset', {  category: 'drawing mask'});
         $scope.controls.text = { content: "TEXT_HERE", position: {X : 260, Y : 380}, rotation : 0, scale : 1, color: "#24ab93"};
         $scope.controls = controlsService.set($scope.controls);
-        console.log('DONE', $scope.controls);
+        //console.log('DONE', $scope.controls);
     };
     
 
@@ -49,12 +52,14 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
         html2canvas(document.querySelector('#customMask'), 
 
             {
-            onrendered: function(canvas) {
+             onrendered: function(canvas) {
 
                 //localStorage the mask (excluding the IMAGE)
-                html5Storage.set('the_mask', '');
+                maskService.unsetMaskFromLocalStorage();
                 var image         = new Image(canvas.width, canvas.height);
                 image.src         = canvas.toDataURL("image/png");
+                
+                //console.log("image SRC: ", image.src);
 
                 //flip the canvas to correctly display and show the image (generated with toDataURL)
                 //and restore the context to correctly display it again in the "/editor" section
@@ -67,7 +72,7 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
                 canvasContext.restore();
 
                 var img    = canvas.toDataURL("image/png");
-
+                //console.log("IMG: ", image.src);
 
                 var head = 'data:image/png;base64,';
                 var imgFileSize = Math.round((img.length - head.length)*3/4) ;
@@ -84,10 +89,11 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
                                         'image'     : img
                                     };
 
-                                    console.log(img);
-
                 //save the PNG image to test!
-                html5Storage.set('the_mask', $scope.customMask);
+                maskService.storeMaskOnLocalStorage($scope.customMask);
+
+                $analytics.eventTrack('Trying Mask', {  category: 'drawing mask'});
+
                 $location.path('/trymask');
                 $scope.$apply();
 
@@ -120,17 +126,18 @@ angular.module("app").controller('drawingBoardCtrl', function($rootScope, $scope
     //+++++++++++++++++++++++++++++++++++++++ MANAGE UPLOAD of a USER IMAGE
     //listen for the file selected event
     $scope.$on("fileError", function (event, args) {
-        console.log(args);
+        //console.log(args);
         //$scope.$apply(function () {            
             //add the file object to the scope's files collection
             //$scope.files.push(args.file);
+            $analytics.eventTrack('File Upload Error', {  category: 'drawing mask'});
             alert($filter('translate')('IMAGES_ONLY'));
         //});
     });
     //listen for the file selected event
     $scope.$on("fileUploaded", function (event, args) {
         $scope.$apply(function () {
-            console.log('uploaded');
+            $analytics.eventTrack('File Upload Success', {  category: 'drawing mask'});
             //set image
             $scope.controls.image.info      = args;
             //set new controls with image

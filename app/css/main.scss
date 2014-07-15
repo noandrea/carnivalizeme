@@ -164,6 +164,11 @@ footer, .pager{
     margin-top: 12px;
     border-top: 1px solid white;
     background: white;
+
+    &.blow-out{
+        margin-top: 0;
+    }
+
     ul{
         li{
             float: right;
@@ -255,10 +260,10 @@ body{
 .site-content {
 
     &.page-main{
-        background-image: url(/img/kaktus.png);
+        background-image: url(/img/doge.png);
         background-repeat:no-repeat;
         background-attachment:fixed;
-        background-position:center 60px;
+        background-position:center 160px;
         
     }
     
@@ -272,7 +277,6 @@ body{
         user-select: none;
         background-color: none;//white;
         min-height: 1000px;
-        margin-top: 20px;
     }
     max-width:100%;
     margin:0;
@@ -339,7 +343,7 @@ body{
         width: 350px;
         font-family: 'Source Sans Pro', sans-serif, Arial, Verdana;
         font-weight: 600;
-        font-size: 25px;
+        font-size: 22px;
         letter-spacing: 3px;
         text-transform: uppercase;
         text-align: center;
@@ -381,14 +385,29 @@ body{
             top:15px;
             right: 12px;
             text-align: right; 
-            color: #e1e1e1;
+            color: black;
             font-weight: 100;
-            font-size: 20px;
+            font-size: 16px;
+            line-height: 40px;
+            .counter{
+                background: rgba(255, 255, 255, 0.8);
+                padding: 2px 10px 2px 10px;
+                display: inline-block;
+                float: left;
+                margin-left: 3px;
+                margin-top: 4px;
+                line-height: 20px;
+            }
             a{
                 cursor: pointer;
                 line-height: 30px;
                 &:hover{
                     color: white;
+                }
+
+                &.btn{
+                    float:right;
+                    margin-right: 3px;
                 }
             }
             input[type="text"]{
@@ -396,9 +415,10 @@ body{
                 line-height: 80px;
                 font-size: 50px;
                 padding: 10px;
-                color: white;
-                background: rgba(0,0,0,.5);
-                border: 1px solid white;
+                color: black;
+                background: rgba(#fff,.5);
+                border: none;
+                border-bottom: 1px solid black;
                 font-weight: 100;
                 text-transform: uppercase;
             }
@@ -406,7 +426,7 @@ body{
         .cover{
             z-index: 100051;
             position: absolute;
-            @include linear-gradient(rgba(black, 1), rgba(black, .2)); // Stick in your favourite HEX colours
+            @include linear-gradient(rgba(#fff, 1), rgba(#fff, .4)); // Stick in your favourite HEX colours
         }
     }
 
@@ -645,6 +665,14 @@ body{
     ul{
         width: 640px;
         margin: 0 auto;
+
+        li {
+            &:first-child{
+                margin-top: 0;
+            }
+            margin-top: 45px;
+        }
+
         .credits{
             color: white;
             span{
@@ -705,18 +733,20 @@ body{
 }
 
 #fullPic{
-    width: 640px;
+    width: 639px;
     height: 480px;
     position: relative;
+    overflow: hidden;
     #overlay{
         z-index: 100052;
         position: absolute;
-        margin-left: 0;
+        margin: 0;
+        padding: 0;
         
-        -moz-transform: matrix(-1, 0, 0, 1, 0, 0);
-        -o-transform: matrix(-1, 0, 0, 1, 0, 0);
-        -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-        transform: matrix(-1, 0, 0, 1, 0, 0);
+        -moz-transform: scale(-1, 1);
+        -o-transform: scale(-1, 1);
+        -webkit-transform: scale(-1, 1);
+        transform: scale(-1, 1);
         filter: FlipH;
         -ms-filter: "FlipH";
     }
@@ -735,12 +765,16 @@ body{
     }
 
     #compare{
-        -moz-transform: matrix(-1, 0, 0, 1, 0, 0);
-        -o-transform: matrix(-1, 0, 0, 1, 0, 0);
-        -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
-        transform: matrix(-1, 0, 0, 1, 0, 0);
+
+        -moz-transform: scale(-1, 1);
+        -o-transform: scale(-1, 1);
+        -webkit-transform: scale(-1, 1);
+        transform: scale(-1, 1);
         filter: FlipH;
         -ms-filter: "FlipH";
+        
+       margin: 0;
+       padding: 0;
         z-index: 100050;
     }
 }
@@ -773,20 +807,14 @@ body{
 
 .canvasContainer{
     .maskWrap{
+        width: 720px;
+        height: 960px;
         #customMask{
             width: 720px;
             height: 960px;
             background: transparent;
             z-index: 999;
             position: relative;
-            &.flipped{
-                -moz-transform: scaleX(-1);
-                -o-transform: scaleX(-1);
-                -webkit-transform: scaleX(-1);
-                transform: scaleX(-1);
-                filter: FlipH;
-                -ms-filter: "FlipH";
-            }
             .text-loaded{
                 position:absolute;
                 font-size:40px;
@@ -1114,7 +1142,7 @@ input[type="range"] {
 .btn{
     padding: 5px 0;
     border: 1px solid black;
-    background: transparent;
+    background: rgba(255,255,255,.8);
     cursor: pointer;
     color: black;
     text-transform: uppercase;
@@ -1522,6 +1550,11 @@ input[type="range"] {
     .center{
         text-align: center;
     }
+    h2,h3,h4,h5{
+        &.center{
+            text-align: center;
+        }
+    }
     h1{
         text-align: center;
         font-size: 60px;
@@ -1583,10 +1616,24 @@ input[type="range"] {
     max-width: 1040px;
     margin: 0 auto;
 }
+
 .carnivalimage{
     height: 250px;
     width: 250px;
     overflow: hidden;
+    cursor: pointer;
+    @include opacity(.9);
+
+    &.seen{
+        @include opacity(.4);
+        &:hover{
+            @include opacity(1);        
+        }
+    }
+    &:hover{
+        @include opacity(1);        
+        opacity: 1!important;
+    }
     &.gif{
         @include radius(125px);
     }
@@ -1606,18 +1653,52 @@ input[type="range"] {
     font-weight: 100;
     max-width: 220px;
     background: $cta;
-        -moz-box-shadow: 1px 0px 100px 1px #0083A7;
-     -webkit-box-shadow: 1px 0px 100px 1px #0083A7;
-             box-shadow: 1px 0px 100px 1px #0083A7;
+}
+
+
+.page-blowout .imagePreview {
+    padding: 0px 0 40px 0px;
+    background: none;
+    background-image: none;
+
+    &:first-child{
+        padding: 0;
+        padding-top: 40px;
+    }
+
+    .rightInfo{
+        padding: 20px;
+        font-weight: 100;
+        width: 300px;
+        max-width: 300px;
+        background: $cta;
+    }
+
+    .info{
+        float: left;
+        width: 150px;
+        border-top: none;
+        margin-top: 0;
+        max-width: 150px;
+        .el{
+            small{
+                word-wrap: break-word;
+            }
+        }
+    }
+
+    .votes{
+        float: right;
+    }
+}
+.page-blowout{
+    background: $cta url('/img/confetti.gif');
 }
 
 .imagePreview{
 
     img{
-        width: 40%;
-            -moz-box-shadow: 1px 0px 100px 1px #0083A7;
-     -webkit-box-shadow: 1px 0px 100px 1px #0083A7;
-             box-shadow: 1px 0px 100px 1px #0083A7;
+        width: 50%;
     }
 
     -webkit-touch-callout: none;
@@ -1629,12 +1710,6 @@ input[type="range"] {
 
     padding:40px 0;
     background: $cta url('/img/confetti.gif');
-
-        -moz-box-shadow: inset 0px 0px 350px 50px #f1f1f1;
-     -webkit-box-shadow: inset 0px 0px 350px 50px #f1f1f1;
-             box-shadow: inset 0px 0px 350px 50px #f1f1f1;
-
-
 
     .info{
         clear: both;
@@ -1691,11 +1766,21 @@ input[type="range"] {
 
     .votes{
         .updown-vote{
+            cursor: pointer;
             float: left;
             padding: 0 5px;
+
+            &:hover{
+                color:white;
+            }
             em{
                 font-size: 30px;
             }
         }
     }
+}
+
+
+.hide{
+    display: none;
 }

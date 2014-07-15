@@ -1,12 +1,16 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, lastWatchedImage, controlsService, $document) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, lastWatchedImage, controlsService, $document, browsersDetect, $analytics) {
 
+
+    if(browsersDetect() !== 'chrome'){
+      $location.path('/browser');
+    }
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
 
     $scope.showVideo        = false;
     $scope.showControls     = false;
     $scope.showStart        = true;
-    $scope.pageClass        = 'page-main';
+    $scope.pageClass        = ($location.path() !== '/sorry' && $location.path() !== '/browser') ? 'page-main' : '';
     $scope.isRunning        = false;
     $scope.showMask         = true;
     $scope.showImage        = true;
@@ -58,6 +62,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
     $scope.saveMaskOnDB = function(maskObj){
         maskObj.lang = $rootScope.lang;
         maskService.saveMaskOnDB(maskObj);
+        $analytics.eventTrack('Saving Mask on DB', {  category: 'drawing mask'});
     };
 
     /**
@@ -84,6 +89,19 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         $scope.images = newList;
     });
 
+
+    $rootScope.$on('savedPhoto', function(event, info) {
+        if(info.update === 1 && info.error === 0){
+            $scope.showModal('pic');
+        }
+    });
+
+    $rootScope.$on('savedMask', function(event, info) {
+        if((info.update === 0 || info.update === 1) && info.error === 0){
+            $scope.showModal('mask');
+        }
+    });
+
     /**
      * activate the possibility to click on left-right arrow and change the mask
      * 
@@ -99,14 +117,17 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
             }else if(maskIndex < 0){
                 maskIndex = maskService.masks.length-1;
             }
-            console.log('MASK #'+maskIndex);
+            //console.log('MASK #'+maskIndex);
             
             maskService.setCurrent(maskService.masks[maskIndex]);
-            $scope.selectedMask = maskService.masks[maskIndex];
+            $scope.selectedMask = maskService.getCurrent();
+            //console.log('SELECTED: ', $scope.selectedMask);
 
-            $scope.credits = maskService.masks[maskIndex].credits;
+            //$scope.credits = maskService.masks[maskIndex].credits;
+            $analytics.eventTrack('Trying different mask', {  category: 'Carnivalizement', label: '(ID: '+ $scope.selectedMask.id + ')'});
         }else{
-            alert('There are NO masks!');
+            $analytics.eventTrack('NO masks', { category: 'Errors' });
+            //alert('There are NO masks!');
         }
         $scope.updateMasksAmountAndTags();
     };
@@ -173,6 +194,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         //set canvas with video content
         canvasInput.width   = videoWidth;
         canvasInput.height  = videoHeight;
+
         //set canvas with overlay(s)
         canvasOverlay.width = videoWidth;
         canvasOverlay.height= videoHeight;
@@ -250,10 +272,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         //check if the camera is shown...if it's not, the "ALLOW CAMERA" message DIV will appear
         //and the header has to go away....
         $scope.$watch('isCameraInactive', function(newVal, oldVal){
+            var header = angular.element(document.getElementsByTagName("header")[0]);
             if(newVal){
-                document.querySelector('header').style.display = "none";
+                header.addClass('hide');
             }else{
-                document.querySelector('header').style.display = "block";
+                header.removeClass('hide');
             }
         });
 
@@ -299,6 +322,10 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                     overlayContext.drawImage(maskService.getStickImage(),-enlargetWidth/2, -enlargetHeight/2, enlargetWidth, enlargetHeight);
                     overlayContext.rotate(degrees);
                     overlayContext.translate(-event.x, -event.y);
+
+                
+
+
                 }
 
             }catch(e){
@@ -318,17 +345,30 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      */
     $scope.startFun = function(dimension){
 
+        var customMask = maskService.getMaskFromLocalStorage();
+
         if($scope.mode !== 'save'){
-            //get masks promise from mask service
-            $scope.getRandomMask();
+
+            //try to get the mask that the user saved, or a random one
+            /*if(customMask){
+                maskService.setCurrent(customMask);
+                $scope.selectedMask = customMask;
+            }else{
+                //get masks promise from mask service*/
+                $scope.getRandomMask();
+            //}
+
+            $analytics.eventTrack('Trying Random Mask ', {  category: 'Carnivalizement' });
         }else{
             //current mask (user handmade one) ...... //TODO: error here in case there is no mask
-            var customMask = maskService.getMaskFromLocalStorage();
             $scope.masks = [];
             $scope.masks.push(maskService.getMaskFromLocalStorage());
-            console.log('THE MASKS IS ONLY THE CUSTOM ONE, this one: ', customMask);
+            
+            //console.log('THE MASKS IS ONLY THE CUSTOM ONE, this one: ', customMask);
             maskService.setCurrent(customMask);
             $scope.selectedMask = customMask;
+
+            $analytics.eventTrack('Trying Custom Mask', {  category: 'drawing mask' });
         }
 
         //remove "go! button"
@@ -350,26 +390,29 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 maskService.setCurrent(response[maskIndex]);
                 $scope.selectedMask = response[maskIndex];
             }else{
-                alert('NO masks!');
+                $analytics.eventTrack('NO masks', { category: 'Errors' });
+                //alert('NO masks!');
             }
             $scope.updateMasksAmountAndTags();
         });
     };
 
     $scope.stopTracking = function(){
+        $analytics.eventTrack('Stopping Tracking', {  category: 'Carnivalizement' });
         trackingService.stop();
         //trackingService.stopStream();
         $scope.isRunning = false;
     };
     $scope.restartTracking = function(){
+        $analytics.eventTrack('Restarting Tracking', {  category: 'Carnivalizement' });
         trackingService.start();
         $scope.isRunning = true;
     };
     $scope.refreshTracking = function(){
+        $analytics.eventTrack('Refreshing Tracking', {  category: 'Carnivalizement' });
         trackingService.stop();
         $scope.restartTracking();
     };
-
 
     /**
      * creates a PNG photo out of videoCanvas+overlayCanvas
@@ -378,6 +421,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      */
     $scope.canvasToImage = function(){
         var canvas = null;
+        
+        $analytics.eventTrack('Creating PNG', {  category: 'Carnivalizement' });
+
         html2canvas(document.querySelector('#fullPic'), {
             onrendered: function(canvas) {
                 var img    = canvas.toDataURL("image/png");
@@ -396,27 +442,17 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 $scope.currentPhoto.type        = 'png';
                 $scope.currentPhoto.image       = img;
                 $scope.currentPhoto.image_url   = img;
-                $scope.currentPhoto.lang        = $rootScope.lang;
-
-                /*$scope.currentPhoto     = { 'id'        : 0,
-                                            'type'      : 'png', 
-                                            'tags'      : [],
-                                            'masks'     : [], 
-                                            'audience'  : 0, 
-                                            'email'     : "",
-                                            'lang'      : $rootScope.lang,
-                                            'size'      : imgFileSize,
-                                            'ts'        : moment().format("X"),
-                                            'image_url' : img,
-                                            'image'     : img,
-                                            $$hashKey   : Math.floor((Math.random()*9999999999)+1) //this is for display purposes
-                                          };*/
+                $scope.currentPhoto.lang        = $rootScope.lang;                
 
                 //add the ID of the used mask 
                 $scope.currentPhoto.masks.push($scope.selectedMask.id);
 
+                var docHeight= Math.max(document.body.scrollHeight, document.documentElement.scrollHeight,
+                                        document.body.offsetHeight, document.documentElement.offsetHeight,
+                                        document.body.clientHeight, document.documentElement.clientHeight);
+
                 //Scroll to the exact position
-                $document.scrollTop(650, 1500).then(function() {
+                $document.scrollTop(docHeight, 1500).then(function() {
                     //console.log('You just scrolled to the top!');
                 });
 
@@ -424,6 +460,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 $scope.images = photoService.getCollection();
 
                 $scope.$apply();
+
+                $analytics.eventTrack('PNG Created', {  category: 'Carnivalizement' });
             }
         });
     };
@@ -453,9 +491,12 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
             encoder.setRepeat(0);   //0  -> loop forever ||| 1+ -> loop n times then stop
             encoder.setDelay(100);  //go to next frame every n milliseconds
             encoder.start();
+
+            $analytics.eventTrack('Recording GIF', {  category: 'Carnivalizement' });
         }
 
-        if($scope.pics === 10){
+        if($scope.pics === 11){
+            $analytics.eventTrack('Creating GIF', {  category: 'Carnivalizement' });
             //stop tracking
             $scope.stopTracking();
             //finish encoding GIF
@@ -488,6 +529,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
 
             photoService.addPhotoToCollection($scope.currentPhoto);
             $scope.images = photoService.getCollection();
+
+            $analytics.eventTrack('GIF Created', {  category: 'Carnivalizement' });
 
             //reset number of pics
             $scope.pics = 0;
@@ -530,6 +573,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
      */
     $scope.resetVideo = function(){
 
+        $analytics.eventTrack('Resetting Video', {  category: 'Carnivalizement' });
+
         //reinit encoder
         encoder = new GIFEncoder();
         //reset number of pics
@@ -538,6 +583,30 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         //show the button to take images again
         $scope.showImage = true;
 
+    };
+
+
+    $scope.showModal = function(type){
+        //alert('show!');
+        //angular.element($document[0].body).addClass('lock');
+        if(type === 'mask'){
+            $scope.modal_show_mask = 1;
+            $scope.modal_wrapper_show_mask = 1;
+        }else{
+            $scope.modal_show_pic = 1;
+            $scope.modal_wrapper_show_pic = 1;
+        }
+
+    };
+    $scope.hideModal = function(){
+        $scope.modal_show_pic = 0;
+        $scope.modal_show_mask = 0;
+        //angular.element($document[0].body).removeClass('lock');
+        setTimeout(function() {
+            $scope.modal_wrapper_show_pic = 0;
+            $scope.modal_wrapper_show_mask = 0;
+            $scope.$apply();
+        }, 400);
     };
 
 

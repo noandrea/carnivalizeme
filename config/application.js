@@ -45,7 +45,7 @@
         enabled: true,
         host: 'http://localhost',
         port: 8000,
-        prefix: '' // request paths that contain 'api' will now be the only ones forwarded to the apiProxy
+        prefix: '' // request paths that contain '_ah' will now be the only ones forwarded to the apiProxy
       }
     },
 
@@ -63,7 +63,7 @@
         },
         constants: {
           ENVIRONMENT: 'dist',
-          API_BASE_URL: 'http://carnivalizemeapi.appspot.com'
+          API_BASE_URL: 'http://carnivalize.me'
         }
       },
       dev: {

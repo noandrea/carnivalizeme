@@ -30,7 +30,6 @@ angular.module("app").factory('trackingService', function() {
         },
 
         isActive: function () {
-            console.log('htracker is obj', angular.isObject(htracker));
             return angular.isObject(htracker);
         }
 

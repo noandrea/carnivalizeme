@@ -2,7 +2,10 @@ angular.module("app").controller('EditorCtrl', function($scope, $document, lastW
     
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
-    $scope.pageClass = 'page-editor';
+    $scope.pageClass    = 'page-editor';
+    
+    var header = angular.element(document.getElementsByTagName("header")[0]);
+    header.addClass('hide');
 
     $scope.showModal = function(){
         //alert('show!');

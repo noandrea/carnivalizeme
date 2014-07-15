@@ -3,7 +3,7 @@
     <div class="aligner">
 
         <ul class="carnivalList">
-            <li class="carnivalimage {{photo.type}}" ng-repeat="photo in photos"> <!-- | orderBy:'ts':true -->
+             <li class="carnivalimage png {{!photo.seen ? '' : 'seen'}}" ng-repeat="photo in photos"> <!-- | orderBy:'ts':true --> <!-- class="carnivalimage {{photo.type}}" -->
                 
                 <gifff ng-if="!photo.ad" photo="photo"></gifff>
                 
@@ -15,19 +15,19 @@
     <div class="pager aligner">
         <ul>
             <li class="textonly">
-                <a ng-click="goTo('/terms');">Last</a>
+                <a ng-click="changePage(lc);">Last</a>
             </li>
             <li class="textonly">
-                <a ng-click="goTo('/terms');">Next</a>
+                <a ng-click="changePage(nc);">Next</a>
             </li>
             <li class="textonly">
                 <strong>PAGE 55</strong>
             </li>
             <li class="textonly">
-                <a ng-click="goTo('/terms');">Previous</a>
+                <a ng-click="changePage(pc);">Previous</a>
             </li>
             <li class="textonly">
-                <a ng-click="goTo('/terms');">First</a>
+                <a ng-click="changePage(fc);">First</a>
             </li>
         </ul>
     </div>

@@ -17,7 +17,6 @@ angular.module("app").factory('controlsService', function(html5Storage) {
                 //...else get them from localStorage
                 controls = html5Storage.get('controls');
             }
-            console.log('----------> the controls', controls);
             //store controls on localStorage
             self.save();
             return controls;

@@ -1,4 +1,4 @@
-angular.module("app").directive('searchMasks', function(maskService) {
+angular.module("app").directive('searchMasks', function(maskService, $analytics) {
     return {
         restrict: 'EA',
         replace: true,
@@ -33,6 +33,7 @@ angular.module("app").directive('searchMasks', function(maskService) {
                         }
                         maskService.masktags        = scope.searchInput;
                         maskService.masktagsAmount  = response.length;
+
                         scope.updateTags();
                     });
                     

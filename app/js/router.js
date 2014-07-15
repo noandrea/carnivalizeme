@@ -27,6 +27,10 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
     controller: 'MainCtrl'
   });
 
+  $routeProvider.when('/blowout', {
+    controller: 'MainCtrl'
+  });
+
   $routeProvider.when('/carnival', {
     templateUrl: 'carnival.html',
     controller: 'CarnivalCtrl',
@@ -39,6 +43,12 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
     templateUrl: 'sorry.html',
     controller: 'MainCtrl'
   });
+
+  $routeProvider.when('/browser', {
+    templateUrl: 'browser.html',
+    controller: 'MainCtrl'
+  });
+
 
   $routeProvider.otherwise({redirectTo: '/now'});
 

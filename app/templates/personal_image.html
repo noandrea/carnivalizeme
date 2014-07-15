@@ -9,7 +9,7 @@
                 <div class="el center" ng-hide="allImages[$parent.$index].audience">
                     <label class="delete" ng-click="removeImage(allImages[$parent.$index])">{{'DELETE_THIS_PHOTO' | translate}}</label>
                     <label>&mdash;</label>
-                    <label>{{'SAVE_PHOTO' | translate}} - {{allImages[$parent.$index].temp_id}}</label>
+                    <label>{{'SAVE_PHOTO' | translate}}</label>
                 </div>
 
                 <div class="el center">
@@ -37,7 +37,7 @@
                         <input maxlength="80" type="email" ng-model="allImages[$parent.$index].email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
                     </div>
                     <div class="el center">
-                        <a class="btn" ng-click="savePhoto(allImages[$parent.$index]);">{{'SAVE_PHOTO' | translate}} {{allImages[$parent.$index].temp_id}}</a>
+                        <a class="btn" ng-click="savePhoto(allImages[$parent.$index]);">{{'SAVE_PHOTO' | translate}}</a>
                     </div>
                 </div>
             </div>

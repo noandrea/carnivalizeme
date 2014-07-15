@@ -6,9 +6,9 @@
 
     <div class="aligner" ng-show="showStart" ng-if="mode !== 'save'">
 
-        <div class="bigPlay">
+        <div class="bigPlay animated fadeInDown">
             <div>
-                <a class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                <a analytics-on="click" analytics-event="Carnivalization"  analytics-category="BIG CTAs" class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
             </div>
         </div>
 
@@ -90,8 +90,13 @@
 <!-- CONTROLS (buttons) *************************** -->
             <div class="controls" ng-show="showControls">
                 <!-- <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div> -->
-                <div ng-if="masktags" class="control masktags" ng-click="alert('Catch All!');" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
-                    {{masktags ? masktags : '...'}}  <br/> <em>{{masktagsAmount}} {{'MASKS_FOUND' | translate}}</em> &mdash; <a ng-click="resetMasksAmountAndTags();">{{'REMOVE_TAGS' | translate}}</a>
+                <div ng-if="masktags" class="control masktags" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
+                    {{masktags ? masktags : '...'}}  <br/> <em>{{masktagsAmount}} {{'MASKS_FOUND' | translate}}</em> &mdash; 
+                    <a ng-click="resetMasksAmountAndTags();">{{'REMOVE_TAGS' | translate}}</a>
+                </div>
+
+                <div class="control masktags" ng-show="!masktags && !showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
+                    <br/><a ng-click="resetMasksAmountAndTags();">RANDOM!</a>
                 </div>
                 
                 <div class="control masktags" ng-click="showSearchMask = !showSearchMask" ng-show="!masktags && !showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
@@ -122,8 +127,8 @@
 
 <!-- fullPic (video canvas + overlay) *************************** -->
             <div id="fullPic" width="{{videoWidth}}" height="{{videoHeight}}">
-                <canvas id="compare"></canvas>
-                <canvas ng-if="showMask" id="overlay"></canvas>
+                <canvas id="compare" width="{{videoWidth}}" height="{{videoHeight}}"></canvas>
+                <canvas ng-if="showMask" id="overlay" width="{{videoWidth}}" height="{{videoHeight}}"></canvas>
                 <div id="watermark">http://carnivalize.me</div>
                 <video id="vid" autoplay loop></video>
             </div>
@@ -170,9 +175,49 @@
     </div>
     <div class="userImages aligner" ng-if="images.length > 0">
         <ul>
-            <li ng-repeat="img in images | orderBy:'ts':true"> <!-- | orderBy:'ts':true -->
+            <li ng-repeat="img in images"> <!-- | orderBy:'ts':true -->
                 <personal-image all-images="images" img="img"></personal-image>
             </li>
         <ul>
     </div>
+
+
+<!-- PIC modal -->
+    <div class="modalWrapper" ng-show='modal_wrapper_show_pic'>
+        <div class="modalCover" ng-show="modal_show_pic" ng-click="hideModal();" ></div>
+        <div class="modalContent" ng-show="modal_show_pic">
+
+            <table>
+                <tr>
+                    <td>
+                        OK!
+                    </td>
+                    <td>
+                        <a analytics-on="click" analytics-event="after picture" analytics-category="modal clicks" class="carnival" ng-click="goTo('/carnival');">{{'GOTO_CARNIVAL' | translate}}</a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+<!-- PIC modal -->
+    <div class="modalWrapper" ng-show='modal_wrapper_show_mask'>
+        <div class="modalCover" ng-show="modal_show_mask" ng-click="hideModal();" ></div>
+        <div class="modalContent" ng-show="modal_show_mask">
+
+            <table>
+                <tr>
+                    <td>
+                        OK!
+                    </td>
+                    <td>
+                        <a analytics-on="click" analytics-event="after mask" analytics-category="footer clicks" class="carnivalize" ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
 </div>

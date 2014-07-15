@@ -1,5 +1,4 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config"]).run(function($rootScope, $location, trackingService, $translate) {
-    
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config", "angulartics", "angulartics.google.analytics"]).run(function($rootScope, $location, trackingService, $translate, $document) {
 
     $rootScope.adsBlocked = 0;
     /**
@@ -13,7 +12,17 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         if(trackingService.isActive()){
             trackingService.stop();
         }
+        var header = angular.element(document.getElementsByTagName("header")[0]);
+        header.removeClass('hide');
+
         $location.path(path);
+
+        setTimeout( function(ev){
+          $document.scrollTop(0, 1500).then(function() {
+            //scrolled to top!
+          });
+        }, 1200 );
+        
     };
 
     /**
