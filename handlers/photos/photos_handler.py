@@ -29,6 +29,7 @@ class PhotoHandler(webapp2.RequestHandler):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
         photo_query = Photo.query().order(-Photo.up_vote, -Photo.added)
+        photo_query_reversed = Photo.query().order(Photo.up_vote, Photo.added)
 
         cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
         photos, next_curs, more = photo_query.fetch_page(32, start_cursor=cursor)
@@ -45,7 +46,7 @@ class PhotoHandler(webapp2.RequestHandler):
 
         # prev cursor
         rev_cursor = cursor.reversed()
-        prev_photos, prev_cursor, prev_more = rev_cursor.fetch_page(32)
+        prev_photos, prev_cursor, prev_more = photo_query_reversed.fetch_page(32, start_cursor=rev_cursor)
         if prev_more:
             reply['pc'] = prev_cursor.urlsafe()
         else:
