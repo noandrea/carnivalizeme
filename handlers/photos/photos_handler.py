@@ -43,7 +43,14 @@ class PhotoHandler(webapp2.RequestHandler):
         else:
             reply['nc'] = None 
 
-        reply['pc'] = self.request.get('cr',default_value=None) # previous cursor
+        # prev cursor
+        rev_cursor = cursor.reversed()
+        prev_photos, prev_cursor, prev_more = rev_cursor.fetch_page(32)
+        if prev_more:
+            reply['pc'] = prev_cursor.urlsafe()
+        else:
+            reply['pc'] = None 
+
         reply['fc'] = None # first cursor
         reply['lc'] = None # last cursor
 
