@@ -56,11 +56,11 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWa
                 
 console.log('NC: ',response.nc);
 console.log('PC: ',response.pc);
-
+                
                 $scope.pc = response.pc;    //Next Cursor
                 $scope.nc = response.nc;    //Previous Cursor
-                $scope.fc = response.fc;    //First Cursor
-                $scope.lc = response.lc;    //Last Cursor
+                // $scope.fc = response.fc;    //First Cursor
+                // $scope.lc = response.lc;    //Last Cursor
 
             }else{
                 alert('NO photos!');
@@ -68,9 +68,9 @@ console.log('PC: ',response.pc);
         });
     };
 
-    $scope.changePage = function(cr){
-        filter = {'cr' : cr};
-        alert('sending filter: ' + cr);
+    $scope.changePage = function(cr, dir){
+        filter = {'cr' : cr, 'd': dir};
+        alert('sending filter: ' + cr+" dir"+dir);
         $scope.getPhotos(filter);
     };
     
