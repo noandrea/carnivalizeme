@@ -28,32 +28,60 @@ class PhotoHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
-        photo_query = Photo.query().order(-Photo.up_vote, -Photo.added)
-        photo_query_reversed = Photo.query().order(Photo.up_vote, Photo.added)
+        pagination_size = 3
+        # this is the query
+        photo_query_fwd = Photo.query().order(-Photo.up_vote, -Photo.added)
+        photo_query_bkw = Photo.query().order(Photo.up_vote, Photo.added)
+        # current cursor
+        current_cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
+        # direction 
+        direction = self.request.get('d', 'f')
+        print 'direction is %s' % direction 
+        if direction == 'b':
+            #photo_query = photo_query_fwd
+            cursor = current_cursor.reversed() if current_cursor else None
+            photo_query = photo_query_bkw
+            #cursor = current_cursor
+        else:
+            photo_query = photo_query_fwd
+            cursor = current_cursor if current_cursor else None
 
-        cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
-        photos, next_curs, more = photo_query.fetch_page(32, start_cursor=cursor)
+        # get the next results
+        photos, new_cursor, more = photo_query.fetch_page(pagination_size, start_cursor=cursor)
+        
+        if more and new_cursor:
+            more = True
+        else:
+            more = False
 
         reply = {'photos':[]}
         for photo in photos:
             reply['photos'].append(Photo.to_json_object(photo))
 
-        # next cursor
-        if more:
-            reply['nc'] = next_curs.urlsafe()
+        
+        # if backward we need to reverse the array
+        if direction == 'b':
+            reply['photos'] = reply['photos'][::-1]
+            reply['pc'] = new_cursor.reversed().urlsafe() if more else None
+            reply['nc'] = current_cursor.urlsafe() if current_cursor else None
         else:
-            reply['nc'] = None 
+            reply['nc'] = new_cursor.reversed().urlsafe() if more else None
+            reply['pc'] = current_cursor.urlsafe() if current_cursor else None
+
+        # if there is more get the next cursor
+        
+
 
         # prev cursor
-        rev_cursor = cursor.reversed()
-        prev_photos, prev_cursor, prev_more = photo_query_reversed.fetch_page(32, start_cursor=rev_cursor)
-        if prev_more:
-            reply['pc'] = prev_cursor.urlsafe()
-        else:
-            reply['pc'] = None 
+        # prev_photos, prev_cursor, prev_more = photo_query_reversed.fetch_page(pagination_size, start_cursor=rev_cursor)
+        # print prev_more
+        # if prev_more:
+        #     reply['pc'] = prev_cursor.urlsafe()
+        # else:
+        #     reply['pc'] = None 
 
-        reply['fc'] = None # first cursor
-        reply['lc'] = None # last cursor
+        # reply['fc'] = None # first cursor
+        # reply['lc'] = None # last cursor
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
