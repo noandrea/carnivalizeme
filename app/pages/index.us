@@ -5,7 +5,8 @@
 	<link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
 	<meta name="description" content="Life is a masquerade. Carnivalize Yourself. This Free anonymous app allows you to create masked GIFs and selfies. Enjoy!">
 	<meta name="keywords" content="carnivalizer, carnivalizeme, carnival, masquerade, masks, game, mask game, effects, webcam, fun, toy, carnivalize">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0,width=device-width" />
     <meta property="og:image" content="http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg"/>
 
     <meta name="alexaVerifyID" content="gWSvemLbucSxbcXk1gCEBT7cES4"/>

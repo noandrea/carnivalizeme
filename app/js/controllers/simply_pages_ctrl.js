@@ -51,16 +51,17 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWa
                 //add 3 ads on random positions
                 $scope.photos.splice(Math.floor(Math.random()*4), 0, {ad:true});
                 $scope.photos.splice(Math.floor(Math.random()*5)+4, 0, {ad:true});
-                $scope.photos.splice(Math.floor(Math.random()*5)+16, 0, {ad:true});
-                $scope.photos.splice(Math.floor(Math.random()*5)+24, 0, {ad:true});
+                /*$scope.photos.splice(Math.floor(Math.random()*5)+16, 0, {ad:true});
+                $scope.photos.splice(Math.floor(Math.random()*5)+24, 0, {ad:true});*/
                 
-                $scope.pc = response.nc;    //Next Cursor
-                $scope.nc = response.pc;    //Previous Cursor
+console.log('NC: ',response.nc);
+console.log('PC: ',response.pc);
+
+                $scope.pc = response.pc;    //Next Cursor
+                $scope.nc = response.nc;    //Previous Cursor
                 $scope.fc = response.fc;    //First Cursor
                 $scope.lc = response.lc;    //Last Cursor
 
-                console.log(filter);
-                console.log('THE PHOTOS:', $scope.photos);
             }else{
                 alert('NO photos!');
             }
@@ -69,7 +70,8 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWa
 
     $scope.changePage = function(cr){
         filter = {'cr' : cr};
-        $scope.getPhotos(cr);
+        alert('sending filter: ' + cr);
+        $scope.getPhotos(filter);
     };
     
     $scope.getPhotos(filter);

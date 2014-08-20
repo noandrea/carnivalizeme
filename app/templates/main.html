@@ -165,12 +165,8 @@
 <!-- previously taken PHOTOS *************************** -->
     <div class="aligner gray" ng-if="images.length > 0">
         <div class="textBlock">
-            <h2 class="white">Your Temporary Images</h2>
-            <p class="white">
-                These images are only available until your next refresh.<br/>
-                To preserve these images you can anonimously save them to the carnival<br/>
-                or <em>Right Click</em> on the ones you like, to store them on your computer.
-            </p>
+            <h2 class="white">{{'TEMPORARY_IMAGES' | translate}}</h2>
+            <p class="white" translate="TEMP_IMAGES_TEXT"></p>
         </div>
     </div>
     <div class="userImages aligner" ng-if="images.length > 0">

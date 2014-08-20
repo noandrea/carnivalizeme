@@ -3,8 +3,8 @@
     <div class="aligner">
 
         <ul class="carnivalList">
-             <li class="carnivalimage png {{!photo.seen ? '' : 'seen'}}" ng-repeat="photo in photos"> <!-- | orderBy:'ts':true --> <!-- class="carnivalimage {{photo.type}}" -->
-                
+             <li class="carnivalimage png {{!photo.seen ? '' : 'seen'}} {{photo.loading ? 'loading' : ''}}" ng-repeat="photo in photos"> <!-- | orderBy:'ts':true --> <!-- class="carnivalimage {{photo.type}}" -->
+                <div width="50" ng-show="photo.loading" class="loading"><img src="img/loading_carnival_image.gif"/></div>
                 <gifff ng-if="!photo.ad" photo="photo"></gifff>
                 
                 <div google-adsense class="squaredAds" ng-if="photo.ad"></div>
@@ -17,13 +17,13 @@
             <li class="textonly">
                 <a ng-click="changePage(lc);">Last</a>
             </li>
-            <li class="textonly">
+            <li class="textonly" ng-show="nc">
                 <a ng-click="changePage(nc);">Next</a>
             </li>
             <li class="textonly">
                 <strong>PAGE 55</strong>
             </li>
-            <li class="textonly">
+            <li class="textonly" ng-show="pc">
                 <a ng-click="changePage(pc);">Previous</a>
             </li>
             <li class="textonly">

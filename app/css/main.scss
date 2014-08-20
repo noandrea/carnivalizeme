@@ -1630,6 +1630,20 @@ input[type="range"] {
             @include opacity(1);        
         }
     }
+    .loading{
+        background-color: rgba(0,0,0,0.4);
+        height: 250px;
+        width: 250px;
+        position: absolute;
+        img{
+            position: absolute;
+            margin-top: 100px;
+            margin-left: 100px;
+            width:50px;
+            height:50px;
+        }
+    }
+
     &:hover{
         @include opacity(1);        
         opacity: 1!important;
@@ -1638,7 +1652,7 @@ input[type="range"] {
         @include radius(125px);
     }
     margin: 5px;
-    img{
+    img.preview{
         vertical-align: middle;
         width:350px;
         margin-left: -50px;
@@ -1698,7 +1712,7 @@ input[type="range"] {
 .imagePreview{
 
     img{
-        width: 50%;
+        width: 640px;
     }
 
     -webkit-touch-callout: none;
