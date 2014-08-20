@@ -36,6 +36,11 @@ indexes:
 - kind: Photo
   properties:
   - name: up_vote
+  - name: added
+
+- kind: Photo
+  properties:
+  - name: up_vote
     direction: desc
   - name: added
     direction: desc

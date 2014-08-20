@@ -43,6 +43,9 @@ handlers:
 
 - url: /css
   static_dir: app/css
+  
+- url: /carnivalizeme
+  static_dir: app/carnivalizeme
 
 - url: /js
   static_dir: app/js
