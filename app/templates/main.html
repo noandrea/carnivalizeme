@@ -186,13 +186,20 @@
             <table>
                 <tr>
                     <td>
-                        OK!
-                    </td>
-                    <td>
-                        <a analytics-on="click" analytics-event="after picture" analytics-category="modal clicks" class="carnival" ng-click="goTo('/carnival');">{{'GOTO_CARNIVAL' | translate}}</a>
+                        DONE!
                     </td>
                 </tr>
             </table>
+
+            <div class="aligner">
+                <div>
+                    <a analytics-on="click" analytics-event="after picture carnival" analytics-category="modal clicks" class="btn cta" ng-click="hideModal();" href="/carnival">{{'GOTO_CARNIVAL' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture close modal" analytics-category="modal clicks" class="btn" ng-click="hideModal();">RE-{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture create mask" analytics-category="modal clicks"  class="btn" ng-click="hideModal();" href="/editor">{{'CREATE_MASK' | translate}}</a>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -205,13 +212,20 @@
             <table>
                 <tr>
                     <td>
-                        OK!
-                    </td>
-                    <td>
-                        <a analytics-on="click" analytics-event="after mask" analytics-category="footer clicks" class="carnivalize" ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                        DONE!
                     </td>
                 </tr>
             </table>
+
+            <div class="aligner">
+                <div>
+                    <a analytics-on="click" analytics-event="after picture carnival" analytics-category="modal clicks" class="btn" ng-click="hideModal();" href="/carnival">{{'GOTO_CARNIVAL' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture close modal" analytics-category="modal clicks" class="btn cta" ng-click="hideModal();" href="/now">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture create mask" analytics-category="modal clicks"  class="btn" ng-click="hideModal();" href="/editor">RE-{{'CREATE_MASK' | translate}}</a>
+                </div>
+            </div>
 
         </div>
     </div>

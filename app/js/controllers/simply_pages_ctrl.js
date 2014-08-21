@@ -28,8 +28,6 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWa
     //Next, Previous, First and Last Cursor
     $scope.nc = null;
     $scope.pc = null;
-    $scope.fc = null;
-    $scope.lc = null;
 
     var filter = {'cr' : $scope.cr};
     $scope.getPhotos = function (filter){ //TODO: here i can paginate passing "page"
@@ -49,18 +47,13 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWa
                 });
 
                 //add 3 ads on random positions
-                $scope.photos.splice(Math.floor(Math.random()*4), 0, {ad:true});
-                $scope.photos.splice(Math.floor(Math.random()*5)+4, 0, {ad:true});
-                /*$scope.photos.splice(Math.floor(Math.random()*5)+16, 0, {ad:true});
+                $scope.photos.splice(Math.floor(Math.random()*4)+16, 0, {ad:true});
+                /*$scope.photos.splice(Math.floor(Math.random()*5)+4, 0, {ad:true});
+                $scope.photos.splice(Math.floor(Math.random()*5)+16, 0, {ad:true});
                 $scope.photos.splice(Math.floor(Math.random()*5)+24, 0, {ad:true});*/
-                
-console.log('NC: ',response.nc);
-console.log('PC: ',response.pc);
                 
                 $scope.pc = response.pc;    //Next Cursor
                 $scope.nc = response.nc;    //Previous Cursor
-                // $scope.fc = response.fc;    //First Cursor
-                // $scope.lc = response.lc;    //Last Cursor
 
             }else{
                 alert('NO photos!');
@@ -68,9 +61,11 @@ console.log('PC: ',response.pc);
         });
     };
 
-    $scope.changePage = function(cr, dir){
-        filter = {'cr' : cr, 'd': dir};
-        alert('sending filter: ' + cr+" dir"+dir);
+    $scope.changePage = function(cr, dir, tags){
+        filter = {  'cr'    : cr,
+                    'd'     : dir,
+                    'tags'  : tags
+                 };
         $scope.getPhotos(filter);
     };
     

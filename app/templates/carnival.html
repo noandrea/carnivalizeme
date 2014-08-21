@@ -1,9 +1,35 @@
 <div>
     <div image-preview image="lastWatchedImage"></div>
-    <div class="aligner">
 
+    <div class="pager aligner pageCounterFirst">
+        <ul>
+            <li class="textonly" ng-hide="tagsPhotos">
+                <a class="pagination" ng-click="changePage(null,'r',null);">Randomize</a>
+            </li>
+            <li class="textonly">
+                <input class="pagination" type="text" ng-model="tagsPhotos"></input><a ng-show="tagsPhotos" class="pagination search reset" ng-click="tagsPhotos='';changePage(null,'t',tagsPhotos);">RESET</a><a class="pagination search" ng-click="changePage(null,'t',tagsPhotos);">search</a>
+            </li>
+            <li class="textonly" ng-show="nc">
+                <a class="pagination" ng-click="changePage(nc,'f',tagsPhotos);">Next &raquo;</a>
+            </li>
+            <li class="textonly" ng-show="pc">
+                <a class="pagination" ng-click="changePage(pc,'b',tagsPhotos);">&laquo; Previous</a>
+            </li>
+            <li class="textonly" ng-show="pc">
+                <a class="pagination" ng-click="changePage(null,'t',tagsPhotos);">First</a>
+            </li>
+            <li class="textonly" ng-hide="pc">
+                <a class="pagination inactive">&laquo; Previous</a>
+            </li>
+            <li class="textonly" ng-hide="pc">
+                <a class="pagination inactive">First</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="aligner">
         <ul class="carnivalList">
-             <li class="carnivalimage png {{!photo.seen ? '' : 'seen'}} {{photo.loading ? 'loading' : ''}}" ng-repeat="photo in photos"> <!-- | orderBy:'ts':true --> <!-- class="carnivalimage {{photo.type}}" -->
+             <li class="carnivalimage png {{photo.seen ? 'seen' : ''}}" ng-repeat="photo in photos"> <!-- | orderBy:'ts':true --> <!-- class="carnivalimage {{photo.type}}" -->
                 <div width="50" ng-show="photo.loading" class="loading"><img src="img/loading_carnival_image.gif"/></div>
                 <gifff ng-if="!photo.ad" photo="photo"></gifff>
                 
@@ -12,22 +38,28 @@
         <ul>
     </div>
 
-    <div class="pager aligner">
+    <div class="pager aligner pageCounter">
         <ul>
+            <li class="textonly" ng-hide="tagsPhotos">
+                <a class="pagination" ng-click="changePage(null,'r',null);">Randomize</a>
+            </li>
             <li class="textonly">
-                <a ng-click="changePage(nc,'f');">Last</a>
+                <input class="pagination" type="text" ng-model="tagsPhotos"></input><a ng-show="tagsPhotos" class="pagination search" ng-click="tagsPhotos='';changePage(null,'t',tagsPhotos);">RESET</a><a class="pagination search" ng-click="changePage(null,'t',tagsPhotos);">search</a>
             </li>
             <li class="textonly" ng-show="nc">
-                <a ng-click="changePage(nc,'f');">Next</a>
-            </li>
-            <li class="textonly">
-                <strong>PAGE 55</strong>
+                <a class="pagination" ng-click="changePage(nc,'f',tagsPhotos);">Next &raquo;</a>
             </li>
             <li class="textonly" ng-show="pc">
-                <a ng-click="changePage(pc,'b');">Previous</a>
+                <a class="pagination" ng-click="changePage(pc,'b',tagsPhotos);">&laquo; Previous</a>
             </li>
-            <li class="textonly">
-                <a ng-click="changePage(pc,'b');">First</a>
+            <li class="textonly" ng-show="pc">
+                <a class="pagination" ng-click="changePage(null,'t',tagsPhotos);">First</a>
+            </li>
+            <li class="textonly" ng-hide="pc">
+                <a class="pagination inactive">&laquo; Previous</a>
+            </li>
+            <li class="textonly" ng-hide="pc">
+                <a class="pagination inactive">First</a>
             </li>
         </ul>
     </div>

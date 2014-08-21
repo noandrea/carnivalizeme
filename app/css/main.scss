@@ -157,12 +157,19 @@ header{
 /* *************************************************************** end HEADER */
 
 /* *************************************************************** FOOTER */
+.pageCounterFirst{
+    border-top: 1px solid white;
+    margin-bottom: 5px;
+}
+.pageCounter{
+    border-bottom: 1px solid white;
+}
 footer, .pager{
     overflow: hidden;
     padding-top: 12px;
     padding-bottom: 12px;
     margin-top: 12px;
-    border-top: 1px solid white;
+
     background: white;
 
     &.blow-out{
@@ -174,6 +181,31 @@ footer, .pager{
             float: right;
             min-width: 20px;
             a{
+
+                &.pagination{
+                    &:hover{
+                        background-color: black;
+                        color: white;
+                        text-decoration: none;
+                    }
+                    &.inactive{
+                        cursor: pointer;
+                        background-color: white;
+                        color: #ddd;
+                        &:hover{
+                            background-color: white;
+                            color: #ddd;
+                        }
+
+                    }
+                    &.search{
+                        float: right;
+                        display: inline-block;
+                        &:hover{
+                            background-color: #2fcaf1;
+                        }
+                    }
+                }
                 display: block;
                 height: 25px;
                 background: white;
