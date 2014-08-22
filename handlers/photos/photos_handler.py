@@ -188,8 +188,8 @@ class PhotoHandler(webapp2.RequestHandler):
 
             response_data = {
                 "id" : photo_id,
-                "photo" : "/photos/%s" % photo_id,
-                "url" : "/p/%s" % photo.filename,
+                "blowout" : "/blowout/%s" % photo_id,
+                "image" : "/p/%s" % photo.filename,
                 "thumb" : photo.thumb
 
             }
@@ -240,11 +240,12 @@ class PhotoHandler(webapp2.RequestHandler):
             # self.response.headers['Content-Type'] = 'application/json'
             # self.response.write(Photo.to_json_string(photo))
 
+            #response_data = Photo.to_json_string(photo)
             response_data = {
                 "id" : _id,
-                "photo" : "/photos/%s" % _id,
+                "blowout" : "/blowout/%s" % _id,
                 "thumb" : photo.thumb,
-                "url" : "/p/%s" % _id
+                "image" : "/p/%s" % _id
             }
 
             self.response.headers['Access-Control-Allow-Origin'] = "*"
