@@ -28,21 +28,33 @@ class PhotoHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
-        pagination_size = 3
+        pagination_size = 32
+
         # this is the query
         photo_query_fwd = Photo.query().order(-Photo.up_vote, -Photo.added)
         photo_query_bkw = Photo.query().order(Photo.up_vote, Photo.added)
+
+        tags = self.request.get('tags',default_value=None) # filter by tags if necessary
+        if tags is not None:
+            tags = [Tag.sanitize(x) for x in csv_tags.split(',')]
+            photo_query_fwd = Photo.query(Photo.tags.IN(tags)).order(-Photo.up_vote, -Photo.added)
+            photo_query_bkw = Photo.query(Photo.tags.IN(tags)).order(Photo.up_vote, Photo.added)
+
+
         # current cursor
         current_cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
+
         # direction 
-        direction = self.request.get('d', 'f')
+        direction = self.request.get('d', 'f') # default is forward
+
         print 'direction is %s' % direction 
-        if direction == 'b':
-            #photo_query = photo_query_fwd
+        if direction == 't': # top 
+            cursor = None
+            photo_query = photo_query_fwd
+        if direction == 'b': # backward
             cursor = current_cursor.reversed() if current_cursor else None
             photo_query = photo_query_bkw
-            #cursor = current_cursor
-        else:
+        if direction == 'f': # forward
             photo_query = photo_query_fwd
             cursor = current_cursor if current_cursor else None
 
