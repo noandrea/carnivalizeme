@@ -302,18 +302,6 @@ class PhotoHandler(webapp2.RequestHandler):
 
         self.response.set_status('400')
 
-    def search_tags(self, csv_tags):
-        self.response.headers['Access-Control-Allow-Origin'] = "*"
-        tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
-        photos = Photo.query(Photo.tags.IN(tags)).order(-Photo.up_vote, -Photo.added).fetch(20)
-
-        reply = []
-        for photo in photos:
-            reply.append(Photo.to_json_object(photo))
-
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(reply))
-
     def photo_page(self, _id):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
         photo = Photo.get_by_id(_id)
