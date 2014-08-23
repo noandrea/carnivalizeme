@@ -31,7 +31,9 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
      * @param  {string} language code eg "it_IT" or "en_EN"
      * @return {null} assigns  $rootScope.lang
      */
-    $rootScope.lang = 'en_EN';
+    
+    $rootScope.lang = 'it_IT';
+    
     $rootScope.changeLanguage = function(lang){
         $translate.use(lang);
         $rootScope.lang = lang;
@@ -55,7 +57,7 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         }
     });
 
-}).config(function($compileProvider, $translateProvider) {
+}).config(function($compileProvider, $translateProvider, $rootScopeProvider) {
 
     var oldWhiteList = $compileProvider.imgSrcSanitizationWhitelist();
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
@@ -65,8 +67,78 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         prefix: '/languages/locale-',
         suffix: '.json'
     });
+
+    
+    var language = window.navigator.userLanguage || window.navigator.language;
+    alert(language); //works IE/SAFARI/CHROME/F
+
+    var preferredLang;
+    switch(language){
+      case 'en-US':
+      case 'en-GB':
+      case 'en-UK':
+      case 'en-EN':
+      case 'en-AU':
+      case 'en':
+        $rootScopeProvider.lang = preferredLang = 'en_EN';
+        break;
+      case 'es-AR':
+      case 'es-BO':
+      case 'es-CL':
+      case 'es-CO':
+      case 'es-CR':
+      case 'es-DO':
+      case 'es-EC':
+      case 'es-SV':
+      case 'es-GT':
+      case 'es-HN':
+      case 'es-MX':
+      case 'es-NI':
+      case 'es-PA':
+      case 'es-PY':
+      case 'es-PE':
+      case 'es-PR':
+      case 'es-ES':
+      case 'es-UY':
+      case 'es-VE':
+      case 'gl-ES':
+      case 'es':
+        $rootScopeProvider.lang = preferredLang = 'es_ES';
+        break;
+      case 'ca-ES':
+        $rootScopeProvider.lang = preferredLang = 'es_CA';
+        break;
+      case 'de-AT':
+      case 'de-DE':
+      case 'de-LI':
+      case 'de-LU':
+      case 'de-CH':
+      case 'de':
+        $rootScopeProvider.lang = preferredLang = 'de_DE';
+        break;
+      case 'fr-BE':
+      case 'fr-CA':
+      case 'fr-FR':
+      case 'fr-LU':
+      case 'fr-MC':
+      case 'fr-CH':
+      case 'fr':
+        $rootScopeProvider.lang = preferredLang = 'fr_FR';
+        break;
+      case 'it-IT':
+      case 'it':
+        $rootScopeProvider.lang = preferredLang = 'es_ES';
+        break;
+      case 'uk-UA':
+        $rootScopeProvider.lang = preferredLang = 'uk_UA';
+        break;
+      default:
+        $rootScopeProvider.lang = preferredLang = 'en_EN';
+        break;
+    }
+
     //set preferred lang
-    $translateProvider.preferredLanguage('en_EN');
+    $translateProvider.preferredLanguage(preferredLang);
 });
 
 /**
