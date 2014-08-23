@@ -706,9 +706,65 @@ body{
         }
 
         .credits{
+            height: 50px;
             color: white;
             span{
                 color: #f1f1f1;
+            }
+            .info{
+                &.left{
+                    float: left;
+                }
+                float: right;
+                
+                .el{
+                    width: 149px;
+                    clear: both;
+                    margin-top: 10px;
+                    ul{
+                        height: 25px;
+                        width: 158px;
+                        li{
+                            margin: 0;
+                            float: left;
+                            min-width: 20px;
+                            a{
+                                display: block;
+                                height: 25px;
+                                background: white;
+                                margin: 0 1px;
+                                padding: 0 10px;
+                                font-size: 10px;
+                                text-align: center;
+                                line-height: 28px;
+                                max-height: 28px; 
+                                letter-spacing: 1px;
+                                text-transform: uppercase;
+                                color: black;
+                                text-decoration: none;
+                                font-weight: 400;
+
+                                &.twitter{
+                                    :hover{
+                                        color: #55acee;
+                                    }
+                                }
+                                &.pinterest{
+                                    :hover{
+                                        color: #e3262e;
+                                    }
+                                }
+                                &.facebook{
+                                    :hover{
+                                        color: #3b5998;
+                                    }
+                                }
+                            }
+                        }
+                        margin: 0;
+                        margin-right: 10px;
+                    }
+                }
             }
         }
     }
@@ -1740,6 +1796,7 @@ input[type="range"] {
 .page-blowout{
     background: $cta url('/img/confetti.gif');
 }
+
 
 .imagePreview{
 

@@ -35,6 +35,8 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
     $rootScope.changeLanguage = function(lang){
         $translate.use(lang);
         $rootScope.lang = lang;
+        //close lang menu
+        $rootScope.showLang = false;
     };
 
     /**

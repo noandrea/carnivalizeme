@@ -1,5 +1,5 @@
 //create directive and INJECT optixCalService
-angular.module("app").directive('personalImage', function(photoService, $rootScope) {
+angular.module("app").directive('personalImage', function(photoService, $rootScope, ENVIRONMENT) {
     return {
         restrict: 'E',
         replace: true,
@@ -9,6 +9,13 @@ angular.module("app").directive('personalImage', function(photoService, $rootSco
         },
         templateUrl: "personal_image.html",
         link: function(scope, element, attrs) {
+
+
+            if(ENVIRONMENT === 'dev'){
+                scope.SITE_URL = 'http://localhost:8080';
+            }else{
+                scope.SITE_URL = 'http://carnivalize.me';
+            }
 
             scope.showMenu = true;
 
@@ -20,6 +27,12 @@ angular.module("app").directive('personalImage', function(photoService, $rootSco
             element.bind('mouseleave', function () {
                 scope.showMenu = false;
                 scope.$apply();
+            });
+
+
+            $rootScope.$on('savedPhoto', function(event, info) {
+                //scope.personalImg = info.photo;
+                console.log('sticazzi', scope.personalImg);
             });
 
             /**

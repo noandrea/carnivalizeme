@@ -91,6 +91,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
 
 
     $rootScope.$on('savedPhoto', function(event, info) {
+        console.log(info);
         if(info.update === 1 && info.error === 0){
             $scope.showModal('pic');
         }

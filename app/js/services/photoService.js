@@ -19,6 +19,8 @@ angular.module("app").factory('photoService', function(Photos, $rootScope, $anal
                             'size'      : 0,
                             'ts'        : moment().format("X"),
                             'image'     : "",
+                            'blowout'     : "",
+                            'thumb'     : ""
                         };
 
             return photo;
@@ -64,12 +66,16 @@ angular.module("app").factory('photoService', function(Photos, $rootScope, $anal
                 $analytics.eventTrack('Saving new Image', {  category: 'Carnivalizement' });
                 Photos.save(photoObj).$promise.then(function(response){
                     //alert('PHOTO SAVED!', photoObj);
-                    photoObj.id = response.id;
+                    photoObj.id         = response.id;
+                    photoObj.blowout    = response.blowout;
+                    photoObj.image      = response.image;
+                    photoObj.thumb      = response.thumb;
+
                     self.updateCurrent(photoObj);
                     $rootScope.$emit("imagesListChaged", self.getCollection());
                     $analytics.eventTrack('Image Saved', {  category: 'Carnivalizement' });
 
-                    $rootScope.$emit("savedPhoto", {update:0, error:0});
+                    $rootScope.$emit("savedPhoto", {update:0, error:0, photo: photoObj});
                 },function(response){
                     $analytics.eventTrack('Image NOT Saved', {  category: 'Carnivalizement', label: response });
                     $rootScope.$emit("savedPhoto", {update:0, error:1});
@@ -82,7 +88,7 @@ angular.module("app").factory('photoService', function(Photos, $rootScope, $anal
                     $rootScope.$emit("imagesListChaged", self.getCollection());
                     $analytics.eventTrack('Image Saved', {  category: 'Carnivalizement' });
 
-                    $rootScope.$emit("savedPhoto", {update:1, error:0});
+                    $rootScope.$emit("savedPhoto", {update:1, error:0, photo: photoObj});
                 },function(response){
                     $analytics.eventTrack('Image NOT Saved', {  category: 'Carnivalizement', label: response });
 

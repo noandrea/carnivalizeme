@@ -46,15 +46,39 @@
     
     <img ng-src="{{allImages[$parent.$index].image_url ? allImages[$parent.$index].image_url : allImages[$parent.$index].image}}"></img>
 
-<!--    
-    <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
-        {{img}}
-    </pre>
--->
 
-    <div ng-if="allImages[$parent.$index]" class="credits"> 
-        <span ng-model="allImages[$parent.$index].tags"></span><br/>
-        {{allImages[$parent.$index].type == 'png' ? 'Still Image' : 'Animated GIF' }} &mdash; <span>{{allImages[$parent.$index].ts | timeago}} </span>
+    <!-- <pre style="max-width: 640px;overflow: scroll;font-size: 12px;background: #f1f1f1;word-wrap: break-word; max-height:600px;font-family:monospace;letter-spacing: 1px;">
+        OBJ: {{allImages[$parent.$index]}}
+    </pre> -->
+
+
+    <div class="credits"> 
+        <div class="info left">
+            {{(allImages[$parent.$index].type === 'png' || allImages[$parent.$index].type === 'PNG') ? 'Still Image' : 'Animated GIF' }} &mdash; <span>{{(allImages[$parent.$index].id) ? 'Saved ' : 'Created'}}{{allImages[$parent.$index].ts | timeago}} </span>
+            <br/>
+            <span ng-repeat="value in allImages[$parent.$index].tags">
+                #{{value}}
+            </span>
+        </div>
+        <div class="info" ng-show="allImages[$parent.$index].id">
+            <div class="el">
+                <ul>
+                    <li>
+                        <a class="facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{SITE_URL}}{{allImages[$parent.$index].blowout | escape}}"><i class="icon pictogramsocial picto-3x">&#62220;</i></a>
+                    </li>
+                    <li>
+                        <a class="twitter" target="_blank" href="https://twitter.com/home?status={{'Check out this #maskedselfie on http://carnivalize.me : ' | escape}}{{SITE_URL}}{{allImages[$parent.$index].blowout | escape}}"><i class="icon pictogramsocial picto-3x">&#62217;</i></a>
+                    </li>
+                    <li>
+                        <a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url={{allImages[$parent.$index].thumb | escape}}&media={{allImages[$parent.$index].thumb | escape}}&description={{'Check out this #maskedselfie on http://carnivalize.me' | escape}}"><i class="icon pictogramsocial picto-3x">&#62226;</i></a>
+                    </li>
+                    <li class="textonly">
+                        <a href="{{SITE_URL}}{{allImages[$parent.$index].blowout}}" target="_blank"><i class="icon pictogram picto-3x">&#128279;</i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 
 </div>
