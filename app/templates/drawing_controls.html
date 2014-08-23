@@ -108,6 +108,7 @@
         <div class="inner">
             <a analytics-on="click" analytics-event="Testing Mask" analytics-category="drawing mask" class="btn" ng-click="save();">{{'TRY_MASK' | translate}}</a>
             <a analytics-on="click" analytics-event="Restart Mask" analytics-category="drawing mask" class="btn important" ng-click="erase();">{{'RESTART_MASK' | translate}}</a>
+            <a analytics-on="click" analytics-event="Cancel Mask" analytics-category="drawing mask" class="btn important" ng-click="erase();goTo('/now');">HOME</a>
             <a analytics-on="click" analytics-event="Help Mask Creation" analytics-category="drawing mask" class="btn cta" ng-click="showModal();">{{'HELP_MASK' | translate}}</a>
         </div>
     </fieldset>
