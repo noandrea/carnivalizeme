@@ -74,6 +74,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/masks/tags/<csv_tags>', handler=MaskHandler, handler_method='search_tags', methods=['GET']),
 
     webapp2.Route(r'/tags', handler=TagHandler),
+    webapp2.Route(r'/tags/search/<hint>', handler=TagHandler, handler_method='autocomplete', methods=['GET']),
     webapp2.Route(r'/<img_type:(m|p)>/<_id:[a-z0-9]+\.(gif|png)>', handler=ImageHandler),
 
     # webapp2.Route(r'/maintenance/thumbgen', handler=MaintenanceHandler),
