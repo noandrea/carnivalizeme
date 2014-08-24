@@ -45,7 +45,7 @@
 	<meta property="og:title" content="Check out my #maskedselfie on http://carnivalize.me/" />
 	<meta property="og:type" content="article" />
 	<meta property="og:image" content="{{photo.thumb}}" />
-	<meta property="og:url" content="http://carnivalize.me/{{photo.key.id()}}" />
+	<meta property="og:url" content="http://carnivalize.me/{{photo.id}}" />
 	<meta property="og:description" content="Make your own funny #maskedselfie and animated #GIF on http://carnivalize.me/" />
 
 	<!-- for Twitter -->          
@@ -71,7 +71,7 @@
 			
 			<div image-preview="" image="lastWatchedImage" class="ng-isolate-scope">
 			    <div class="aligner imagePreview">
-		    		<img alt="carnivalize.me - selfie #{{photo.key.id()}}" src="{{photo.thumb}}"></img>
+		    		<img alt="carnivalize.me - selfie #{{photo.id}}" src="{{photo.thumb}}"></img>
 			    </div>
 
                 <div class="aligner imagePreview">
@@ -80,11 +80,11 @@
                         <small>Created <em class="ng-binding">some time ago</em></small>
 
                         <div class="votes">
-                            <div class="updown-vote" onclick="get('/photos/{{photo.key.id()}}/up','response');">
+                            <div class="updown-vote" onclick="get('/photos/{{photo.id}}/up','response');">
                                 <em class="ng-binding">{{photo.up_vote}}</em> <i class="icon pictogram picto-2x green">👍</i>
                             </div> 
 
-                            <div class="updown-vote" onclick="get('/photos/{{photo.key.id()}}/dw','response');">
+                            <div class="updown-vote" onclick="get('/photos/{{photo.id}}/dw','response');">
                                 <em class="ng-binding">{{photo.dwn_vote}}</em> <i class="icon pictogram picto-2x red">👎</i>
                             </div>
                         </div>
@@ -92,16 +92,16 @@
                             <div class="el">
                                 <ul>
                                     <li>
-                                        <a class="facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://carnivalize.me/blowout/{{photo.key.id()}}"><i class="icon pictogramsocial picto-3x"></i></a>
+                                        <a class="facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://carnivalize.me/blowout/{{photo.id}}"><i class="icon pictogramsocial picto-3x"></i></a>
                                     </li>
                                     <li>
-                                        <a class="twitter" target="_blank" href="https://twitter.com/home?status=Check%20out%20this%20%23maskedselfie%20on%20http://carnivalize.me/blowout/{{photo.key.id()}}"><i class="icon pictogramsocial picto-3x"></i></a>
+                                        <a class="twitter" target="_blank" href="https://twitter.com/home?status=Check%20out%20this%20%23maskedselfie%20on%20http://carnivalize.me/blowout/{{photo.id}}"><i class="icon pictogramsocial picto-3x"></i></a>
                                     </li>
                                     <li>
-                                        <a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://carnivalize.me/blowout/{{photo.key.id()}}&media={{photo.thumb}}&description=Check%20out%20this%20%23maskedselfie%20on%20http%3A//carnivalize.me"><i class="icon pictogramsocial picto-3x"></i></a>
+                                        <a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://carnivalize.me/blowout/{{photo.id}}&media={{photo.thumb}}&description=Check%20out%20this%20%23maskedselfie%20on%20http%3A//carnivalize.me"><i class="icon pictogramsocial picto-3x"></i></a>
                                     </li>
                                     <li class="textonly">
-                                        <a href="http://carnivalize.me/blowout/{{photo.key.id()}}" target="_blank"><i class="icon pictogram picto-3x">&#128279;</i></a>
+                                        <a href="http://carnivalize.me/blowout/{{photo.id}}" target="_blank"><i class="icon pictogram picto-3x">&#128279;</i></a>
                                     </li>
                                 </ul>
                             </div>

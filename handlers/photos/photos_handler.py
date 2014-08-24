@@ -7,6 +7,7 @@ import logging
 import os
 import base64
 from google.appengine.api import app_identity
+from google.appengine.api import memcache
 from google.appengine.api import images
 from google.appengine.ext import blobstore
 from google.appengine.ext import ndb
@@ -68,7 +69,9 @@ class PhotoHandler(webapp2.RequestHandler):
 
         reply = {'photos':[]}
         for photo in photos:
-            reply['photos'].append(Photo.to_json_object(photo))
+            json_photo = Photo.to_json_object(photo)
+            memcache.add(photo.key.id(), json_photo)
+            reply['photos'].append(json_photo)
 
         
         # if backward we need to reverse the array
@@ -194,6 +197,10 @@ class PhotoHandler(webapp2.RequestHandler):
 
             }
 
+            # memcache
+            json_photo = Photo.to_json_object(photo)
+            memcache.add(photo.key.id(), json_photo)
+
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps(response_data))
@@ -248,6 +255,10 @@ class PhotoHandler(webapp2.RequestHandler):
                 "image" : "/p/%s" % _id
             }
 
+            # memcache
+            json_photo = Photo.to_json_object(photo)
+            memcache.add(photo.key.id(), json_photo)
+
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps(response_data))
@@ -289,6 +300,11 @@ class PhotoHandler(webapp2.RequestHandler):
         if action == 'up':
             photo.up_vote +=1 
             photo.put()
+
+            # memcache
+            json_photo = Photo.to_json_object(photo)
+            memcache.add(photo.key.id(), json_photo)
+
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote }))
             return
@@ -296,6 +312,11 @@ class PhotoHandler(webapp2.RequestHandler):
         if action == 'dw':
             photo.dwn_vote +=1
             photo.put()
+
+            # memcache
+            json_photo = Photo.to_json_object(photo)
+            memcache.add(photo.key.id(), json_photo)
+
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote }))
             return 
@@ -304,13 +325,22 @@ class PhotoHandler(webapp2.RequestHandler):
 
     def photo_page(self, _id):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        photo = Photo.get_by_id(_id)
-        if photo is None:
-            self.response.set_status('404')
-            return
+
+        json_photo = memcache.get(_id)
+        if json_photo is None:
+            photo = Photo.get_by_id(_id)
+            if photo is None:
+                self.response.set_status('404')
+                return
+            
+            # memcache
+            json_photo = Photo.to_json_object(photo)
+            memcache.add(photo.key.id(), json_photo)
+
+        
 
         template_values = {
-            'photo': photo,
+            'photo': json_photo,
         }
 
         template = JINJA_ENVIRONMENT.get_template('photo_page.html')
