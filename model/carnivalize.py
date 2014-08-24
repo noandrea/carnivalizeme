@@ -15,6 +15,12 @@ class Photo(ndb.Model):
     ext = ndb.StringProperty()
     thumb = ndb.StringProperty()
 
+
+    def tags2string(self, separator=', '):
+        if self.tags is None:
+            return ''
+        return separator.join(self.tags)
+
     @staticmethod
     def to_json_string(photo):
         data = Photo.to_json_object(photo)
