@@ -32,19 +32,23 @@ class PhotoHandler(webapp2.RequestHandler):
         pagination_size = 32
 
         # this is the query
-        photo_query_fwd = Photo.query().order(-Photo.up_vote, -Photo.added)
-        photo_query_bkw = Photo.query().order(Photo.up_vote, Photo.added)
+        photo_query_fwd = Photo.query()#.order(-Photo.up_vote, -Photo.added)
+        photo_query_bkw = Photo.query()#.order(Photo.up_vote, Photo.added)
 
         query_tags = self.request.get('tags',default_value=None) # filter by tags if necessary
         if query_tags is not None:
             tags = [Tag.sanitize(x) for x in query_tags.split(',')]
             for tag in tags:
-                photo_query_fwd.filter(ndb.AND(Photo._properties['tags'] >= tag), Photo._properties['tags'] <= unicode(tag) + u'\ufffd')
-                photo_query_bkw.filter(ndb.AND(Photo._properties['tags'] >= tag), Photo._properties['tags'] <= unicode(tag) + u'\ufffd')
+                photo_query_fwd = photo_query_fwd.filter(ndb.AND(Photo._properties['tags'] >= tag), Photo._properties['tags'] <= unicode(tag) + u'\ufffd')
+                photo_query_bkw = photo_query_bkw.filter(ndb.AND(Photo._properties['tags'] >= tag), Photo._properties['tags'] <= unicode(tag) + u'\ufffd')
 
-            # photo_query_fwd = Photo.query(Photo.tags.IN(tags)).order(-Photo.up_vote, -Photo.added)
-            # photo_query_bkw = Photo.query(Photo.tags.IN(tags)).order(Photo.up_vote, Photo.added)
-
+            # sorting
+            photo_query_fwd = photo_query_fwd.order(Photo.tags, -Photo.up_vote, -Photo.added)
+            photo_query_bkw = photo_query_bkw.order(Photo.tags, Photo.up_vote, Photo.added)
+        else:
+            # sorting
+            photo_query_fwd = photo_query_fwd.order(-Photo.up_vote, -Photo.added)
+            photo_query_bkw = photo_query_bkw.order(Photo.up_vote, Photo.added)
 
         # current cursor
         current_cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
