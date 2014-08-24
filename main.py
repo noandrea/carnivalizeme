@@ -78,6 +78,8 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/<img_type:(m|p)>/<_id:[a-z0-9]+\.(gif|png)>', handler=ImageHandler),
 
     # webapp2.Route(r'/maintenance/thumbgen', handler=MaintenanceHandler),
-    webapp2.Route(r'/blowout/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_page', handler_method='photo_page', methods=['GET'])
+    webapp2.Route(r'/blowout/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_page', handler_method='photo_page', methods=['GET']),
+
+    webapp2.Route(r'/sitemap.xml', handler=MainHandler, name='sitemap', handler_method='sitemap', methods=['GET'])
 
 ], debug=True)

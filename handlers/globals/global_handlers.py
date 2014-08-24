@@ -1,4 +1,5 @@
 import webapp2
+import jinja2
 import hashlib
 import json
 import lib.cloudstorage as gcs
@@ -16,9 +17,24 @@ from datetime import datetime
 FOLDER_MASKS = 'masks'
 FOLDER_PHOTOS = 'photos'
 
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True)
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write('Hello world!')
+
+    def sitemap(self):
+        self.response.headers['Access-Control-Allow-Origin'] = "*"
+        self.response.headers['Content-Type'] = 'application/xml'
+
+        template_values = {'photos': Photo.query().iter()}
+
+        template = JINJA_ENVIRONMENT.get_template('sitemap.xml')
+        self.response.write(template.render(template_values))
+
 
 class ImageHandler(webapp2.RequestHandler):
     def get(self,_id, img_type):
