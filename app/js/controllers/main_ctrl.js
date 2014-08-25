@@ -22,6 +22,8 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
     $scope.selectedMask     = maskService.init($rootScope.lang);
     $scope.currentPhoto     = photoService.init($rootScope.lang);
 
+    $scope.gifframes        = [];
+
 
     $scope.mode = 'play';
     if($location.$$path === '/trymask'){
@@ -485,6 +487,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         //hide the button to take images again
         $scope.showImage = false;
 
+        $scope.helpLabel='saving frame...';
         $scope.pics++;
 
         if($scope.pics === 1){
@@ -536,9 +539,13 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
             //reset number of pics
             $scope.pics = 0;
             $scope.GIFprogress = '0%';
+            $scope.gifframes = [];
 
             //show the button to take images again
             $scope.showImage = true;
+
+            //empty help label
+            $scope.helpLabel='';
         }else{
             html2canvas(document.querySelector('#fullPic'), {
                 onrendered: function(canvas) {
@@ -556,6 +563,11 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                     
                     var context = canvas.getContext('2d');
                     encoder.addFrame(context);
+                    var img    = canvas.toDataURL("image/png");
+                    $scope.gifframes.push(img);
+
+                    //empty help label
+                    $scope.helpLabel='';
 
                     $scope.$apply();
                 }
@@ -583,6 +595,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
         $scope.GIFprogress = '0%';
         //show the button to take images again
         $scope.showImage = true;
+
+        //empty gifframes
+        $scope.gifframes = [];
 
     };
 

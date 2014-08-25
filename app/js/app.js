@@ -60,7 +60,9 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
 }).config(function($compileProvider, $translateProvider, $rootScopeProvider) {
 
     var oldWhiteList = $compileProvider.imgSrcSanitizationWhitelist();
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|data):|data:image\//);
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|blob|data):|data:image\//);
+        // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
 
     $translateProvider.useStaticFilesLoader({
         type: 'static-files',

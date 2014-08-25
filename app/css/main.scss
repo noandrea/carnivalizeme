@@ -515,6 +515,20 @@ body{
         position: absolute;
 
 
+        .helpLabel{
+            background: rgba(0, 204, 255, 0.8);
+            margin-right: 5px;
+            height: 40px;
+            position: absolute;
+            bottom: 50px;
+            width: 520px;
+            color: white;
+            padding: 0 50px;
+            font-size: 32px;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
         .videoProgress{
             width: 490px;
             background: rgba(0,0,0,.2);
@@ -527,12 +541,20 @@ body{
                 background: red;
                 height: 40px;
                 background: rgba(255,0,153,.7);
+
+                img{
+                    float:left;
+                    width:49px;
+                    height: 40px;
+                }
                 .framesCounter{
-                    padding-top: 10px;
                     font-size: 18px;
+                    padding: 0 5px;
+                    color: $pink;
+                    text-align: right;
                     float: right;
-                    padding-right: 10px;
-                    color: white;
+                    background: black;
+                    height: 26px;
                     span{
                         font-size: 12px;
                         display: inline;
