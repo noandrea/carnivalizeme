@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<title>Carnivalize.me - Carnival Online</title>
+	<meta charset="utf-8">
+	
+	
+	<!-- Important stuff for SEO, don't neglect. (And don't dupicate values across your site!) -->
+	<title>carnivalize.me - admin{{ page }}</title>
+	<meta name="author" content="carnivalize.me" />
+	<meta name="description" content="Your own ridiculous #maskedselfie and animated #GIF on http://carnivalize.me/" />
+	
+
+	<!-- Who owns the content of this site? -->
+	<meta name="Copyright" content="carnivalize.me" />
+	
+	<!-- Use Iconifyer to generate all the favicons and touch icons you need: http://iconifier.net -->
+	<link rel="shortcut icon" href="favicon.ico" />
+
+	<style>
+	.box-photo{
+		float: left;
+		border: 2px dashed black;
+		margin: 4px;
+	}
+	</style>
+</head>
+
+	<body class="site">
+
+		<header>
+			<h1>PHOTOS</h1>
+			<a href="/batman/">Admin Home</a>
+		</header>
+
+		<main>
+		
+			{% for item in items %}                         
+			<div class="box-photo">
+				<img width="250" src="{{ item.thumb }}">
+				<br/>
+				<a href="/batman/photos?delete={{item.key.string_id()}}">&times; DELETE</a>
+			</div>
+			{% endfor %}
+
+		</main>
+		
+		
+	</body>
+</html>

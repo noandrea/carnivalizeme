@@ -34,6 +34,7 @@ from handlers.masks.masks_handler import MaskHandler
 from handlers.tags.tags_handler import TagHandler
 from handlers.globals.global_handlers import MainHandler
 from handlers.globals.global_handlers import ImageHandler
+from handlers.admin.admin_handlers import AdminHandler
 
 
 BUCKET = 'carnivalizemeapi.appspot.com'
@@ -80,6 +81,20 @@ app = webapp2.WSGIApplication([
     # webapp2.Route(r'/maintenance/thumbgen', handler=MaintenanceHandler),
     webapp2.Route(r'/blowout/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_page', handler_method='photo_page', methods=['GET']),
 
-    webapp2.Route(r'/sitemap.xml', handler=MainHandler, name='sitemap', handler_method='sitemap', methods=['GET'])
+    webapp2.Route(r'/sitemap.xml', handler=MainHandler, name='sitemap', handler_method='sitemap', methods=['GET']),
+    # administration
+    webapp2.Route(r'/batman', handler=AdminHandler, name='home', handler_method='get', methods=['GET']),
+
+], debug=True)
+
+## ADMINISTRATION APP
+
+secure = webapp2.WSGIApplication([
+    # webapp2.Route('/', handler=MainHandler),
+    webapp2.Route(r'/batman/', handler=AdminHandler, name='index', handler_method='index', methods=['GET']),
+    webapp2.Route(r'/batman/masks', handler=AdminHandler, name='masks', handler_method='masks', methods=['GET']),
+    webapp2.Route(r'/batman/photos', handler=AdminHandler, name='photos', handler_method='photos', methods=['GET']),
+    # webapp2.Route(r'/batman/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo', handler_method='photo', methods=['GET']),
+    # webapp2.Route(r'/batman/<_id:[a-z0-9]+>', handler=PhotoHandler, name='photo_update', handler_method='update', methods=['PUT']),
 
 ], debug=True)

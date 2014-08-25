@@ -13,6 +13,10 @@ handlers:
   static_files: app/crossdomain.xml
   upload: app/crossdomain\.xml
 
+- url: /batman/.*
+  script: main.secure
+  login: admin
+
 - url: /
   static_files: app/index.html
   upload: app/index\.html
