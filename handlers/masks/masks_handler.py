@@ -5,9 +5,11 @@ import lib.cloudstorage as gcs
 import logging
 import os
 import base64
+from google.appengine.api import memcache
 from google.appengine.api import app_identity
 from google.appengine.api import images
 from google.appengine.ext import blobstore
+from google.appengine.ext import ndb
 from model.carnivalize import Tag
 from model.carnivalize import Mask
 from model.carnivalize import Photo
@@ -19,17 +21,22 @@ FOLDER_MASKS = 'masks'
 class MaskHandler(webapp2.RequestHandler):
     def mask(self, _id):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        mask = Mask.get_by_id(_id)
-        if mask is None:
-            self.response.set_status('404')
-            return
+
+        mask_json = memcache.get(_id)
+        if mask_json is None:
+            mask = Mask.get_by_id(_id)
+            if mask is None:
+                self.response.set_status('404')
+                return
+            mask_json = Mask.to_json_string(mask)
+            memcache.put(_id, mask_json)
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(Mask.to_json_string(mask))
+        self.response.write(mask_json)
 
     def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        masks = Mask.query().order(-Mask.up_vote, -Mask.added).fetch(20)
+        masks = Mask.query().order(-Mask.up_vote, -Mask.added).fetch()
 
         reply = []
         for mask in masks:
@@ -53,6 +60,10 @@ class MaskHandler(webapp2.RequestHandler):
         if action == 'up':
             mask.up_vote +=1 
             mask.put()
+
+            # memcache
+            memcache.add(_id, Mask.to_json_object(mask))
+
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote }))
             return
@@ -60,6 +71,10 @@ class MaskHandler(webapp2.RequestHandler):
         if action == 'dw':
             mask.dwn_vote +=1
             mask.put()
+
+            # memcache
+            memcache.add(_id, Mask.to_json_object(mask))
+
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote }))
             return 
@@ -134,6 +149,9 @@ class MaskHandler(webapp2.RequestHandler):
                 credits = credits)
             mask.put()
 
+            # memcache
+            memcache.add(mask_id, Mask.to_json_object(mask))
+
             response_data = {
                 "id" : mask_id,
                 "mask" : "/masks/%s" % mask_id,
@@ -184,8 +202,8 @@ class MaskHandler(webapp2.RequestHandler):
             mask.credits = credits
             mask.put()
 
-            # self.response.headers['Content-Type'] = 'application/json'
-            # self.response.write(Photo.to_json_string(photo))
+            # memcache
+            memcache.add(_id, Mask.to_json_object(mask))
 
             response_data = {
                 "id" : _id,
@@ -211,8 +229,13 @@ class MaskHandler(webapp2.RequestHandler):
 
     def search_tags(self, csv_tags):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        tags = [Tag.sanitize(x) for x in csv_tags.split('|')]
-        masks = Mask.query(Mask.tags.IN(tags)).order(-Mask.up_vote, -Mask.added).fetch(20)
+        tags = [Tag.sanitize(x) for x in csv_tags.split(',')]
+
+        masks_query = Mask.query()
+
+        for tag in tags:
+            masks_query = masks_query.filter(ndb.AND(Mask._properties['tags'] >= tag), Mask._properties['tags'] <= unicode(tag) + u'\ufffd')
+        masks = masks_query.order(Mask.tags, -Mask.up_vote, -Mask.added).fetch()
 
         reply = []
         for mask in masks:
