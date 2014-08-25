@@ -78,7 +78,7 @@ class PhotoHandler(webapp2.RequestHandler):
         reply = {'photos':[]}
         for photo in photos:
             json_photo = Photo.to_json_object(photo)
-            memcache.add(photo.key.id(), json_photo)
+            memcache.set(photo.key.id(), json_photo)
             reply['photos'].append(json_photo)
 
         
@@ -192,7 +192,7 @@ class PhotoHandler(webapp2.RequestHandler):
 
             # memcache
             json_photo = Photo.to_json_object(photo)
-            memcache.add(photo.key.id(), json_photo)
+            memcache.set(photo.key.id(), json_photo)
 
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.headers['Content-Type'] = 'application/json'
@@ -250,7 +250,7 @@ class PhotoHandler(webapp2.RequestHandler):
 
             # memcache
             json_photo = Photo.to_json_object(photo)
-            memcache.add(photo.key.id(), json_photo)
+            memcache.set(photo.key.id(), json_photo)
 
             self.response.headers['Access-Control-Allow-Origin'] = "*"
             self.response.headers['Content-Type'] = 'application/json'
@@ -296,7 +296,7 @@ class PhotoHandler(webapp2.RequestHandler):
 
             # memcache
             json_photo = Photo.to_json_object(photo)
-            memcache.add(photo.key.id(), json_photo)
+            memcache.set(photo.key.id(), json_photo)
 
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote }))
@@ -308,7 +308,7 @@ class PhotoHandler(webapp2.RequestHandler):
 
             # memcache
             json_photo = Photo.to_json_object(photo)
-            memcache.add(photo.key.id(), json_photo)
+            memcache.set(photo.key.id(), json_photo)
 
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : photo.up_vote, 'dw' : photo.dwn_vote }))
@@ -328,7 +328,7 @@ class PhotoHandler(webapp2.RequestHandler):
             
             # memcache
             json_photo = Photo.to_json_object(photo)
-            memcache.add(photo.key.id(), json_photo)
+            memcache.set(photo.key.id(), json_photo)
 
         
 

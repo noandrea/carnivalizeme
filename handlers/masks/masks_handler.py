@@ -29,7 +29,7 @@ class MaskHandler(webapp2.RequestHandler):
                 self.response.set_status('404')
                 return
             mask_json = Mask.to_json_string(mask)
-            memcache.put(_id, mask_json)
+            memcache.set(_id, mask_json)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(mask_json)
@@ -62,7 +62,7 @@ class MaskHandler(webapp2.RequestHandler):
             mask.put()
 
             # memcache
-            memcache.add(_id, Mask.to_json_object(mask))
+            memcache.set(_id, Mask.to_json_object(mask))
 
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote }))
@@ -73,7 +73,7 @@ class MaskHandler(webapp2.RequestHandler):
             mask.put()
 
             # memcache
-            memcache.add(_id, Mask.to_json_object(mask))
+            memcache.set(_id, Mask.to_json_object(mask))
 
             self.response.headers['Content-Type'] = 'application/json'
             self.response.write(json.dumps({ 'up' : mask.up_vote, 'dw' : mask.dwn_vote }))
@@ -150,7 +150,7 @@ class MaskHandler(webapp2.RequestHandler):
             mask.put()
 
             # memcache
-            memcache.add(mask_id, Mask.to_json_object(mask))
+            memcache.set(mask_id, Mask.to_json_object(mask))
 
             response_data = {
                 "id" : mask_id,
@@ -203,7 +203,7 @@ class MaskHandler(webapp2.RequestHandler):
             mask.put()
 
             # memcache
-            memcache.add(_id, Mask.to_json_object(mask))
+            memcache.set(_id, Mask.to_json_object(mask))
 
             response_data = {
                 "id" : _id,
