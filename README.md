@@ -3,7 +3,10 @@
 Usage and methods for carnivalize.me photo app.
 
 
-default endopoint: **http://carnivalizemeapi.appspot.com/**
+administration url: [**http://carnivalize.me/batman/**](http://carnivalize.me/batman/)
+
+
+default endopoint: **http://carnivalize.me/**
 
 example api invocation:
 
