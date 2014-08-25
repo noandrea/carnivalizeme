@@ -36,7 +36,13 @@ class MaskHandler(webapp2.RequestHandler):
 
     def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        masks = Mask.query().order(-Mask.up_vote, -Mask.added).fetch()
+        masks_query = Mask.query().order(-Mask.up_vote, -Mask.added)
+
+        pg_rating = self.request.get('a',default_value=None) # filter for pg rating
+        if pg_rating is not None:
+            masks_query = masks_query.filter(Mask._properties['audience'] == 1)
+
+        masks = masks_query.fetch()
 
         reply = []
         for mask in masks:

@@ -31,10 +31,18 @@ class PhotoHandler(webapp2.RequestHandler):
 
         pagination_size = 32
 
+
+
         # this is the query
         photo_query_fwd = Photo.query()#.order(-Photo.up_vote, -Photo.added)
         photo_query_bkw = Photo.query()#.order(Photo.up_vote, Photo.added)
 
+        pg_rating = self.request.get('a',default_value=None) # filter for pg rating
+        if pg_rating is not None:
+            photo_query_fwd = photo_query_fwd.filter(Photo._properties['audience'] == 1)
+            photo_query_bkw = photo_query_bkw.filter(Photo._properties['audience'] == 1)
+
+        # tags
         query_tags = self.request.get('tags',default_value=None) # filter by tags if necessary
         if query_tags is not None and query_tags != "":
             tags = [Tag.sanitize(x) for x in query_tags.split(',')]

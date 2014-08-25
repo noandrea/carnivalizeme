@@ -12,6 +12,14 @@ indexes:
 
 - kind: Mask
   properties:
+  - name: audience
+  - name: up_vote
+    direction: desc
+  - name: added
+    direction: desc
+
+- kind: Mask
+  properties:
   - name: tags
   - name: up_vote
     direction: desc
@@ -20,6 +28,14 @@ indexes:
 
 - kind: Mask
   properties:
+  - name: up_vote
+    direction: desc
+  - name: added
+    direction: desc
+
+- kind: Photo
+  properties:
+  - name: audience
   - name: up_vote
     direction: desc
   - name: added
