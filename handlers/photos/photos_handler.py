@@ -36,7 +36,7 @@ class PhotoHandler(webapp2.RequestHandler):
         photo_query_bkw = Photo.query()#.order(Photo.up_vote, Photo.added)
 
         query_tags = self.request.get('tags',default_value=None) # filter by tags if necessary
-        if query_tags is not None:
+        if query_tags is not None and query_tags != "":
             tags = [Tag.sanitize(x) for x in query_tags.split(',')]
             for tag in tags:
                 photo_query_fwd = photo_query_fwd.filter(ndb.AND(Photo._properties['tags'] >= tag), Photo._properties['tags'] <= unicode(tag) + u'\ufffd')
@@ -87,24 +87,9 @@ class PhotoHandler(webapp2.RequestHandler):
             reply['photos'] = reply['photos'][::-1]
             reply['pc'] = new_cursor.reversed().urlsafe() if more else None
             reply['nc'] = current_cursor.urlsafe() if current_cursor else None
-        else:
-            reply['nc'] = new_cursor.reversed().urlsafe() if more else None
+        if direction == 'f' or direction == 't':
+            reply['nc'] = new_cursor.urlsafe() if more else None
             reply['pc'] = current_cursor.urlsafe() if current_cursor else None
-
-        # if there is more get the next cursor
-        
-
-
-        # prev cursor
-        # prev_photos, prev_cursor, prev_more = photo_query_reversed.fetch_page(pagination_size, start_cursor=rev_cursor)
-        # print prev_more
-        # if prev_more:
-        #     reply['pc'] = prev_cursor.urlsafe()
-        # else:
-        #     reply['pc'] = None 
-
-        # reply['fc'] = None # first cursor
-        # reply['lc'] = None # last cursor
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(reply))
