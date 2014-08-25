@@ -70,7 +70,7 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
 
     
     var language = window.navigator.userLanguage || window.navigator.language;
-    alert(language); //works IE/SAFARI/CHROME/F
+    //alert(language); //works IE/SAFARI/CHROME/F
 
     var preferredLang;
     switch(language){
