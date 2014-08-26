@@ -127,7 +127,7 @@ class PhotoHandler(webapp2.RequestHandler):
             email = data.get('email', '')
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
-            audience = int(data.get('audience', 0))
+            audience = int(data.get('audience', 1))
             masks = [str(x) for x in data.get('masks', [])]
 
 
@@ -223,7 +223,7 @@ class PhotoHandler(webapp2.RequestHandler):
             email = data.get('email', '')
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
-            audience = int(data.get('audience', 0))
+            audience = int(data.get('audience', 1))
             
             tags_list = []
 

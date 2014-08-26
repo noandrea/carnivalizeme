@@ -107,7 +107,7 @@ class MaskHandler(webapp2.RequestHandler):
             credits = data.get('credits', '')
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
-            audience = int(data.get('audience', 0))
+            audience = int(data.get('audience', 1))
             email = data.get('email', None)
             
             # flip image horizontally
@@ -183,7 +183,7 @@ class MaskHandler(webapp2.RequestHandler):
             credits = data.get('credits', '')
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
-            audience = int(data.get('audience', 0))
+            audience = int(data.get('audience', 1))
             email = data.get('email', None)
             
             tags_list = []
