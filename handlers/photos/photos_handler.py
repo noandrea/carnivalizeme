@@ -29,7 +29,7 @@ class PhotoHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
 
-        pagination_size = 32
+        pagination_size = 19
 
 
 
