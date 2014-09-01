@@ -28,6 +28,13 @@
 @import "animations.scss";
 
 
+input{
+    .age{
+        font-size: 80px;
+    }
+}
+
+
 ::selection {
     background: none; /* Safari */
     color:$cta;
@@ -1469,11 +1476,23 @@ input[type="range"] {
 }
 
 
-
-
 .formMask{
     max-width: 450px;
     min-width: 250px;
+
+    &.ageForm{
+        max-width: none!important;
+        min-width: none!important; 
+        background: rgba(255,0,0,.5);
+        .el{
+            .radio{
+                label {
+                    padding: 15px 15px;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
     //background: rgba(0,0,0,.4);
     label.delete{
         font-size: 12px;

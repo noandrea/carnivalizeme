@@ -1,4 +1,5 @@
 {
+  "YOUR_AGE": "La tua età",
   "LANGUAGE": "Lingua",
   "CARNIVALIZE_YOURSELF": "carnivalizzati",
   "GOTO_CARNIVAL": "guarda il carnevale",
@@ -10,6 +11,8 @@
   "RECALIBRATE_FACE_DETECT": "ri-calibra rilevamento volto",
   "FIND_MASKS": "CERCA ALTRE MACHERE",
   "DELETE_THIS_PHOTO": "cancella questa immagine!",
+  "TEMPORARY_IMAGES": "Le tue immagini temporanee",
+  "TEMP_IMAGES_TEXT": "Queste immagini sono disponibili solamente fino al prossimo aggiornamento di pagina.<br/>Per salvare queste immagini, puoi salvarle anonimamente al carnevale<br/>o usare il <em>click destro</em> sulle tue immagini preferite per salvarle sul tuo computer.",
   "MASKS": "Maschere",
   "MASK": "Maschera",
   "SEARCHING_FOR": "cercando",
@@ -67,8 +70,8 @@
   "ABOUT_01": "Carnivalize.me è iniziato (ed attualmente è) un generatore di avatar/selfies GIF mascherate.<br/>E' un side-project/esperimento realizzato da <a href='https://twitter.com/ricricucit' target='_blank'>Enrico</a>(<em>UI+UX+FrontCode</em>),<a href='https://twitter.com/noandrea' target='_blank'>Andrea</a>(<em>DB+Back-EndCode</em>),<a href='http://cargocollective.com/lihiejacob' target='blank'>Lihie</a>,<a href='#'' target='blank'>Stephan</a>(<em>Testing+Translations+initialMasksIllustrations</em>) e altre persone stupende (Traduzioni) durante Aprile-Luglio 2014. E' online &mdash;come permanente lavoro-in-corso&mdash; da Luglio 2014.",
   "ABOUT_CNT": "Al momento contiene",
   "ADD_LANGUAGE": "contattaci, così aggiungiamo anche la tua!",
-  "ABOUT_02": "Il progetto è ispirato a Google Hangouts 'Effects App', ma differentemente da qualsiasi prodotto Google, carnivalize.me contiene per lo più <strong>contenuto generato da utenti incensurato ed anonimo</strong>. Le maschere sono create usando un semplice <a href='/editor'>creatore di maschere</a> e le foto sono scattate usando la <a href='/now'>in-appcamera</a>, e NON sono affette da nessun tipo di censura. Tutto il contenuto di carnivalize.me è votato usando un sistema di raccomandazione in stile<a href='http://en.wikipedia.org/wiki/Motion_Picture_Association_of_America_film_rating_system' target='_blank'>MPAA</a> (come Gravatar). Il contenuto vietato in base all'età verrà nascosto dipendentemente dall'età dell'utente (collezionata attraverso un form di auto-certificazione).",
+  "ABOUT_02": "Il progetto è ispirato a Google Hangouts 'Effects App', ma differentemente da qualsiasi prodotto Google, carnivalize.me contiene per lo più <strong>contenuto generato da utenti incensurato ed anonimo</strong>. Le maschere sono create usando un semplice <a href='/editor'>creatore di maschere</a> e le foto sono scattate usando la <a href='/now'>in-appcamera</a>, e NON sono affette da nessun tipo di censura. Tutto il contenuto di carnivalize.me è votato usando un sistema di raccomandazione in stile <a href='http://en.wikipedia.org/wiki/Motion_Picture_Association_of_America_film_rating_system' target='_blank'>MPAA</a> (come Gravatar). Il contenuto vietato in base all'età verrà nascosto dipendentemente dall'età dell'utente (collezionata attraverso un form di auto-certificazione).",
   "TECHNOLOGIES": "Tecnologie",
-  "ABOUT_03": "Un miscuglio di scripts OpenSource custom da svariati programmatori nel mondo.<br/>E' basato principalmente su HTML5, utilizza soprattutto <a href='https://github.com/auduno/headtrackr' target='_blank'>auduno'sheadtrackr</a> (per il <em>FaceTracking</em>) e <a href='http://html2canvas.hertzen.com' target='_blank'>html2canvas</a>. E' scritto in AngularJS (utilizzando <a href='https://github.com/linemanjs/lineman-angular-template' target='_blank'>linemnanjs</a>) e Python (su GAE).",
+  "ABOUT_03": "Carnivalize.me è un miscuglio di scripts custom ed OpenSource provenienti da svariati programmatori nel mondo.<br/>E' principalmente basato su HTML5, utilizza soprattutto <a href='https://github.com/auduno/headtrackr' target='_blank'>auduno'sheadtrackr</a> (per il <em>FaceTracking</em>) e <a href='http://html2canvas.hertzen.com' target='_blank'>html2canvas</a>. E' scritto in AngularJS (utilizzando <a href='https://github.com/linemanjs/lineman-angular-template' target='_blank'>linemnanjs</a>) e Python (su GAE).",
   "ENGLISH_TERMS": "Facendo accesso ad ogni pagina del nostro sito esclusa la homepage, la 'About' page e questa pagina si acconsente automaticamente a questi Termini e Condizioni d'uso e alla nostra Privacy Policy che vuol anche dire che si comprende completamente l'inglese scritto e quindi tutto il contenuto di questa pagina e della pagina 'About'. Se non acconsenti, non usare questo sito. Se non hai ancora letto, prima leggi la <a href='/about'>pagina 'About'</a>"
 }

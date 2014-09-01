@@ -8,10 +8,14 @@
 
         <div class="bigPlay animated fadeInDown">
             <div>
-                <a analytics-on="click" analytics-event="Carnivalization"  analytics-category="BIG CTAs" class="playButton" ng-click="startFun();">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                <a analytics-on="click" analytics-event="Carnivalization"  analytics-category="BIG CTAs" class="playButton" ng-click="startFun(age);">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
             </div>
         </div>
 
+    </div>
+
+    <div class="aligner" ng-show="showStart" ng-if="mode !== 'save'">
+        <div google-adsense-block></div>
     </div>
 
 

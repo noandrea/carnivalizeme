@@ -49,6 +49,11 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
     controller: 'MainCtrl'
   });
 
+$routeProvider.when('/age', {
+    templateUrl: 'age.html',
+    controller: 'MainCtrl'
+  });
+
 
   $routeProvider.otherwise({redirectTo: '/now'});
 

@@ -1,4 +1,4 @@
-angular.module("app").factory('maskService', function($rootScope, Masks, API_BASE_URL, html5Storage, $analytics) {
+angular.module("app").factory('maskService', function($rootScope, Masks, API_BASE_URL, html5Storage, $analytics, userService) {
 
     var mask        = {};
     var masks       = {};
@@ -39,7 +39,7 @@ angular.module("app").factory('maskService', function($rootScope, Masks, API_BAS
         },
 
         getFromTags: function (tags) {
-            return Masks.tags({ tags: tags }).$promise;
+            return Masks.tags({ 'tags' : tags, 'a' : userService.get().age_filter}).$promise;
         },
 
         setCurrent: function (currentMask) {
@@ -65,7 +65,7 @@ angular.module("app").factory('maskService', function($rootScope, Masks, API_BAS
          * @return {[type]}      [description]
          */
         getMasks: function(){
-            var filter = {};
+            var filter = {'a' : userService.get().age_filter};
             // get data for the "upcoming reservations" panel
             return Masks.query(filter).$promise;
         },

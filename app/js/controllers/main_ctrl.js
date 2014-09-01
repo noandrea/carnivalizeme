@@ -1,5 +1,7 @@
-angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, lastWatchedImage, controlsService, $document, browsersDetect, $analytics) {
+angular.module("app").controller('MainCtrl', function($scope, $location, trackingService, html5Storage, Masks, Photos, $translate, $filter, API_BASE_URL, $rootScope, maskService, photoService, lastWatchedImage, controlsService, $document, browsersDetect, $analytics, userService) {
 
+    //check Age
+    $rootScope.checkAge();
 
     if(browsersDetect() !== 'chrome'){
       $location.path('/browser');
@@ -86,14 +88,14 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
     };
 
     $scope.$on('imagesListChaged', function(newList) {
-        console.log('list changed, emit listened!');
+        //console.log('list changed, emit listened!');
         $scope.images = [];
         $scope.images = newList;
     });
 
 
     $rootScope.$on('savedPhoto', function(event, info) {
-        console.log(info);
+        //console.log(info);
         if(info.update === 1 && info.error === 0){
             $scope.showModal('pic');
         }
@@ -332,7 +334,7 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
                 }
 
             }catch(e){
-                console.log(e);
+                //console.log(e);
                 $scope.stopTracking();
                 return;
             }
@@ -382,9 +384,9 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
     };
 
 
-
     $scope.getRandomMask = function(){
-        maskService.getMasks($scope.mode).then(function(response){
+        var user = userService.get();
+        maskService.getMasks({'a' : user.age_filter}).then(function(response){
             maskService.masktagsAmount = response.length;
             if(response.length){
                 maskService.masks = $scope.masks = response;
@@ -624,6 +626,20 @@ angular.module("app").controller('MainCtrl', function($scope, $location, trackin
             $scope.$apply();
         }, 400);
     };
+
+    /**
+     * setAge function is the function to allow user to set and store his age
+     * 
+     * @param {[type]} age [age number]
+     */
+    $scope.setAge = function(age){
+        
+        var user = userService.setAge(age);
+        if(user.age){
+          $rootScope.goTo('/now');
+        }
+    };
+
 
 
 });

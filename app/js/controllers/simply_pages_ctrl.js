@@ -16,7 +16,10 @@ angular.module("app").controller('TermsCtrl', function($scope, lastWatchedImage)
     
 });
 
-angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWatchedImage) {
+angular.module("app").controller('CarnivalCtrl', function($scope, $rootScope, html5Storage, Photos, lastWatchedImage, userService) {
+
+    //check Age
+    $rootScope.checkAge();
 
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
@@ -29,7 +32,7 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWa
     $scope.nc = null;
     $scope.pc = null;
 
-    var filter = {'cr' : $scope.cr};
+    var filter = {'cr' : $scope.cr, 'a' : userService.get().age_filter};
     $scope.getPhotos = function (filter){ //TODO: here i can paginate passing "page"
         
         // get data for the ...CARNIVAL!
@@ -62,9 +65,11 @@ angular.module("app").controller('CarnivalCtrl', function($scope, Photos, lastWa
     };
 
     $scope.changePage = function(cr, dir, tags){
+
         filter = {  'cr'    : cr,
                     'd'     : dir,
-                    'tags'  : tags
+                    'tags'  : tags,
+                    'a'     : userService.get().age_filter
                  };
         $scope.getPhotos(filter);
     };

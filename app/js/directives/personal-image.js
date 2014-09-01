@@ -32,7 +32,7 @@ angular.module("app").directive('personalImage', function(photoService, $rootSco
 
             $rootScope.$on('savedPhoto', function(event, info) {
                 //scope.personalImg = info.photo;
-                console.log('sticazzi', scope.personalImg);
+                //console.log('sticazzi', scope.personalImg);
             });
 
             /**
@@ -43,7 +43,7 @@ angular.module("app").directive('personalImage', function(photoService, $rootSco
              * @return {null}               [pops out the image from the photos collection]
              */
             scope.removeImage = function(img){
-                console.log(img);
+                //console.log(img);
                 photoService.removePhotoFromCollection(img);
             };
 
@@ -57,7 +57,7 @@ angular.module("app").directive('personalImage', function(photoService, $rootSco
              */
             scope.savePhoto = function(img){
                 img.lang = $rootScope.lang;
-                console.log('save this', img);
+                //console.log('save this', img);
                 photoService.savePhotoOnDB(img);
             };
 

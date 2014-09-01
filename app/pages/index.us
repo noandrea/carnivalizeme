@@ -49,6 +49,31 @@
 								<img height="13" width="20" src="http://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Catalonia.svg/810px-Flag_of_Catalonia.svg.png" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Catalan
 							</a>
 						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Spanish"  analytics-category="menu clicks" ng-click="changeLanguage('es_ES');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/es.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Español
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > French"  analytics-category="menu clicks" ng-click="changeLanguage('fr_FR');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/fr.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Français
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Ukranian"  analytics-category="menu clicks" ng-click="changeLanguage('uk_UA');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/ua.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Український
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Russian"  analytics-category="menu clicks" ng-click="changeLanguage('uk_UA');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/ru.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">России
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Add New"  analytics-category="menu clicks" href="mailto:enrico.icardi@gmail.com?subject=I'd like to translate carnivalize.me">
+								Add Your Language
+							</a>
+						</li>
 					</ul>
 				</li>
 			</ul>
@@ -82,6 +107,11 @@
 				<li>
 					<a analytics-on="click" analytics-event="FOOTER > Pinterest Share" analytics-category="footer clicks" class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=http:%2F%2Fcarnivalize.me%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-3x">&#62226;</i></a>
 				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Chrome Store" analytics-category="footer clicks" target="_blank" href="https://chrome.google.com/webstore/detail/carnivalizeme/iahnhcjjndnnnahcgcabcfmmcflmkfih"><img src="img/chromeApp.png" alt="carnivalize.me on Google Chrome Store"/></a>
+				</li>
+
+
 			</ul>
 		</footer>
 

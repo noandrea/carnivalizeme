@@ -1,4 +1,4 @@
-var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config", "angulartics", "angulartics.google.analytics"]).run(function($rootScope, $location, trackingService, $translate, $document) {
+var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngSanitize", "colorpicker.module", "pascalprecht.translate", "duScroll", "config", "angulartics", "angulartics.google.analytics"]).run(function($rootScope, $location, $translate, $document, trackingService, userService) {
 
     $rootScope.adsBlocked = 0;
     /**
@@ -25,6 +25,18 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
         
     };
 
+
+    /**
+     * If age is not set, ask user to set
+     */
+    $rootScope.checkAge = function(){
+      //console.log('USSSSSSS: ', userService.get());
+      if(!userService.get().age){
+         $location.path('/age'); //this is where the user will set the age
+      }
+    };
+
+
     /**
      * changes the language of the application
      * 
@@ -48,12 +60,12 @@ var myModule = angular.module("app", ["ngResource", "ngRoute", "ngAnimate", "ngS
     $rootScope.$on('adBlockDetected', function(){
         $rootScope.adsBlocked++;
 
-        console.log('ADS BLOCKED! Total blocked:', $rootScope.adsBlocked);
+        //console.log('ADS BLOCKED! Total blocked:', $rootScope.adsBlocked);
 
         if($rootScope.adsBlocked>2){
             $rootScope.adsBlocked = 0;
             $rootScope.goTo('/sorry');
-            console.log('ADS BLOCKED! Total blocked:', $rootScope.adsBlocked);
+            //console.log('ADS BLOCKED! Total blocked:', $rootScope.adsBlocked);
         }
     });
 

@@ -1,4 +1,7 @@
-angular.module("app").controller('EditorCtrl', function($scope, $document, lastWatchedImage) {
+angular.module("app").controller('EditorCtrl', function($scope, $rootScope, $document, lastWatchedImage) {
+
+    //check Age
+    $rootScope.checkAge();
     
     //put a placeholder in the right drawer
     lastWatchedImage.reset();
