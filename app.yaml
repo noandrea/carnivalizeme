@@ -25,6 +25,10 @@ handlers:
   static_files: app/index.html
   upload: app/index\.html
 
+- url: /age
+  static_files: app/index.html
+  upload: app/index\.html
+
 - url: /trymask
   static_files: app/index.html
   upload: app/index\.html

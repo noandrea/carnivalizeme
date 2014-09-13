@@ -1,4 +1,5 @@
 {
+  "YOUR_AGE": "la teva edat",
   "LANGUAGE": "Idioma",
   "CARNIVALIZE_YOURSELF": "Carnavalitza't",
   "GOTO_CARNIVAL": "Comprova el carnaval",
@@ -10,6 +11,8 @@
   "RECALIBRATE_FACE_DETECT": "Recalibra la detecció facial",
   "FIND_MASKS": "Troba les màscares",
   "DELETE_THIS_PHOTO": "Esborra aquesta imatge!",
+  "TEMPORARY_IMAGES": "Les teves imatges temporals",
+  "TEMP_IMAGES_TEXT": "Aquestes imatges estan només disponibles fins a un nou refresc.<br/>Per mantenir aquestes imatges pots guardar-les anònimament al carnaval.<br/> <em>Clica al botó dret</em> a les que vulguis per guardar-les al teu ordinador.",
   "MASKS": "Màscares",
   "MASK": "Màscara",
   "SEARCHING_FOR": "Cercant",
