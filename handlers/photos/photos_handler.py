@@ -37,10 +37,10 @@ class PhotoHandler(webapp2.RequestHandler):
         photo_query_fwd = Photo.query()#.order(-Photo.up_vote, -Photo.added)
         photo_query_bkw = Photo.query()#.order(Photo.up_vote, Photo.added)
 
-        pg_rating = self.request.get('a',default_value=None) # filter for pg rating
-        if pg_rating is not None:
-            photo_query_fwd = photo_query_fwd.filter(Photo._properties['audience'] == 1)
-            photo_query_bkw = photo_query_bkw.filter(Photo._properties['audience'] == 1)
+        pg_rating = self.request.get('a',default_value=0) # filter for pg rating
+        if pg_rating > 0:
+            photo_query_fwd = photo_query_fwd.filter(ndb.OR(Photo._properties['audience'] == 1, Photo._properties['audience'] == 2))
+            photo_query_bkw = photo_query_bkw.filter(ndb.OR(Photo._properties['audience'] == 1, Photo._properties['audience'] == 2))
 
         # tags
         query_tags = self.request.get('tags',default_value=None) # filter by tags if necessary
@@ -51,12 +51,24 @@ class PhotoHandler(webapp2.RequestHandler):
                 photo_query_bkw = photo_query_bkw.filter(ndb.AND(Photo._properties['tags'] >= tag), Photo._properties['tags'] <= unicode(tag) + u'\ufffd')
 
             # sorting
-            photo_query_fwd = photo_query_fwd.order(Photo.tags, -Photo.up_vote, -Photo.added)
-            photo_query_bkw = photo_query_bkw.order(Photo.tags, Photo.up_vote, Photo.added)
+            # if pg_rating > 0: ## with pg_rating
+            #     photo_query_fwd = photo_query_fwd.order(Photo.audience, Photo.tags, -Photo.added, -Photo.up_vote)
+            #     photo_query_bkw = photo_query_bkw.order(Photo.audience, Photo.tags, Photo.added, Photo.up_vote)
+            # else:
+            #     photo_query_fwd = photo_query_fwd.order(Photo.tags, -Photo.added, -Photo.up_vote)
+            #     photo_query_bkw = photo_query_bkw.order(Photo.tags, Photo.added, Photo.up_vote)
+            photo_query_fwd = photo_query_fwd.order(Photo._key)
+            photo_query_bkw = photo_query_bkw.order(Photo._key)
         else:
             # sorting
-            photo_query_fwd = photo_query_fwd.order(-Photo.up_vote, -Photo.added)
-            photo_query_bkw = photo_query_bkw.order(Photo.up_vote, Photo.added)
+            # if pg_rating > 0: ## with pg_rating
+            #     photo_query_fwd = photo_query_fwd.order(Photo.audience, -Photo.added, -Photo.up_vote)
+            #     photo_query_bkw = photo_query_bkw.order(Photo.audience, Photo.added, Photo.up_vote)
+            # else:
+            #     photo_query_fwd = photo_query_fwd.order(-Photo.added, -Photo.up_vote)
+            #     photo_query_bkw = photo_query_bkw.order(Photo.added, Photo.up_vote)
+            photo_query_fwd = photo_query_fwd.order(Photo._key)
+            photo_query_bkw = photo_query_bkw.order(Photo._key)
 
         # current cursor
         current_cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
@@ -75,8 +87,10 @@ class PhotoHandler(webapp2.RequestHandler):
             photo_query = photo_query_fwd
             cursor = current_cursor if current_cursor else None
 
+        print "before query"
         # get the next results
         photos, new_cursor, more = photo_query.fetch_page(pagination_size, start_cursor=cursor)
+        print "after query"
         
         if more and new_cursor:
             more = True
@@ -158,10 +172,16 @@ class PhotoHandler(webapp2.RequestHandler):
                 if mask_id == 0: # test mask
                     continue
                 mask = Mask.get_by_id(mask_id)
+
                 if mask is not None:
                     tags_list.extend(mask.tags)
                     mask.photo_count += 1
                     mask.put()
+
+                    # set the minumum audience to the maximum of the mask audience
+                    if mask.audience > audience:
+                        audience = mask.audience 
+                        
             tags_list = list(set(tags_list))
 
             # save it on cloud storage

@@ -13,27 +13,12 @@ indexes:
 - kind: Mask
   properties:
   - name: audience
-  - name: up_vote
-    direction: desc
   - name: added
+    direction: desc
+  - name: up_vote
     direction: desc
 
 - kind: Mask
-  properties:
-  - name: tags
-  - name: up_vote
-    direction: desc
-  - name: added
-    direction: desc
-
-- kind: Mask
-  properties:
-  - name: up_vote
-    direction: desc
-  - name: added
-    direction: desc
-
-- kind: Photo
   properties:
   - name: audience
   - name: up_vote
@@ -41,7 +26,7 @@ indexes:
   - name: added
     direction: desc
 
-- kind: Photo
+- kind: Mask
   properties:
   - name: tags
   - name: up_vote
@@ -49,16 +34,40 @@ indexes:
   - name: added
     direction: desc
 
-- kind: Photo
-  properties:
-  - name: up_vote
-  - name: added
-
-- kind: Photo
+- kind: Mask
   properties:
   - name: up_vote
     direction: desc
   - name: added
+    direction: desc
+
+- kind: Photo
+  properties:
+  - name: added
+  - name: up_vote
+
+- kind: Photo
+  properties:
+  - name: added
+    direction: desc
+  - name: up_vote
+    direction: desc
+
+- kind: Photo
+  properties:
+  - name: audience
+  - name: added
+    direction: desc
+  - name: up_vote
+    direction: desc
+
+- kind: Photo
+  properties:
+  - name: audience
+  - name: tags
+  - name: added
+    direction: desc
+  - name: up_vote
     direction: desc
 
 - kind: Tag

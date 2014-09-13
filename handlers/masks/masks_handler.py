@@ -36,11 +36,14 @@ class MaskHandler(webapp2.RequestHandler):
 
     def get(self):
         self.response.headers['Access-Control-Allow-Origin'] = "*"
-        masks_query = Mask.query().order(-Mask.up_vote, -Mask.added)
+        masks_query = Mask.query()
 
-        pg_rating = self.request.get('a',default_value=None) # filter for pg rating
-        if pg_rating is not None:
-            masks_query = masks_query.filter(Mask._properties['audience'] == 1)
+        pg_rating = self.request.get('a',default_value=0) # filter for pg rating
+        if pg_rating > 0:
+            masks_query = masks_query.filter(ndb.OR(Mask._properties['audience'] == 1, Mask._properties['audience'] == 2))
+            masks_query = masks_query.order(Mask.audience, -Mask.added, -Mask.up_vote)
+        else:
+            masks_query = masks_query.order(-Mask.added, -Mask.up_vote)
 
         masks = masks_query.fetch()
 
