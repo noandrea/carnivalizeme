@@ -39,11 +39,11 @@ class MaskHandler(webapp2.RequestHandler):
         masks_query = Mask.query()
 
         pg_rating = self.request.get('a',default_value=0) # filter for pg rating
-        if pg_rating > 0:
-            masks_query = masks_query.filter(ndb.OR(Mask._properties['audience'] == 1, Mask._properties['audience'] == 2))
-            masks_query = masks_query.order(Mask.audience, -Mask.added, -Mask.up_vote)
-        else:
-            masks_query = masks_query.order(-Mask.added, -Mask.up_vote)
+        pg_rating = 0 if pg_rating == '' else pg_rating
+        if int(pg_rating) > 0:
+            masks_query = masks_query.filter(Mask._properties['is_safe'] == True)
+        
+        masks_query = masks_query.order(-Mask.added, -Mask.up_vote)
 
         masks = masks_query.fetch()
 
@@ -111,6 +111,7 @@ class MaskHandler(webapp2.RequestHandler):
             tags = data.get('tags', [])
             lang = data.get('lang', 'en')
             audience = int(data.get('audience', 1))
+            is_safe = True if audience <= 2 else False
             email = data.get('email', None)
             
             # flip image horizontally
@@ -155,7 +156,8 @@ class MaskHandler(webapp2.RequestHandler):
                 audience = audience,
                 email = email,
                 tags = tags_list,
-                credits = credits)
+                credits = credits,
+                is_safe = is_safe)
             mask.put()
 
             # memcache
@@ -204,6 +206,7 @@ class MaskHandler(webapp2.RequestHandler):
                 self.response.write("Not Found")
             
             mask.audience = audience
+            mask.is_safe = True if int(audience) <= 2 else False
             mask.tags.extend(tags_list)
             mask.tags = list(set(mask.tags))
             mask.email = email

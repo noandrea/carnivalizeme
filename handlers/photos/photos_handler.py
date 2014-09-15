@@ -38,9 +38,10 @@ class PhotoHandler(webapp2.RequestHandler):
         photo_query_bkw = Photo.query()#.order(Photo.up_vote, Photo.added)
 
         pg_rating = self.request.get('a',default_value=0) # filter for pg rating
-        if pg_rating > 0:
-            photo_query_fwd = photo_query_fwd.filter(ndb.OR(Photo._properties['audience'] == 1, Photo._properties['audience'] == 2))
-            photo_query_bkw = photo_query_bkw.filter(ndb.OR(Photo._properties['audience'] == 1, Photo._properties['audience'] == 2))
+        pg_rating = 0 if pg_rating == '' else pg_rating
+        if int(pg_rating) > 0:
+            photo_query_fwd = photo_query_fwd.filter(Photo._properties['is_safe'] == True)
+            photo_query_bkw = photo_query_bkw.filter(Photo._properties['is_safe'] == True)
 
         # tags
         query_tags = self.request.get('tags',default_value=None) # filter by tags if necessary
@@ -51,24 +52,15 @@ class PhotoHandler(webapp2.RequestHandler):
                 photo_query_bkw = photo_query_bkw.filter(ndb.AND(Photo._properties['tags'] >= tag), Photo._properties['tags'] <= unicode(tag) + u'\ufffd')
 
             # sorting
-            # if pg_rating > 0: ## with pg_rating
-            #     photo_query_fwd = photo_query_fwd.order(Photo.audience, Photo.tags, -Photo.added, -Photo.up_vote)
-            #     photo_query_bkw = photo_query_bkw.order(Photo.audience, Photo.tags, Photo.added, Photo.up_vote)
-            # else:
-            #     photo_query_fwd = photo_query_fwd.order(Photo.tags, -Photo.added, -Photo.up_vote)
-            #     photo_query_bkw = photo_query_bkw.order(Photo.tags, Photo.added, Photo.up_vote)
-            photo_query_fwd = photo_query_fwd.order(Photo._key)
-            photo_query_bkw = photo_query_bkw.order(Photo._key)
+            photo_query_fwd = photo_query_fwd.order(Photo.tags, -Photo.added, -Photo.up_vote)
+            photo_query_bkw = photo_query_bkw.order(Photo.tags, Photo.added, Photo.up_vote)
+            
         else:
-            # sorting
-            # if pg_rating > 0: ## with pg_rating
-            #     photo_query_fwd = photo_query_fwd.order(Photo.audience, -Photo.added, -Photo.up_vote)
-            #     photo_query_bkw = photo_query_bkw.order(Photo.audience, Photo.added, Photo.up_vote)
-            # else:
-            #     photo_query_fwd = photo_query_fwd.order(-Photo.added, -Photo.up_vote)
-            #     photo_query_bkw = photo_query_bkw.order(Photo.added, Photo.up_vote)
-            photo_query_fwd = photo_query_fwd.order(Photo._key)
-            photo_query_bkw = photo_query_bkw.order(Photo._key)
+            
+            photo_query_fwd = photo_query_fwd.order(-Photo.added, -Photo.up_vote)
+            photo_query_bkw = photo_query_bkw.order(Photo.added, Photo.up_vote)
+            # photo_query_fwd = photo_query_fwd.order(-Photo.added)
+            # photo_query_bkw = photo_query_bkw.order(-Photo._key)
 
         # current cursor
         current_cursor = ndb.Cursor(urlsafe=self.request.get('cr',default_value=None))  
@@ -181,6 +173,9 @@ class PhotoHandler(webapp2.RequestHandler):
                     # set the minumum audience to the maximum of the mask audience
                     if mask.audience > audience:
                         audience = mask.audience 
+
+            # now understand if it is safe or not
+            is_safe = True if int(audience) <= 2 else False
                         
             tags_list = list(set(tags_list))
 
@@ -207,7 +202,8 @@ class PhotoHandler(webapp2.RequestHandler):
                 tags = tags_list,
                 email= email,
                 ext = ext,
-                thumb=serving_url)
+                thumb=serving_url,
+                is_safe = is_safe)
             photo.put()
 
             response_data = {
@@ -260,6 +256,7 @@ class PhotoHandler(webapp2.RequestHandler):
                 self.response.write("Not Found")
             
             photo.audience = audience
+            photo.is_safe = True if int(audience) <= 2 else False
             photo.tags.extend(tags_list)
             photo.tags = list(set(photo.tags))
             photo.email = email

@@ -14,6 +14,7 @@ class Photo(ndb.Model):
     masks = ndb.StringProperty(repeated=True)
     ext = ndb.StringProperty()
     thumb = ndb.StringProperty()
+    is_safe = ndb.BooleanProperty(default=True)
 
 
     def tags2string(self, separator=', '):
@@ -59,6 +60,7 @@ class Mask(ndb.Model):
     audience = ndb.IntegerProperty(default=0)
     photo_count = ndb.IntegerProperty(default=0)
     thumb = ndb.StringProperty()
+    is_safe = ndb.BooleanProperty(default=True)
 
     @staticmethod
     def to_json_string(mask):

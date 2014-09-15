@@ -72,4 +72,11 @@ class MaintenanceHandler(webapp2.RequestHandler):
                 photo.put()
                 
                 self.response.write('<img src="%s=s100" />' % photo.thumb)
+    def set_issafe(self):
+        for photo in Mask.query():
+            if photo.audience <= 2:
+                photo.is_safe = True
+            else:
+                photo.is_safe = False
+            photo.put()
 
