@@ -1,7 +1,7 @@
 {
   "YOUR_AGE": "Ваш вік",
   "LANGUAGE": "Мова",
-  "CARNIVALIZE_YOURSELF": null,
+  "CARNIVALIZE_YOURSELF": "создай свою маску",
   "GOTO_CARNIVAL": "Спробуй карнавал",
   "CREATE_MASK": "створити маску",
   "ALLOW_CAMERA": "Мені потрібен доступ до Веб камери",
@@ -73,5 +73,5 @@
   "ABOUT_02": "Проект надихнула аплікація Google Hangouts 'Effects App', однак на відміну від продуктів Google, carnivalize.me містить лише анонімний<strong>не цензорований контент користувачів</strong>. Маски створені з допомогою звичайного <a href='/editor'>генератора масок</a> і фотографій створених з допомогою <a href='/now'>in-app camera</a>, і вони НЕ підлягають ніякій цензурі. Весь контент  carnivalize.me категоризований згідно з системою вікових рекомендацій '<a href='http://en.wikipedia.org/wiki/Motion_Picture_Association_of_America_film_rating_system' target='_blank'>MPAA</a> style' (як Gravatar). Контент для окремихв вмкових груп, буде наданий залежно від віку користувача (який відслідковується через індивідуальні сертифікати).",
   "TECHNOLOGIES": "Технології",
   "ABOUT_03": "Колаж і OpenSource Scripts з різних програм по всьому світу.<br/>В основному воно базується на HTML5, але також <a href='https://github.com/auduno/headtrackr' target='_blank'>auduno's headtrackr</a> (for <em>Face Tracking</em>) і <a href='http://html2canvas.hertzen.com' target='_blank'>html2canvas</a>. Написане на AngularJS (використовуючи <a href='https://github.com/linemanjs/lineman-angular-template' target='_blank'>linemnanjs</a>) and Python (on GAE).",
-  "ENGLISH_TERMS": null
+  "ENGLISH_TERMS": "Accessing any page of our website other than our home page, the 'About' page and this page constitutes your consent to these Terms Of Use and to our Privacy Policy which also means you fully understand written English and therefore the full content of this page and the content of 'About' page. If you do not consent, do not use our website. If you didn't yet, first look at the <a href='/about'>about page</a>."
 }
