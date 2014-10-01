@@ -617,20 +617,7 @@ body{
                     background-position: -126px 2px;
                 }
             }
-            &.image{
-                background-repeat:no-repeat;
-                background-position: -166px -82px;
-                &:hover{
-                    background-repeat:no-repeat;
-                    background-position: -166px -41px;
-                }
-                &:active{
-                    background-repeat:no-repeat;
-                    background-position: -166px 1px;
-                }
-            }
             &.video{
-                @include radius(3px 0 0 3px);
                 background-repeat:no-repeat;
                 background-position: -208px -82px;
                 &:hover{
@@ -646,6 +633,19 @@ body{
                         background-repeat:no-repeat;
                         background-position: -208px -41px;
                     }
+                }
+            }
+            &.image{
+                @include radius(3px 0 0 3px);
+                background-repeat:no-repeat;
+                background-position: -166px -82px;
+                &:hover{
+                    background-repeat:no-repeat;
+                    background-position: -166px -41px;
+                }
+                &:active{
+                    background-repeat:no-repeat;
+                    background-position: -166px 1px;
                 }
             }
             &.mask{

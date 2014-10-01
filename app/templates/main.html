@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="control mask" ng-click="showSearchMask = !showSearchMask" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''"></div>
-                <div class="control image" ng-mouseover="helpLabel='1 PHOTO'" ng-mouseout="helpLabel=''" ng-click="canvasToImage();" ng-show="isRunning && showImage && (mode !== 'save')"></div>
+                <div ng-mouseover="helpLabel='10 FRAMES VIDEO'" ng-mouseout="helpLabel=''" class="control video" ng-class="{active: pics>0}" ng-click="canvasToGif();" ng-show="isRunning && (mode !== 'save')"></div>
                 <div class="control empty" ng-hide="isRunning && showImage"></div>
 
                 <div class="helpLabel" ng-show="mode !== 'save' && helpLabel">{{helpLabel}}</div>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                <div ng-mouseover="helpLabel='10 FRAMES VIDEO'" ng-mouseout="helpLabel=''" class="control video" ng-class="{active: pics>0}" ng-click="canvasToGif();" ng-show="isRunning && (mode !== 'save')"></div>
+                <div class="control image" ng-mouseover="helpLabel='1 PHOTO'" ng-mouseout="helpLabel=''" ng-click="canvasToImage();" ng-show="isRunning && showImage && (mode !== 'save')"></div>
                 <div ng-mouseover="helpLabel='PAUSE'" ng-mouseout="helpLabel=''" class="control pause" ng-click="stopTracking();"   ng-show="isRunning"></div>
                 <div ng-mouseover="helpLabel='PLAY'" ng-mouseout="helpLabel=''" class="control play" ng-click="restartTracking();" ng-hide="isRunning"></div>
                 <!-- <div class="control loading"><span class="spinning"></span></div> -->
