@@ -13,8 +13,8 @@ angular.module("app").config(function($routeProvider, $locationProvider) {
   });
 
   $routeProvider.when('/about', {
-    templateUrl: 'about.html',
-    controller: 'AboutCtrl'
+    templateUrl: 'main.html',
+    controller: 'MainCtrl'
   });
 
   $routeProvider.when('/terms', {

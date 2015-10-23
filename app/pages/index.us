@@ -69,11 +69,6 @@
 								<img height="13" width="20" src="http://www.geonames.org/flags/x/ru.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">России
 							</a>
 						</li>
-						<li>
-							<a analytics-on="click" analytics-event="MENU > Language > Add New"  analytics-category="menu clicks" href="mailto:enrico.icardi@gmail.com?subject=I'd like to translate carnivalize.me">
-								Add Your Language
-							</a>
-						</li>
 					</ul>
 				</li>
 			</ul>
@@ -85,9 +80,6 @@
 			<ul>
 				<li class="textonly">
 					<a analytics-on="click" analytics-event="FOOTER > Terms" analytics-category="footer clicks" ng-click="goTo('/terms');">{{'TERMS_AND_CONDITIONS_PRIVACY' | translate}}</a>
-				</li>
-				<li class="textonly">
-					<a analytics-on="click" analytics-event="FOOTER > About" analytics-category="footer clicks" ng-click="goTo('/about');">{{'ABOUT' | translate}}</a>
 				</li>
 				<li>
 					<a analytics-on="click" analytics-event="FOOTER > Carnivalize Yourself" analytics-category="footer clicks" class="carnivalize" ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
