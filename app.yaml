@@ -1,0 +1,79 @@
+application: carnivalizemeapi
+version: 5
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: app/favicon.ico
+  upload: app/favicon\.ico
+
+- url: /crossdomain\.xml
+  static_files: app/crossdomain.xml
+  upload: app/crossdomain\.xml
+
+- url: /batman/.*
+  script: main.secure
+  login: admin
+
+- url: /
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /now
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /age
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /trymask
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /editor
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /about
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /terms
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /carnival
+  static_files: app/index.html
+  upload: app/index\.html
+
+- url: /css
+  static_dir: app/css
+  
+- url: /carnivalizeme
+  static_dir: app/carnivalizeme
+
+- url: /js
+  static_dir: app/js
+
+- url: /webfonts
+  static_dir: app/webfonts
+
+- url: /img
+  static_dir: app/img
+
+- url: /languages
+  static_dir: app/languages
+
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: latest
+- name: PIL
+  version: latest
+- name: jinja2
+  version: latest

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>http://carnivalize.me/now</loc>
+  </url>
+  <url>
+    <loc>http://carnivalize.me/carnival</loc>
+  </url>
+  <url>
+    <loc>http://carnivalize.me/editor</loc>
+  </url>
+  <url>
+    <loc>http://carnivalize.me/about</loc>
+  </url>
+  <url>
+    <loc>http://carnivalize.me/about</loc>
+  </url>
+  <url>
+    <loc>http://carnivalize.me/terms</loc>
+  </url>
+  {% for photo in photos %}                         
+  
+  <url>
+    <loc>http://carnivalize.me/blowout/{{ photo.key.string_id() }}</loc>
+    <image:image>
+      <image:loc>{{ photo.thumb }}</image:loc>
+      <image:caption>carnivalize.me - {{photo.tags2string()}} </image:caption>
+      <image:title>carnivalize.me - {{photo.tags2string()}}</image:title>
+    </image:image>
+  </url>
+  {% endfor %}
+</urlset>
