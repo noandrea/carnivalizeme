@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<title>Carnivalize.me - Carnival Online</title>
+	<link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+	<meta name="description" content="Life is a masquerade. Carnivalize Yourself. This Free anonymous app allows you to create masked GIFs and (anti) selfies. Enjoy!">
+	<meta name="keywords" content="carnivalizer, carnivalizeme, carnival, masquerade, masks, game, mask game, effects, webcam, fun, toy, carnivalize">
+    
+    <meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0,width=device-width" />
+    <meta property="og:image" content="http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg"/>
+
+    <meta name="alexaVerifyID" content="gWSvemLbucSxbcXk1gCEBT7cES4"/>
+</head>
+
+	<body class="site">
+
+		<header>
+			<img class="logo" width="50" src="img/carnivalizeOk.png" alt="Carnivalize.me"/>
+			<ul>
+				<li>
+					<a analytics-on="click" analytics-event="MENU > Carnivalize Yourself" analytics-category="menu clicks" class="carnivalize" ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="MENU > Go to Carnival" analytics-category="menu clicks" class="carnival" ng-click="goTo('/carnival');">{{'GOTO_CARNIVAL' | translate}}</a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="MENU > Create Mask" analytics-category="menu clicks" class="create" ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
+				</li>
+				<li class="right">
+					<a analytics-on="click" analytics-event="MENU > Change Language" analytics-category="menu clicks" class="language" ng-click="showLang = !showLang"><i class="icon pictogram" style="font-size:1.5em;">&#127758;</i> {{'LANGUAGE' | translate}} </a>
+					<ul ng-show="showLang">
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > English" analytics-category="language clicks" ng-click="changeLanguage('en_EN');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/uk.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">English
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Italian"  analytics-category="menu clicks" ng-click="changeLanguage('it_IT');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/it.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Italiano
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > German"  analytics-category="menu clicks" ng-click="changeLanguage('de_DE');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/de.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Deutsch
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Catalan"  analytics-category="menu clicks" ng-click="changeLanguage('es_CA');">
+								<img height="13" width="20" src="http://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Catalonia.svg/810px-Flag_of_Catalonia.svg.png" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Catalan
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Spanish"  analytics-category="menu clicks" ng-click="changeLanguage('es_ES');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/es.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Español
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > French"  analytics-category="menu clicks" ng-click="changeLanguage('fr_FR');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/fr.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Français
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Ukranian"  analytics-category="menu clicks" ng-click="changeLanguage('uk_UA');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/ua.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">Український
+							</a>
+						</li>
+						<li>
+							<a analytics-on="click" analytics-event="MENU > Language > Russian"  analytics-category="menu clicks" ng-click="changeLanguage('uk_UA');">
+								<img height="13" width="20" src="http://www.geonames.org/flags/x/ru.gif" style="display:inline; padding:0; margin:0;padding-left:10px;" class="">России
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</header>
+
+		<main id="view" ng-view class="site-content page {{pageClass}}" class="site-content container"></main>
+
+		<footer class="aligner">
+			<ul>
+				<li class="textonly">
+					<a analytics-on="click" analytics-event="FOOTER > Terms" analytics-category="footer clicks" ng-click="goTo('/terms');">{{'TERMS_AND_CONDITIONS_PRIVACY' | translate}}</a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Carnivalize Yourself" analytics-category="footer clicks" class="carnivalize" ng-click="goTo('/now');">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Go to Carnival" analytics-category="footer clicks" class="carnival" ng-click="goTo('/carnival');">{{'GOTO_CARNIVAL' | translate}}</a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Create Mask" analytics-category="footer clicks" class="create" ng-click="goTo('/editor');">{{'CREATE_MASK' | translate}}</a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Facebook Share" analytics-category="footer clicks" class="facebook" target="_blank" href="http://hrefshare.com/3270"><i class="icon pictogramsocial picto-3x">&#62220;</i></a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Twitter Share" analytics-category="footer clicks" class="twitter" target="_blank" href="http://hrefshare.com/8da03"><i class="icon pictogramsocial picto-3x">&#62217;</i></a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Pinterest Share" analytics-category="footer clicks" class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&media=http://s29.postimg.org/c99by9tfr/carnivalize_GIGA.jpg&description=http:%2F%2Fcarnivalize.me%20is%20an%20%23absurd%20%23selfie%20%2F%20%23avatar%20%23generator%20(also%20for%20%23animated%20%23GIFs)"><i class="icon pictogramsocial picto-3x">&#62226;</i></a>
+				</li>
+				<li>
+					<a analytics-on="click" analytics-event="FOOTER > Chrome Store" analytics-category="footer clicks" target="_blank" href="https://chrome.google.com/webstore/detail/carnivalizeme/iahnhcjjndnnnahcgcabcfmmcflmkfih"><img src="img/chromeApp.png" alt="carnivalize.me on Google Chrome Store"/></a>
+				</li>
+
+
+			</ul>
+		</footer>
+
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		  ga('require', 'displayfeatures');
+		  ga('create', 'UA-2305595-15', 'auto');
+		</script>
+		
+		<script type="text/javascript" src="/js/app.js"></script>
+		<script type="text/javascript" src="/js/config.js"></script>
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+		<script type="text/javascript">
+		window.google_analytics_uacct = "UA-2305595-15";
+		</script>
+
+	</body>
+</html>

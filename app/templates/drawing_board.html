@@ -1,0 +1,17 @@
+<div ng-controller="drawingBoardCtrl" class="drawingBoard">
+    <div class="canvasContainer">
+        <div class="maskWrap">
+            <div id="customMask">
+                <div analytics-on="click" analytics-event="Moving Text" analytics-category="drawing mask" drag-rotate-resize type="text" class="text-loaded"style="color:{{controls.text.color}}" ng-bind-html="controls.text.content | nl2br"></div>
+                <img analytics-on="click" analytics-event="Moving Image" analytics-category="drawing mask" ng-if="controls.image.info.fileBase64" id="upped-image" drag-rotate-resize type="image" class="img-uploaded" ng-show="controls.image.info.fileBase64" ng-src="{{controls.image.info.fileBase64}}" alt="image"/>
+                <drawing-canvas></drawing-canvas>
+            </div>
+            <div class="canvasBg" ng-show="controls.showGrid"></div>
+        </div>
+
+        <img ng-if="customMask.image" ng-src="{{customMask.image}}" alt="image" width="720" height="960" />
+
+    </div>
+    
+    <drawing-controls></drawing-controls>
+</div>

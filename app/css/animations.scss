@@ -1,0 +1,244 @@
+/* ANIMATIONS for pages (as seen at http://scotch.io/tutorials/javascript/animating-angularjs-apps-ngview) */
+@charset "UTF-8";
+
+/*!
+Animate.css - http://daneden.me/animate
+Licensed under the MIT license - http://opensource.org/licenses/MIT
+
+Copyright (c) 2014 Daniel Eden
+*/
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 1000px, 0);
+    transform: translate3d(0, 1000px, 0);
+  }
+
+  100% {
+    opacity: .5;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 1000px, 0);
+    -ms-transform: translate3d(0, 1000px, 0);
+    transform: translate3d(0, 1000px, 0);
+  }
+
+  100% {
+    opacity: .5;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInUp {
+  -webkit-animation-delay: 2s; /* Safari and Chrome */
+          animation-delay: 2s;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+
+@-webkit-keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -1000px, 0);
+    transform: translate3d(0, -1000px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -1000px, 0);
+    -ms-transform: translate3d(0, -1000px, 0);
+    transform: translate3d(0, -1000px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+  }
+}
+
+.fadeInDown {
+  -webkit-animation-delay: 1s; /* Safari and Chrome */
+          animation-delay: 1s;
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+}
+
+
+
+/* --------------------------------------------------- PAGES ANIMATIONS ----------- */
+/* -------------------------------------------------------------- */
+.page.ng-leave  { z-index:99999999; }
+.page.ng-enter  { z-index:88888888; }
+
+/* home -------------------------  */
+.page-main.ng-leave         {
+  -webkit-animation: slideOutLeft 0.5s both ease-in;
+  -moz-animation: slideOutLeft 0.5s both ease-in;
+  animation: slideOutLeft 0.5s both ease-in;
+
+}
+.page-main.ng-enter     {  
+    -webkit-animation:bounceInLeft 0.5s both ease-in;
+    -moz-animation:bounceInLeft 0.5s both ease-in;
+    animation:bounceInLeft 0.5s both ease-in;
+    animation-delay:0.5s;
+    -webkit-animation-delay:0.5s; /* Safari and Chrome */
+}
+
+/* editor, about ------------------------ */
+.page-editor.ng-leave, .page-about.ng-leave, .page-terms.ng-leave, .page-carnival.ng-leave {
+    -webkit-animation:slideOutRight 0.5s both ease-in;
+    -moz-animation:slideOutRight 0.5s both ease-in;
+    animation:slideOutRight 0.5s both ease-in;   
+}
+.page-editor.ng-enter, .page-about.ng-enter, .page-terms.ng-enter, .page-carnival.ng-enter {
+    -webkit-animation:bounceInRight 0.5s both ease-in;
+    -moz-animation:bounceInRight 0.5s both ease-in;
+    animation:bounceInRight 0.5s both ease-in;    
+    animation-delay:0.5s;
+    -webkit-animation-delay:0.5s; /* Safari and Chrome */
+}
+
+/* -------------------------------------------------------------- */
+/* --------------------------------------------------- end PAGES ANIMATIONS ----------- */
+
+
+/* --------------------------------------------------- fade to 0.6 */
+@-webkit-keyframes fadeInHalf {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: .8;
+  }
+}
+
+@keyframes fadeInHalf {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: .8;
+  }
+}
+.fadeInHalf {
+  -webkit-animation-name: fadeInHalf;
+  animation-name: fadeInHalf;
+}
+
+/* --------------------------------------------------- fade from 0.6 */
+@-webkit-keyframes fadeOutHalf {
+  0% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fadeOutHalf {
+  0% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+.fadeInHalf {
+  -webkit-animation-name: fadeOutHalf;
+  animation-name: fadeOutHalf;
+}
+
+
+/* --------------------------------------------------- infinite spin */
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to { 
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+
+
+
+
+/* --------------------------------------------------- ANIMATION FOR BAR for NO WebCam ----------- */
+
+@-webkit-keyframes progressNoCam {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -60px -60px;
+  }
+}
+@-moz-keyframes progressNoCam {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -60px -60px;
+  }
+}
+@-ms-keyframes progressNoCam {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -60px -60px;
+  }
+}
+@-o-keyframes progressNoCam {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -60px -60px;
+  }
+}
+@keyframes progressNoCam {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -60px -60px;
+  }
+}
+/* --------------------------------------------------- end ANIMATION FOR BAR for NO WebCam ----------- */

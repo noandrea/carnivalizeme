@@ -1,0 +1,242 @@
+<div>
+
+    <div ng-if="(isCameraInactive && showVideo)" class="noCamBar stripe">
+        <span class="animateCamBar">{{'ALLOW_CAMERA' | translate}}</span>
+    </div>
+
+    <div class="aligner" ng-show="showStart" ng-if="mode !== 'save'">
+
+        <div class="bigPlay animated fadeInDown">
+            <div>
+                <a analytics-on="click" analytics-event="Carnivalization"  analytics-category="BIG CTAs" class="playButton" ng-click="startFun(age);">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="aligner" ng-show="showStart" ng-if="mode !== 'save'">
+        <div google-adsense-block></div>
+    </div>
+
+
+    <div class="aligner">
+
+
+<!-- VIDEO STATUS MESSAGES *************************** -->
+        <div class="messages" ng-show="cameraMsg.msg">
+            <i class="icon {{cameraMsg.icon}}"></i>
+            <p ng-bind-html="cameraMsg.msg"></p>
+        </div>
+
+        <div class="imgWrap onVideo" ng-if="mode === 'save' && cameraMsg.msg === ''">
+            <div class="imgCover" ></div>
+            <div class="imgMenu" >
+                 <div class="formMask">
+
+                    <div class="el center">
+                        <label>{{'SAVE_MASK' | translate}}</label>
+                    </div>
+
+                    <div class="el center">
+                        <div class="radio">
+                            <input id="safe" type="radio" ng-model="selectedMask.audience" name="gender" value="1">
+                            <label class="xxxA" for="safe">{{'SAFE' | translate}}</label>
+                            <input id="rude" type="radio"  ng-model="selectedMask.audience" name="gender" value="2">
+                            <label class="xxxB" for="rude">{{'RUDE' | translate}}</label>
+                            <input id="nokids" type="radio"  ng-model="selectedMask.audience" name="gender" value="3">
+                            <label class="xxxC" for="nokids">{{'ADULT' | translate}}</label>
+                            <input id="hardcore" type="radio" ng-model="selectedMask.audience" name="gender" value="4">
+                            <label class="xxxD" for="hardcore">{{'XXX' | translate}}</label>     
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="el center" ng-show="selectedMask.audience">
+                            <input maxlength="100"  type="text" ng-model="selectedMask.tags" ng-list placeholder="{{'PLACEHOLDER_TAGS' | translate}}">
+                        </div>
+                        <div class="el center" ng-show="selectedMask.audience && (selectedMask.tags.length>=2)">
+                            <input maxlength="100"  type="text" ng-model="selectedMask.credits" placeholder="{{'PLACEHOLDER_CREDITS' | translate}}">
+                        </div>
+                        <div class="el center" ng-show="selectedMask.audience && (selectedMask.tags.length>=1) && selectedMask.credits.length>5">
+                            <div class="wrap">
+                                <input maxlength="80" type="email" ng-model="selectedMask.email" placeholder="{{'PLACEHOLDER_MAIL' | translate}}">
+                            </div>
+                        </div>
+                        <div class="el center"  ng-show="selectedMask.audience && (selectedMask.tags.length>=1)">
+                            <a class="btn" ng-click="saveMaskOnDB(selectedMask);">{{'SAVE_MASK' | translate}}</a>
+                        </div>
+                        <div class="el center">
+                            <a class="btn small important" ng-click="goTo('/editor');">{{'MODIFY_MASK' | translate}}</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="videoBlock" ng-show="(!isCameraInactive && showVideo)">
+            
+
+<!-- SEARCH MASK *************************** -->
+        <div ng-show="showSearchMask" tags-input="searchInput" update-tags="updateMasksAmountAndTags()" search-masks></div>
+
+
+
+
+<!-- CHANGE MASK *************************** -->
+            <div class="changeMask" ng-show="isRunning && mode !== 'save' && masks.length > 1">
+                <div class="roundBtn left" ng-click="changeMask(1);"></div>
+                <div class="roundBtn right" ng-click="changeMask(-1);"></div>
+            </div>
+
+
+
+<!-- CONTROLS (buttons) *************************** -->
+            <div class="controls" ng-show="showControls">
+                <!-- <div class="control calibrate" ng-click="refreshTracking();" ng-show="isRunning"></div> -->
+                <div ng-if="masktags" class="control masktags" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
+                    {{masktags ? masktags : '...'}}  <br/> <em>{{masktagsAmount}} {{'MASKS_FOUND' | translate}}</em> &mdash; 
+                    <a ng-click="resetMasksAmountAndTags();">{{'REMOVE_TAGS' | translate}}</a>
+                </div>
+
+                <div class="control masktags" ng-show="!masktags && !showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
+                    <br/><a ng-click="resetMasksAmountAndTags();">RANDOM!</a>
+                </div>
+                
+                <div class="control masktags" ng-click="showSearchMask = !showSearchMask" ng-show="!masktags && !showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''">
+                    <em>{{'TOTAL_MASKS' | translate}}: {{masktagsAmount}}</em> &mdash; <a>{{'SEARCH_BY_TAGS' | translate}}</a>
+                </div>
+
+                <div class="control mask" ng-click="showSearchMask = !showSearchMask" ng-show="!showSearchMask && isRunning && (mode !== 'save') && cameraMsg.msg === ''"></div>
+                <div ng-mouseover="helpLabel='10 FRAMES VIDEO'" ng-mouseout="helpLabel=''" class="control video" ng-class="{active: pics>0}" ng-click="canvasToGif();" ng-show="isRunning && (mode !== 'save')"></div>
+                <div class="control empty" ng-hide="isRunning && showImage"></div>
+
+                <div class="helpLabel" ng-show="mode !== 'save' && helpLabel">{{helpLabel}}</div>
+
+                <div class="videoProgress" ng-show="mode !== 'save' && isRunning">
+                    <div class="progress" style="width: {{GIFprogress}}">
+                        
+                        <a ng-repeat="gifframe in gifframes" href="{{gifframe}}" target="_blank"><img ng-src="{{gifframe}}" alt="$index frame"></img></a>
+
+                        <div class="framesCounter" ng-if="pics>0">
+                            <span ng-if="pics>=2" ng-mouseover="helpLabel='CANCEL VIDEO'" ng-mouseout="helpLabel=''" ng-click="resetVideo();">
+                                reset 
+                            </span>
+                            {{pics}}/10
+                        </div>
+                    </div>
+                </div>
+                <div class="control image" ng-mouseover="helpLabel='1 PHOTO'" ng-mouseout="helpLabel=''" ng-click="canvasToImage();" ng-show="isRunning && showImage && (mode !== 'save')"></div>
+                <div ng-mouseover="helpLabel='PAUSE'" ng-mouseout="helpLabel=''" class="control pause" ng-click="stopTracking();"   ng-show="isRunning"></div>
+                <div ng-mouseover="helpLabel='PLAY'" ng-mouseout="helpLabel=''" class="control play" ng-click="restartTracking();" ng-hide="isRunning"></div>
+                <!-- <div class="control loading"><span class="spinning"></span></div> -->
+            </div>
+
+
+
+
+<!-- fullPic (video canvas + overlay) *************************** -->
+            <div id="fullPic" width="{{videoWidth}}" height="{{videoHeight}}">
+                <canvas id="compare" width="{{videoWidth}}" height="{{videoHeight}}"></canvas>
+                <canvas ng-if="showMask" id="overlay" width="{{videoWidth}}" height="{{videoHeight}}"></canvas>
+                <div id="watermark">http://carnivalize.me</div>
+                <video id="vid" autoplay loop></video>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+<!-- find mask and re-calibrate buttons *************************** -->
+    <div class="aligner" ng-show="(!isCameraInactive && showVideo)">
+        <div class="credits minimenu"> 
+            <a ng-click="showSearchMask = !showSearchMask" ng-show="isRunning && (mode !== 'save') && cameraMsg.msg === ''"> {{'FIND_MASKS' | translate}} </a>
+            <div class="right">
+                {{'MASK_NO_FIT' | translate}} <strong><a ng-click="refreshTracking();">{{'RECALIBRATE_FACE_DETECT' | translate}}</a></strong>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!-- credits *************************** -->
+    <div class="aligner" ng-if="selectedMask.credits.length">
+        <div class="credits"> 
+            CREDITS <span ng-bind-html="selectedMask.credits | linky"></span>
+        </div>
+    </div>
+
+
+<!-- previously taken PHOTOS *************************** -->
+    <div class="aligner gray" ng-if="images.length > 0">
+        <div class="textBlock">
+            <h2 class="white">{{'TEMPORARY_IMAGES' | translate}}</h2>
+            <p class="white" translate="TEMP_IMAGES_TEXT"></p>
+        </div>
+    </div>
+    <div class="userImages aligner" ng-if="images.length > 0">
+        <ul>
+            <li ng-repeat="img in images"> <!-- | orderBy:'ts':true -->
+                <personal-image all-images="images" img="img"></personal-image>
+            </li>
+        <ul>
+    </div>
+
+
+<!-- PIC modal -->
+    <div class="modalWrapper" ng-show='modal_wrapper_show_pic'>
+        <div class="modalCover" ng-show="modal_show_pic" ng-click="hideModal();" ></div>
+        <div class="modalContent" ng-show="modal_show_pic">
+
+            <table>
+                <tr>
+                    <td>
+                        DONE!
+                    </td>
+                </tr>
+            </table>
+
+            <div class="aligner">
+                <div>
+                    <a analytics-on="click" analytics-event="after picture carnival" analytics-category="modal clicks" class="btn cta" ng-click="hideModal();" href="/carnival">{{'GOTO_CARNIVAL' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture close modal" analytics-category="modal clicks" class="btn" ng-click="hideModal();">RE-{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture create mask" analytics-category="modal clicks"  class="btn" ng-click="hideModal();" href="/editor">{{'CREATE_MASK' | translate}}</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<!-- PIC modal -->
+    <div class="modalWrapper" ng-show='modal_wrapper_show_mask'>
+        <div class="modalCover" ng-show="modal_show_mask" ng-click="hideModal();" ></div>
+        <div class="modalContent" ng-show="modal_show_mask">
+
+            <table>
+                <tr>
+                    <td>
+                        DONE!
+                    </td>
+                </tr>
+            </table>
+
+            <div class="aligner">
+                <div>
+                    <a analytics-on="click" analytics-event="after picture carnival" analytics-category="modal clicks" class="btn" ng-click="hideModal();" href="/carnival">{{'GOTO_CARNIVAL' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture close modal" analytics-category="modal clicks" class="btn cta" ng-click="hideModal();" href="/now">{{'CARNIVALIZE_YOURSELF' | translate}}</a>
+                    <br/>
+                    <a analytics-on="click" analytics-event="after picture create mask" analytics-category="modal clicks"  class="btn" ng-click="hideModal();" href="/editor">RE-{{'CREATE_MASK' | translate}}</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,11 @@
+<div class="findMasks">
+    <div class="cover"></div>
+    <div class="input">
+        <input placeholder="{{'SEARCH_MASK_BY_TAG' | translate}}" ng-model="searchInput" type="text"/>
+        <br/>
+        <div class="counter">
+            <strong>{{maskAmount}} <span ng-if="maskAmount>1 || maskAmount<1">{{'MASKS' | translate}}</span> <span ng-if="maskAmount===1">{{'MASK' | translate}}</span> </strong> {{'SEARCHING_FOR' | translate}} "<em>{{searchInput ? searchInput : '...'}}</em>"
+        </div>
+        <a class="btn small" ng-click="hideThis();"><strong> {{'OK_DONE' | translate}} </strong></a>
+    </div>
+</div>

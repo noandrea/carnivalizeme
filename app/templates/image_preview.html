@@ -1,0 +1,51 @@
+<div>
+    <div class="aligner imagePreview animated fadeInDown">
+        <img alt="carnivalize.me lastWatchedImage.id" ng-src="{{lastWatchedImage.image ? lastWatchedImage.image : 'img/loading500.gif'}}" width="450"/>
+        
+        <div class="rightInfo" ng-if="lastWatchedImage.image === 'img/loading500.gif' ">
+            <div class="info">
+                <ul>
+                    <li class="textonly">
+                        <a>{{'SELECT_IMAGE_IN_CARNIVAL' | translate}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="rightInfo" ng-if="lastWatchedImage.image !== 'img/loading500.gif' ">
+
+            <small>Created <em>{{lastWatchedImage.added | timeago}}</em></small>
+
+            <div class="votes">
+                <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'up');">
+                    <em>{{lastWatchedImage.up}}</em> <i class="icon pictogram picto-2x green">&#128077;</i>
+                </div> 
+
+                <div class="updown-vote" ng-click="votePhoto(lastWatchedImage,'dw');">
+                    <em>{{lastWatchedImage.dw}}</em> <i class="icon pictogram picto-2x red">&#128078;</i>
+                </div>
+            </div>
+            <div class="info">
+                <div class="el">
+                    <ul>
+                        <li>
+                            <a class="facebook" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{SITE_URL}}{{lastWatchedImage.blowout | escape}}"><i class="icon pictogramsocial picto-3x">&#62220;</i></a>
+                        </li>
+                        <li>
+                            <a class="twitter" target="_blank" href="https://twitter.com/home?status={{'Check out this #maskedselfie on http://carnivalize.me : ' | escape}}{{SITE_URL}}{{lastWatchedImage.blowout | escape}}"><i class="icon pictogramsocial picto-3x">&#62217;</i></a>
+                        </li>
+                        <li>
+                            <a class="pinterest" target="_blank" href="https://pinterest.com/pin/create/button/?url={{lastWatchedImage.thumb | escape}}&media={{lastWatchedImage.thumb | escape}}&description={{'Check out this #maskedselfie on http://carnivalize.me' | escape}}"><i class="icon pictogramsocial picto-3x">&#62226;</i></a>
+                        </li>
+                        <li class="textonly">
+                            <a href="{{SITE_URL}}{{lastWatchedImage.blowout}}" target="_blank"><i class="icon pictogram picto-3x">&#128279;</i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="el">
+                    <small><em><span ng-repeat="tag in lastWatchedImage.tags">{{tag}}{{$last ? '' : ', '}}</span></em></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

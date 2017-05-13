@@ -1,0 +1,84 @@
+//
+// Icons
+//
+
+[class^="icon"],
+[class*=" icon"] {
+    display: inline-block;
+    margin-top: 0;
+    width: auto;
+    height: auto;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat;
+    color: inherit;
+    vertical-align: baseline;
+    text-decoration: none;
+    text-transform: none;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-size: inherit;
+    text-rendering: optimizeLegibility;
+
+}
+
+// Standard Icons are pictogram
+.pictogram {
+    &.red{
+        color: #B90000;
+    }
+    &.green{
+        color: #008F11;
+    }
+    font-family: $entypo;
+
+    // Icon Sizes
+    &.picto-small {
+        font-size: 1em;
+    }
+    &.picto-large {
+        font-size: 1.5em;
+    }
+    &.picto-2x {
+        font-size: 2em;
+    }
+    &.picto-3x {
+        font-size: 3em;
+    }
+    &.picto-4x {
+        font-size: 4em;
+        line-height: .6;
+    }
+    &.picto-xlarge {
+        font-size: em-calc(240);
+        line-height: .5;
+    }
+
+}
+.pictogramsocial {
+    font-family: $entypo-social;
+
+    // Icon Sizes
+    &.picto-small {
+        font-size: 1em;
+    }
+    &.picto-large {
+        font-size: 1.5em;
+    }
+    &.picto-2x {
+        font-size: 2em;
+    }
+    &.picto-3x {
+        font-size: 3em;
+    }
+    &.picto-4x {
+        font-size: 4em;
+        line-height: .6;
+    }
+    &.picto-xlarge {
+        font-size: em-calc(240);
+        line-height: .5;
+    }
+
+}
